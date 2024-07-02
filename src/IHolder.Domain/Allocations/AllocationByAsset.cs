@@ -18,7 +18,7 @@ public class AllocationByAsset : Allocation
     {
         if ((IsQuarantineTimeExceeded() && Asset.State == State.Quarantine) || ExceedsPercentageDifference())
             return Recommendation.Sell;
-        else if (PercentagesAndValues.PercentageDifference > 0 && Asset.State != State.Quarantine)
+        else if (AllocationValues.PercentageDifference > 0 && Asset.State != State.Quarantine)
             return Recommendation.Buy;
 
         return Recommendation.Hold;

@@ -48,7 +48,6 @@ public class AssetInPortfolio : Entity
     public decimal InvestedAmount { get; private set; }
     public Guid UserId { get; private set; }
     public DateTime FirstInvestmentDate { get; private set; }
-
     public Asset Asset { get; private set; } = default!;
     public User User { get; private set; } = default!;
 
@@ -60,5 +59,4 @@ public class AssetInPortfolio : Entity
 
         return averagePrice * quantity;
     }
-
 }
