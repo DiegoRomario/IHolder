@@ -1,8 +1,9 @@
 ﻿using IHolder.Domain.Common;
+using IHolder.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace IHolder.Domain.Infrastructure.Middlewares;
+namespace IHolder.Infrastructure.Middlewares;
 
 public class EventualConsistencyMiddleware(RequestDelegate next)
 {

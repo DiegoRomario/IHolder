@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace IHolder.Domain.Infrastructure.Users;
+namespace IHolder.Infrastructure.Users;
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
@@ -11,7 +11,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(p => p.FirstName).HasColumnType("VARCHAR(80)").IsRequired();
         builder.Property(p => p.LastName).HasColumnType("VARCHAR(80)").IsRequired();
         builder.Property(p => p.Email).HasColumnType("VARCHAR(40)").IsRequired();
-        builder.Property("_passwordHash").HasColumnName("PasswordHash");
+        builder.Property("_passwordHash").HasColumnName("PasswordHash").HasColumnType("VARCHAR(1200)");
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.UpdatedAt);
 

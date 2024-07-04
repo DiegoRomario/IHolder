@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace IHolder.Domain.Infrastructure.Assets;
+namespace IHolder.Infrastructure.Assets;
 public class AssetInPortifolioConfigurations : IEntityTypeConfiguration<AssetInPortfolio>
 {
     public void Configure(EntityTypeBuilder<AssetInPortfolio> builder)

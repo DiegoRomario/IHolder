@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace IHolder.Domain.Infrastructure;
+namespace IHolder.Infrastructure;
 public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor, IPublisher _publisher) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -25,10 +25,10 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        SetDefaultDBType(modelBuilder, typeof(decimal), "DECIMAL(18,4)");
         SetDefaultDBType(modelBuilder, typeof(string), "VARCHAR(100)");
         SetDefaultDBType(modelBuilder, typeof(DateTime), "DATETIME");
         SetDefaultDBType(modelBuilder, typeof(DateTime?), "DATETIME");
-        SetDefaultDBType(modelBuilder, typeof(decimal), "DECIMAL(12,2)");
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -56,7 +56,7 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
         if (_httpContextAccessor.HttpContext is not null)
         {
 
-            var domainEvents = ChangeTracker.Entries<Entity>()
+            var domainEvents = ChangeTracker.Entries<AggregateRoot>()
                                             .Select(entry => entry.Entity.PopDomainEvents())
                                             .SelectMany(x => x)
                                             .ToList();
