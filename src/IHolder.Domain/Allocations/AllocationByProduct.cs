@@ -1,15 +1,14 @@
 ﻿using IHolder.Domain.Enumerators;
-using IHolder.Domain.Products;
 
 namespace IHolder.Domain.Allocations;
 
 public class AllocationByProduct : Allocation
 {
     private AllocationByProduct() { }
-    public AllocationByProduct(Product product, Guid userId, decimal targetPercentage) : base(targetPercentage, userId)
+    public AllocationByProduct(Guid productId, Guid userId, decimal targetPercentage) : base(targetPercentage, userId)
     {
-        Product = product;
+        ProductId = productId;
         Recommendation = Recommendation.Hold;
     }
-    public Product Product { get; private set; } = default!;
+    public Guid ProductId { get; private set; }
 }

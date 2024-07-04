@@ -41,7 +41,7 @@ public class AllocationTests
     {
         // Arrange
         Product product = new("Product A", "Stuff about Produtct A", Guid.NewGuid(), Risk.Medium);
-        AllocationByProduct allocation = new(product, Guid.NewGuid(), targetPercentage);
+        AllocationByProduct allocation = new(product.Id, Guid.NewGuid(), targetPercentage);
         // Act
         allocation.GenerateRecommendation(amountInvestedPerAllocation, totalAmountInvested);
         // Assert
@@ -59,7 +59,7 @@ public class AllocationTests
     {
         // Arrange
         Category category = new("Variable Income", "Stuff about variable income");
-        AllocationByCategory allocation = new(category, Guid.NewGuid(), targetPercentage);
+        AllocationByCategory allocation = new(category.Id, Guid.NewGuid(), targetPercentage);
 
         // Act
         allocation.GenerateRecommendation(amountInvestedPerAllocation, totalAmountInvested);

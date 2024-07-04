@@ -2,9 +2,16 @@
 
 namespace IHolder.Domain.Allocations;
 
-public record AllocationValues(decimal TargetPercentage)
+public class AllocationValues
 {
-    public decimal TargetPercentage { get; private set; } = TargetPercentage;
+    public AllocationValues(decimal targetPercentage)
+    {
+        TargetPercentage = targetPercentage;
+    }
+
+    private AllocationValues() { }
+
+    public decimal TargetPercentage { get; private set; }
     public decimal CurrentPercentage { get; private set; }
     public decimal PercentageDifference { get; private set; }
     public decimal CurrentAmount { get; private set; }

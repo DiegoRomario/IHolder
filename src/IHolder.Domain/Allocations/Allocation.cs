@@ -17,9 +17,10 @@ public abstract class Allocation : Entity
         Recommendation = Recommendation.Hold;
         UserId = userId;
     }
-    public AllocationValues AllocationValues { get; init; } = default!;
+
     public User User { get; private set; } = default!;
     public Guid UserId { get; private set; }
+    public AllocationValues AllocationValues { get; private set; } = default!;
     public Recommendation Recommendation { get; protected set; }
 
     public void GenerateRecommendation(decimal amountInvestedPerAllocation, decimal totalAmountInvested)
