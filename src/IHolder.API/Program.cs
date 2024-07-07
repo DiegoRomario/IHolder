@@ -1,20 +1,16 @@
 using IHolder.API;
+using IHolder.Application;
 using IHolder.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPresentation()
+                .AddApplication()
                 .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddMediatR(options =>
-{
-    options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection));
-
-    //options.AddOpenBehavior(typeof(ValidationBehavior<,>));
-    //options.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
-});
-
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

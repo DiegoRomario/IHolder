@@ -1,0 +1,7 @@
+﻿using IHolder.Domain.Users;
+
+namespace IHolder.Application.Common.Interfaces;
+public interface IJwtTokenGenerator
+{
+    string GenerateToken(User user);
+}

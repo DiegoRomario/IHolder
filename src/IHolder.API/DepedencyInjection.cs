@@ -1,4 +1,7 @@
-﻿namespace IHolder.API;
+﻿using IHolder.API.Services;
+using IHolder.Application.Common.Interfaces;
+
+namespace IHolder.API;
 
 public static class DepedencyInjection
 {
@@ -10,6 +13,9 @@ public static class DepedencyInjection
         services.AddProblemDetails();
         services.AddHttpContextAccessor();
 
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+
         return services;
     }
 }
+

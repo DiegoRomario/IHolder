@@ -12,13 +12,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <!--<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />-->
     <!--<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.5" />-->
-    <!--<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />-->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <!--<PackageReference Include="System.IdentityModel.Tokens.JwT" Version="7.5.2" />-->
-    <!--<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />-->
+    <!--<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />-->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IHolder.Application\IHolder.Application.csproj" />
     <ProjectReference Include="..\IHolder.Domain\IHolder.Domain.csproj" />
   </ItemGroup>
   

@@ -1,15 +1,16 @@
 ﻿using IHolder.Domain.Allocations;
 using IHolder.Domain.Products;
+using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IHolder.Infrastructure.Allocations;
-public class AllocationByProductConfigurations : IEntityTypeConfiguration<AllocationByProduct>
+public class AllocationByProductConfigurations : EntityConfiguration<AllocationByProduct>
 {
-    public void Configure(EntityTypeBuilder<AllocationByProduct> builder)
+    public override void Configure(EntityTypeBuilder<AllocationByProduct> builder)
     {
-        builder.HasKey(d => d.Id);
-        builder.OwnsOne(a => a.AllocationValues, i =>
+        base.Configure(builder);
+        builder.ComplexProperty(a => a.AllocationValues, i =>
         {
             i.Property(a => a.TargetPercentage).HasColumnName("TargetPercentage").HasColumnType("DECIMAL(18,4)").IsRequired();
             i.Property(a => a.CurrentPercentage).HasColumnName("CurrentPercentage").HasColumnType("DECIMAL(18,4)").IsRequired();
@@ -21,9 +22,6 @@ public class AllocationByProductConfigurations : IEntityTypeConfiguration<Alloca
         builder.HasOne<Product>().WithMany().HasForeignKey(p => p.ProductId);
 
         builder.Property(p => p.Recommendation).IsRequired().HasColumnType("TINYINT");
-        builder.Property(p => p.CreatedAt).IsRequired();
-        builder.Property(p => p.UpdatedAt);
-        builder.ToTable("AllocationByProduct");
     }
 
 }

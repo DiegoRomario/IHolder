@@ -7,14 +7,21 @@ using IHolder.Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 
-namespace IHolder.Infrastructure;
+namespace IHolder.Infrastructure.Database;
 public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor, IPublisher _publisher) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public DbSet<AssetInPortfolio> AssetsInPortfolio { get; set; }
+
+    /* This line: 
+       public DbSet<AssetInPortfolio> AssetsInPortfolio => Set<AssetInPortfolio>();
+       Can be used when the compiler complains about a nullable field.
+       It provides a shorthand syntax to access the DbSet without explicitly declaring a backing field. */
+
     public DbSet<Asset> Assets { get; set; }
     public DbSet<AllocationByAsset> AllocationsByAsset { get; set; }
     public DbSet<AllocationByProduct> AllocationsByProduct { get; set; }
@@ -39,10 +46,13 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
 
     private static void SetDefaultDBType(ModelBuilder modelBuilder, Type type, string dbFieldType)
     {
-        foreach (var property in modelBuilder
-              .Model
-              .GetEntityTypes()
-              .SelectMany(e => e.GetProperties().Where(p => p.ClrType == type)))
+        // todo: DECIMAL NOT WORKING... DEBUG IT (COMPLEX PROPERTY)
+        IEnumerable<IMutableProperty> properties = modelBuilder
+                      .Model
+                      .GetEntityTypes()
+                      .SelectMany(e => e.GetProperties().Where(p => p.ClrType == type));
+
+        foreach (var property in properties)
         {
             property.SetColumnType(dbFieldType);
         }
@@ -101,7 +111,7 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
 
     private void SetTimestamps()
     {
-        foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataInclusao") != null && entry.Entity.GetType().GetProperty("DataAlteracao") != null))
+        foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("CreatedAt") != null && entry.Entity.GetType().GetProperty("UpdatedAt") != null))
         {
             if (entry.State == EntityState.Added)
             {
