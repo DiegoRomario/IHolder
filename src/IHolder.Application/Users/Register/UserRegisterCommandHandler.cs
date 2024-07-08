@@ -1,11 +1,12 @@
 ﻿using ErrorOr;
-using IHolder.Application.Common.Authorization;
+using IHolder.Application.Common.Auth;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Common;
 using IHolder.Domain.Users;
 using MediatR;
 
 namespace IHolder.Application.Users.Register;
+
 public class UserRegisterCommandHandler(IUserRepository _userRepository, IJwtTokenGenerator _jwtTokenGenerator, IPasswordHasher _passwordHasher) : IRequestHandler<UserRegisterCommand, ErrorOr<AuthenticationResult>>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(UserRegisterCommand request, CancellationToken cancellationToken)

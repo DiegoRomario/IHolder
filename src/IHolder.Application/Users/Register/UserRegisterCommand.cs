@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.Application.Common.Authorization;
+using IHolder.Application.Common.Auth;
 using MediatR;
 
 namespace IHolder.Application.Users.Register;

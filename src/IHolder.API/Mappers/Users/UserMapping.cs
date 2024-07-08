@@ -1,4 +1,4 @@
-﻿using IHolder.Application.Common.Authorization;
+﻿using IHolder.Application.Common.Auth;
 using IHolder.Contracts.Users;
 
 namespace IHolder.API.Mappers.Users;
