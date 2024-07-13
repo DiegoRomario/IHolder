@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IHolder.Infrastructure.Users;
 public class UserRepository(IHolderDbContext _dbContext) : IUserRepository
 {
-    public async Task AddUserAsync(User user)
+    public async Task AddAsync(User user)
     {
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();

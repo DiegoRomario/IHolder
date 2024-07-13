@@ -1,6 +1,8 @@
-﻿using IHolder.Application.Common.Interfaces;
+﻿using IHolder.Application.Common;
+using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Common;
 using IHolder.Infrastructure.Authentication;
+using IHolder.Infrastructure.Categories;
 using IHolder.Infrastructure.Database;
 using IHolder.Infrastructure.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,6 +26,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<IHolderDbContext>(options => options.UseSqlServer(configuration["Database:IHolderConnectionString"]));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }

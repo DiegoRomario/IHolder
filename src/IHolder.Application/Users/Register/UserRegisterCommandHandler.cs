@@ -19,7 +19,7 @@ public class UserRegisterCommandHandler(IUserRepository _userRepository, IJwtTok
 
         var user = new User(request.FirstName, request.LastName, request.Email, hashPasswordResult.Value);
 
-        await _userRepository.AddUserAsync(user);
+        await _userRepository.AddAsync(user);
 
         var token = _jwtTokenGenerator.GenerateToken(user);
 
