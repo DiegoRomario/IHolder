@@ -1,4 +1,5 @@
 ﻿using IHolder.API.Services;
+using IHolder.API.Swagger;
 using IHolder.Application.Common.Interfaces;
 
 namespace IHolder.API;
@@ -9,7 +10,7 @@ public static class DepedencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerConfiguration();
         services.AddProblemDetails();
         services.AddHttpContextAccessor();
 
