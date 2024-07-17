@@ -15,10 +15,14 @@ public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _cu
 
         if (authorizationAttributes.Count == 0) return await next();
 
-        var currentUser = _currentUserProvider.GetCurrentUser();
+        var currentUserResult = _currentUserProvider.GetCurrentUser();
 
-        var requiredPermissions = authorizationAttributes.SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
+        if (currentUserResult.IsError) return (dynamic)currentUserResult.Errors;
+
+        var requiredPermissions = authorizationAttributes.SelectMany(attribute => attribute.Permissions?.Split(',') ?? [])
                                                          .ToList();
+
+        var currentUser = currentUserResult.Value;
 
         if (requiredPermissions.Except(currentUser.Permissions).Any())
             return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
