@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IHolder.API", "src\IHolder.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IHolder.Infrastructure", "src\IHolder.Infrastructure\IHolder.Infrastructure.csproj", "{6D618CE7-BA04-49E4-906A-94AF3C86EA48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHolder.Application", "src\IHolder.Application\IHolder.Application.csproj", "{C58F2A40-11D7-4D33-ABC3-84E13FBDDFE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IHolder.Application", "src\IHolder.Application\IHolder.Application.csproj", "{C58F2A40-11D7-4D33-ABC3-84E13FBDDFE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHolder.Contracts", "src\IHolder.Contracts\IHolder.Contracts.csproj", "{1A14718B-4CB1-46E1-8386-F62149C8049C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IHolder.Contracts", "src\IHolder.Contracts\IHolder.Contracts.csproj", "{1A14718B-4CB1-46E1-8386-F62149C8049C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,9 +1,7 @@
-﻿using ErrorOr;
-
-namespace IHolder.Domain.Common;
+﻿namespace IHolder.Domain.Common;
 
 public interface IPasswordHasher
 {
-    public ErrorOr<string> HashPassword(string password);
+    public string HashPassword(string password);
     bool IsCorrectPassword(string password, string hash);
 }

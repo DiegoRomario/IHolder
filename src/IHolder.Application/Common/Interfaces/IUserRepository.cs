@@ -4,9 +4,10 @@ namespace IHolder.Application.Common.Interfaces;
 
 public interface IUserRepository
 {
-    Task AddAsync(User user);
-    Task<bool> ExistsByEmailAsync(string email);
-    Task<User?> GetByEmailAsync(string email);
     Task<User?> GetByIdAsync(Guid userId);
+    Task<User?> GetByEmailAsync(string email);
+    Task<bool> ExistsByIdAsync(Guid id);
+    Task<bool> ExistsByEmailAsync(string email);
+    Task AddAsync(User user);
     Task UpdateAsync(User user);
 }

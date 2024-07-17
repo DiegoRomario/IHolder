@@ -15,11 +15,11 @@ public class User : AggregateRoot
     }
 
     private User() { }
-    public string FirstName { get; } = null!;
-    public string LastName { get; } = null!;
-    public string Email { get; } = null!;
+    public string FirstName { get; private set; } = null!;
+    public string LastName { get; private set; } = null!;
+    public string Email { get; private set; } = null!;
 
-    private readonly string _passwordHash = null!;
+    private string _passwordHash = null!;
 
 
     public IEnumerable<AllocationByCategory> AllocationsByCategory { get; private set; } = [];
@@ -30,5 +30,14 @@ public class User : AggregateRoot
     public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher)
     {
         return passwordHasher.IsCorrectPassword(password, _passwordHash);
+    }
+
+    public void UpdateUserDetails(string firstName, string lastName, string email, string? passwordHash = null)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+
+        if (!string.IsNullOrEmpty(passwordHash)) _passwordHash = passwordHash;
     }
 }
