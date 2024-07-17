@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using IHolder.API.Mappers.Categories;
 using IHolder.Application.Categories.Create;
+using IHolder.Application.Categories.List;
 using IHolder.Application.Categories.Update;
 using IHolder.Contracts.Categories;
 using IHolder.Domain.Categories;
@@ -14,7 +15,19 @@ namespace IHolder.API.Controllers;
 [Authorize]
 public class CategoryController(ISender _mediator) : IHolderControllerBase
 {
-    [HttpPost("create")]
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        CategoryGetByIdQuery command = new(id);
+
+        ErrorOr<Category> categoryResult = await _mediator.Send(command);
+
+        IActionResult response = categoryResult.Match(category => base.Ok(category.ToCategoryResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpPost()]
     public async Task<IActionResult> Create(CategoryCreateRequest request)
     {
         CategoryCreateCommand command = request.ToCategoryCreateCommand();
@@ -26,7 +39,7 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
-    [HttpPut("update/{id:guid}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, CategoryUpdateRequest request)
     {
         CategoryUpdateCommand command = request.ToCategoryUpdateCommand(id);

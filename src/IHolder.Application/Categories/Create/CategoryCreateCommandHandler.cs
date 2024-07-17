@@ -6,15 +6,15 @@ using MediatR;
 
 namespace IHolder.Application.Categories.Create;
 
-public class CategoryCreateCommandHandler(ICategoryRepository _categoryRepository) : IRequestHandler<CategoryCreateCommand, ErrorOr<Category>>
+public class CategoryCreateCommandHandler(ICategoryRepository _repository) : IRequestHandler<CategoryCreateCommand, ErrorOr<Category>>
 {
     public async Task<ErrorOr<Category>> Handle(CategoryCreateCommand request, CancellationToken cancellationToken)
     {
         var category = request.ToCategoryEntity();
 
-        await _categoryRepository.AddAsync(category);
+        await _repository.AddAsync(category);
 
-        category = await _categoryRepository.GetByIdAsync(category.Id);
+        category = await _repository.GetByIdAsync(category.Id);
 
         if (category == null) return Error.Conflict(description: "Failed to retrieve the updated category.");
 

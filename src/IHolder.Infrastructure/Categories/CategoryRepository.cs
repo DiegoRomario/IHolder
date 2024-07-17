@@ -7,25 +7,25 @@ namespace IHolder.Infrastructure.Categories;
 
 internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryRepository
 {
-    public async Task AddAsync(Category category)
+    public async Task<Category?> GetByIdAsync(Guid Id)
     {
-        await _dbContext.AddAsync(category);
-        await _dbContext.SaveChangesAsync();
+        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Id == Id);
     }
 
     public async Task<Category?> GetByDescriptionAsync(string description)
     {
-        return await _dbContext.Categories.FirstOrDefaultAsync(category => category.Description == description);
+        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Description == description);
     }
 
     public async Task<bool> ExistsByIdAsync(Guid Id)
     {
-        return await _dbContext.Categories.AnyAsync(category => category.Id == Id);
+        return await _dbContext.Categories.AsNoTracking().AnyAsync(category => category.Id == Id);
     }
 
-    public async Task<Category?> GetByIdAsync(Guid Id)
+    public async Task AddAsync(Category category)
     {
-        return await _dbContext.Categories.FirstOrDefaultAsync(category => category.Id == Id);
+        await _dbContext.AddAsync(category);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Category category)

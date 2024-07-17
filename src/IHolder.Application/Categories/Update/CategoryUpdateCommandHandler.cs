@@ -6,16 +6,15 @@ using MediatR;
 
 namespace IHolder.Application.Categories.Update;
 
-public class CategoryUpdateCommandHandler(ICategoryRepository _categoryRepository) : IRequestHandler<CategoryUpdateCommand, ErrorOr<Category>>
+public class CategoryUpdateCommandHandler(ICategoryRepository _repository) : IRequestHandler<CategoryUpdateCommand, ErrorOr<Category>>
 {
     public async Task<ErrorOr<Category>> Handle(CategoryUpdateCommand request, CancellationToken cancellationToken)
     {
-        if (await _categoryRepository.ExistsByIdAsync(request.Id) is false)
-            return Error.Conflict(description: "Category not found");
+        if (await _repository.ExistsByIdAsync(request.Id) is false) return Error.Conflict(description: "Category not found");
 
-        await _categoryRepository.UpdateAsync(request.ToCategoryEntity());
+        await _repository.UpdateAsync(request.ToCategoryEntity());
 
-        var category = await _categoryRepository.GetByIdAsync(request.Id);
+        var category = await _repository.GetByIdAsync(request.Id);
 
         if (category == null) return Error.Conflict(description: "Failed to retrieve the updated category.");
 

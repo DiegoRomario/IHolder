@@ -5,10 +5,10 @@ namespace IHolder.Application.Categories.Create;
 
 public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
-    public CategoryCreateCommandValidator(ICategoryRepository categoryRepository)
+    private readonly ICategoryRepository _repository;
+    public CategoryCreateCommandValidator(ICategoryRepository repository)
     {
-        _categoryRepository = categoryRepository;
+        _repository = repository;
 
         RuleFor(x => x.Description).NotEmpty()
                                    .MaximumLength(80);
@@ -24,7 +24,7 @@ public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCo
 
     private async Task<bool> ValidateDescription(CategoryCreateCommand categoryUpdateCommand, string description, CancellationToken token = default)
     {
-        var existingCategory = await _categoryRepository.GetByDescriptionAsync(description);
+        var existingCategory = await _repository.GetByDescriptionAsync(description);
         return existingCategory is null;
     }
 }

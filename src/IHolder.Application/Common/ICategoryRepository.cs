@@ -4,9 +4,9 @@ namespace IHolder.Application.Common;
 
 public interface ICategoryRepository
 {
-    Task AddAsync(Category category);
+    Task<Category?> GetByIdAsync(Guid Id);
     Task<Category?> GetByDescriptionAsync(string description);
     Task<bool> ExistsByIdAsync(Guid Id);
-    Task<Category?> GetByIdAsync(Guid Id);
+    Task AddAsync(Category category);
     Task UpdateAsync(Category category);
 }
