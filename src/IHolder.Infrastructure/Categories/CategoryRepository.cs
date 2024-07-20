@@ -1,6 +1,8 @@
-﻿using IHolder.Application.Common;
+﻿using IHolder.Application.Categories.List;
+using IHolder.Application.Common;
 using IHolder.Domain.Categories;
 using IHolder.Infrastructure.Database;
+using IHolder.SharedKernel.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace IHolder.Infrastructure.Categories;
@@ -32,5 +34,24 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
     {
         _dbContext.Update(category);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter)
+    {
+        var query = _dbContext.Categories.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrEmpty(filter.Description))
+            query = query.Where(category => category.Description.Contains(filter.Description));
+
+        if (!string.IsNullOrEmpty(filter.Details))
+            query = query.Where(category => category.Details.Contains(filter.Details));
+
+        if (filter.Id.HasValue)
+            query = query.Where(category => category.Id == filter.Id.Value);
+
+        var count = await query.CountAsync();
+        var items = await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+
+        return new PaginatedList<Category>(items, count, filter.PageNumber, filter.PageSize);
     }
 }
