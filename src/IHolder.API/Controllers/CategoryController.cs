@@ -7,13 +7,11 @@ using IHolder.Contracts.Categories;
 using IHolder.Domain.Categories;
 using IHolder.SharedKernel.DTO;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Controllers;
 
 [Route("[controller]")]
-[Authorize]
 public class CategoryController(ISender _mediator) : IHolderControllerBase
 {
     [HttpGet("{id}")]

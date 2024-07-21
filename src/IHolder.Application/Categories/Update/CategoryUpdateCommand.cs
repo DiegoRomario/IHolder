@@ -5,5 +5,5 @@ using MediatR;
 
 namespace IHolder.Application.Categories.Update;
 
-[Authorization()]
+[Authorization]
 public record CategoryUpdateCommand(Guid Id, string Description, string Details) : IRequest<ErrorOr<Category>>;

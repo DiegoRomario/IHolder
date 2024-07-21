@@ -7,13 +7,11 @@ using IHolder.Application.Users.Update;
 using IHolder.Contracts.Users;
 using IHolder.Domain.Users;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Controllers;
 
 [Route("[controller]")]
-[AllowAnonymous]
 public class UserController(ISender _mediator) : IHolderControllerBase
 {
     [HttpPost()]

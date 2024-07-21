@@ -5,5 +5,5 @@ using MediatR;
 
 namespace IHolder.Application.Categories.Create;
 
-[Authorization()]
+[Authorization]
 public record CategoryCreateCommand(string Description, string Details) : IRequest<ErrorOr<Category>>;
