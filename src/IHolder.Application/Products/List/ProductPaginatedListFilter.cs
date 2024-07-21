@@ -7,6 +7,7 @@ public record ProductPaginatedListFilter(
     Guid? Id,
     string? Description,
     string? Details,
+    Guid? CategoryId,
     string? CategoryDescription,
     Risk? Risk,
     int PageNumber,

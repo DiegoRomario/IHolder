@@ -9,11 +9,11 @@ namespace IHolder.Infrastructure.Products;
 
 internal class ProductRepository(IHolderDbContext _dbContext) : IProductRepository
 {
-    public async Task<Product?> GetByIdAsync(Guid Id)
+    public async Task<Product?> GetByIdAsync(Guid id)
     {
         return await _dbContext.Products.AsNoTracking()
                                         .Include(p => p.Category)
-                                        .FirstOrDefaultAsync(Product => Product.Id == Id);
+                                        .FirstOrDefaultAsync(Product => Product.Id == id);
     }
 
     public async Task<Product?> GetByDescriptionAsync(string description)
@@ -22,10 +22,16 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
                                         .FirstOrDefaultAsync(Product => Product.Description == description);
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid Id)
+    public async Task<bool> ExistsByIdAsync(Guid id)
     {
         return await _dbContext.Products.AsNoTracking()
-                                        .AnyAsync(Product => Product.Id == Id);
+                                        .AnyAsync(Product => Product.Id == id);
+    }
+
+    public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId)
+    {
+        return await _dbContext.Products.AsNoTracking()
+                                .AnyAsync(Product => Product.CategoryId == categoryId);
     }
 
     public async Task AddAsync(Product Product)
@@ -58,6 +64,9 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
         if (filter.Risk.HasValue)
             query = query.Where(product => product.Risk == filter.Risk.Value);
 
+        if (filter.CategoryId is not null && filter.CategoryId != Guid.Empty)
+            query = query.Where(product => product.CategoryId == filter.CategoryId.Value);
+
         if (!string.IsNullOrEmpty(filter.CategoryDescription))
             query = query.Where(product => product.Category.Description.Contains(filter.CategoryDescription));
 
@@ -66,5 +75,4 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
 
         return new PaginatedList<Product>(items, count, filter.PageNumber, filter.PageSize);
     }
-
 }

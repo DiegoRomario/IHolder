@@ -54,4 +54,10 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
 
         return new PaginatedList<Category>(items, count, filter.PageNumber, filter.PageSize);
     }
+
+    public async Task DeleteAsync(Category category)
+    {
+        _dbContext.Remove(category);
+        await _dbContext.SaveChangesAsync();
+    }
 }

@@ -61,4 +61,14 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
 
         return response;
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        CategoryDeleteCommand command = new(id);
+
+        ErrorOr<Deleted> result = await _mediator.Send(command);
+
+        return result.Match(_ => NoContent(), Problem);
+    }
 }

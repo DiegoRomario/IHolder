@@ -35,7 +35,7 @@ public static class ProductContractsMapping
 
     public static ProductPaginatedListQuery ToProductPaginatedListQuery(this ProductPaginatedListRequest request)
     {
-        return new ProductPaginatedListQuery(new ProductPaginatedListFilter(request.Id, request.Description, request.Details, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
+        return new ProductPaginatedListQuery(new ProductPaginatedListFilter(request.Id, request.Description, request.Details, request.CategoryId, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
     }
 
     public static PaginatedList<ProductResponse> ToProductResponsePaginatedList(this PaginatedList<Product> Product)

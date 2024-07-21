@@ -8,6 +8,7 @@ public record ProductPaginatedListRequest : PaginatedFilter
     public string? Description { get; set; }
     public string? Details { get; set; }
     public byte? Risk { get; set; }
+    public Guid? CategoryId { get; set; }
     public string? CategoryDescription { get; set; }
 }
 
