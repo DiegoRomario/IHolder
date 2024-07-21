@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.Application.Common;
+using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Products;
 using IHolder.SharedKernel.DTO;
 using MediatR;

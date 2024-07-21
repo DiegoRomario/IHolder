@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using IHolder.API.Mappers.Categories;
 using IHolder.Application.Categories.Create;
+using IHolder.Application.Categories.Delete;
 using IHolder.Application.Categories.List;
 using IHolder.Application.Categories.Update;
 using IHolder.Contracts.Categories;

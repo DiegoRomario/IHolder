@@ -1,4 +1,4 @@
-﻿using IHolder.Application.Common;
+﻿using IHolder.Application.Common.Interfaces;
 using IHolder.Application.Products.List;
 using IHolder.Domain.Products;
 using IHolder.Infrastructure.Database;
@@ -31,19 +31,13 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
     public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId)
     {
         return await _dbContext.Products.AsNoTracking()
-                                .AnyAsync(Product => Product.CategoryId == categoryId);
+                                        .AnyAsync(product => product.CategoryId == categoryId);
     }
 
-    public async Task AddAsync(Product Product)
+    public async Task<bool> HasAllocationsAsync(Guid productId)
     {
-        await _dbContext.AddAsync(Product);
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Product Product)
-    {
-        _dbContext.Update(Product);
-        await _dbContext.SaveChangesAsync();
+        return await _dbContext.AllocationsByProduct.AsNoTracking()
+                                                    .AnyAsync(allocation => allocation.ProductId == productId);
     }
 
     public async Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter)
@@ -74,5 +68,23 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
         var items = await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
 
         return new PaginatedList<Product>(items, count, filter.PageNumber, filter.PageSize);
+    }
+
+    public async Task AddAsync(Product product)
+    {
+        await _dbContext.AddAsync(product);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Product product)
+    {
+        _dbContext.Update(product);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Product product)
+    {
+        _dbContext.Remove(product);
+        await _dbContext.SaveChangesAsync();
     }
 }

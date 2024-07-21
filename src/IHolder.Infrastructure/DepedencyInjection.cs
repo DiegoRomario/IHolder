@@ -1,6 +1,7 @@
 ﻿using IHolder.Application.Common;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Common;
+using IHolder.Infrastructure.Assets;
 using IHolder.Infrastructure.Authentication;
 using IHolder.Infrastructure.Categories;
 using IHolder.Infrastructure.Database;
@@ -29,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IAssetRepository, AssetRepository>();
 
         return services;
     }

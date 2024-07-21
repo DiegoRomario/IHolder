@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using IHolder.Application.Common;
+using IHolder.Application.Common.Interfaces;
 
 namespace IHolder.Application.Products.Create;
 

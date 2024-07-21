@@ -2,7 +2,7 @@
 using IHolder.Domain.Products;
 using IHolder.SharedKernel.DTO;
 
-namespace IHolder.Application.Common;
+namespace IHolder.Application.Common.Interfaces;
 
 public interface IProductRepository
 {
@@ -11,6 +11,8 @@ public interface IProductRepository
     Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter);
     Task<bool> ExistsByIdAsync(Guid id);
     Task<bool> ExistsByCategoryIdAsync(Guid categoryId);
+    Task<bool> HasAllocationsAsync(Guid productId);
     Task AddAsync(Product Product);
     Task UpdateAsync(Product Product);
+    Task DeleteAsync(Product Product);
 }

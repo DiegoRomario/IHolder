@@ -1,8 +1,9 @@
 ﻿using ErrorOr;
 using IHolder.Application.Common;
+using IHolder.Application.Common.Interfaces;
 using MediatR;
 
-namespace IHolder.Application.Categories.Create;
+namespace IHolder.Application.Categories.Delete;
 
 public class CategoryDeleteCommandHandler(ICategoryRepository _repository, IProductRepository _productRepository) : IRequestHandler<CategoryDeleteCommand, ErrorOr<Deleted>>
 {

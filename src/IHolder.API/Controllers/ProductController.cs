@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using IHolder.API.Mappers.Products;
 using IHolder.Application.Products.Create;
+using IHolder.Application.Products.Delete;
 using IHolder.Application.Products.List;
 using IHolder.Application.Products.Update;
 using IHolder.Contracts.Products;
@@ -60,5 +61,15 @@ public class ProductController(ISender _mediator) : IHolderControllerBase
         IActionResult response = Product.Match(Product => base.Ok(Product.ToProductResponse()), Problem);
 
         return response;
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        ProductDeleteCommand command = new(id);
+
+        ErrorOr<Deleted> result = await _mediator.Send(command);
+
+        return result.Match(_ => NoContent(), Problem);
     }
 }

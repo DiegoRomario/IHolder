@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace IHolder.Application.Categories.Create;
+namespace IHolder.Application.Categories.Delete;
 
 public class CategoryDeleteCommandValidator : AbstractValidator<CategoryDeleteCommand>
 {
