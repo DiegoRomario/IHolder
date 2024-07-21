@@ -1,10 +1,10 @@
 ﻿namespace IHolder.Domain.Enumerators;
 
-public enum Risk : ushort
+public enum Risk : byte
 {
-    Low = 0,
-    MediumLow = 1,
-    Medium = 2,
-    MediumHigh = 3,
+    Low = 1,
+    MediumLow = 2,
+    Medium = 3,
+    MediumHigh = 4,
     High = 5,
 }

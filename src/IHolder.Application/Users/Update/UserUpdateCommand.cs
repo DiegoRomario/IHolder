@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IHolder.Application.Users.Update;
 
-[Authorization()]
+[Authorization]
 public record UserUpdateCommand
     (Guid Id,
     string FirstName,
