@@ -15,7 +15,7 @@ public class ProductDeleteCommandHandler(IProductRepository _productRepository, 
         var hasAllocations = await _productRepository.HasAllocationsAsync(request.Id);
         if (hasAllocations) return Error.Conflict(description: "Unable to delete product. There are allocations for this product.");
 
-        var assetsExists = await _assetRepository.ExistsByProductIdAsync(request.Id);
+        var assetsExists = await _assetRepository.ExistsByPredicateAsync(a => a.ProductId == request.Id);
         if (assetsExists) return Error.Conflict(description: "Unable to delete product. This product is linked to one or more assets.");
 
         await _productRepository.DeleteAsync(product);
