@@ -1,4 +1,5 @@
 ﻿using IHolder.Domain.Allocations;
+using IHolder.Domain.Portfolios;
 using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,10 +18,13 @@ public class AllocationByAssetConfigurations : EntityConfiguration<AllocationByA
             i.Property(a => a.CurrentAmount).HasColumnName("CurrentAmount").HasColumnType("DECIMAL(18,4)").IsRequired();
             i.Property(a => a.AmountDifference).HasColumnName("AmountDifference").HasColumnType("DECIMAL(18,4)").IsRequired();
         });
+        builder.Property(p => p.PortfolioId).IsRequired();
+        builder.HasOne<Portfolio>().WithMany(p => p.AllocationsByAsset).HasForeignKey(p => p.PortfolioId);
+
         builder.Property(p => p.AssetId).IsRequired();
         /* Todo: this way of mapping is slightly different from AllocationByProduct and Category
                  given that AllocationByAsset has the Asset property (and a todo to review it later) */
-        builder.HasOne(a => a.Asset).WithMany().HasForeignKey(a => a.AssetId);
+        builder.HasOne(a => a.AssetInPortfolio).WithMany().HasForeignKey(a => a.AssetId);
 
         builder.Property(p => p.Recommendation).IsRequired().HasColumnType("TINYINT");
         builder.ToTable("AllocationByAsset");

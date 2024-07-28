@@ -2,6 +2,7 @@
 using IHolder.Domain.Assets;
 using IHolder.Domain.Categories;
 using IHolder.Domain.Common;
+using IHolder.Domain.Portfolios;
 using IHolder.Domain.Products;
 using IHolder.Domain.Users;
 using MediatR;
@@ -29,6 +30,7 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Portfolio> Portfolios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

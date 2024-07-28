@@ -14,8 +14,6 @@ public class AssetConfigurations : EntityConfiguration<Asset>
         builder.Property(a => a.Ticker).HasColumnType("VARCHAR(80)").IsRequired();
         builder.Property(a => a.Price).IsRequired();
         builder.Property(a => a.ProductId).IsRequired();
-        builder.Property(p => p.State).HasColumnType("TINYINT");
-        builder.Property(p => p.StateSetAt).IsRequired();
         builder.ToTable("Asset");
     }
 }

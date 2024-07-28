@@ -1,4 +1,5 @@
 ﻿using IHolder.Domain.Allocations;
+using IHolder.Domain.Portfolios;
 using IHolder.Domain.Products;
 using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ public class AllocationByProductConfigurations : EntityConfiguration<AllocationB
             i.Property(a => a.CurrentAmount).HasColumnName("CurrentAmount").HasColumnType("DECIMAL(18,4)").IsRequired();
             i.Property(a => a.AmountDifference).HasColumnName("AmountDifference").HasColumnType("DECIMAL(18,4)").IsRequired();
         });
+        builder.Property(p => p.PortfolioId).IsRequired();
+        builder.HasOne<Portfolio>().WithMany(p => p.AllocationsByProduct).HasForeignKey(p => p.PortfolioId);
+
         builder.Property(p => p.ProductId).IsRequired();
         builder.HasOne<Product>().WithMany().HasForeignKey(p => p.ProductId);
 

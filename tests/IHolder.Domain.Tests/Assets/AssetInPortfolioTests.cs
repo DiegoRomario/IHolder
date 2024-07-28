@@ -1,4 +1,4 @@
-﻿using IHolder.Domain.Assets;
+﻿using IHolder.Domain.Portfolios;
 
 namespace IHolder.Domain.Tests.Assets;
 
@@ -12,9 +12,10 @@ public class AssetInPortfolioTests
     {
         // Arrange & Act (constructor calls CalculateInvestedAmount method)
         AssetInPortfolio assetInPortfolio = new(
+            portfolioId: Guid.NewGuid(),
             assetId: Guid.NewGuid(),
-            averagePrice: 33.45M, quantity: 825,
-            userId: Guid.NewGuid(),
+            averagePrice: 33.45M,
+            quantity: 825,
             firstInvestmentDate: DateTime.Now);
 
         // Assert 
@@ -31,9 +32,10 @@ public class AssetInPortfolioTests
         var exception = Record.Exception(() =>
         {
             AssetInPortfolio assetInPortfolio = new(
+            portfolioId: Guid.NewGuid(),
             assetId: Guid.NewGuid(),
-            averagePrice: 999999999999999999995M, quantity: 999999999999999999995M,
-            userId: Guid.NewGuid());
+            averagePrice: 999999999999999999995M,
+            quantity: 999999999999999999995M);
 
         });
 

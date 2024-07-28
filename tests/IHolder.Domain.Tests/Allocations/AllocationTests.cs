@@ -2,6 +2,7 @@
 using IHolder.Domain.Assets;
 using IHolder.Domain.Categories;
 using IHolder.Domain.Enumerators;
+using IHolder.Domain.Portfolios;
 using IHolder.Domain.Products;
 
 namespace IHolder.Domain.Tests.Allocations;
@@ -20,7 +21,8 @@ public class AllocationTests
     {
         // Arrange
         Asset asset = new(Guid.NewGuid(), "Demo Company", "Stuff about Demo Company", "TEST3", 10);
-        AllocationByAsset allocation = new(asset, Guid.NewGuid(), targetPercentage);
+        AssetInPortfolio assetInPortfolio = new(Guid.NewGuid(), asset.Id, asset.Price, 10);
+        AllocationByAsset allocation = new(assetInPortfolio, Guid.NewGuid(), targetPercentage);
 
         // Act
         allocation.GenerateRecommendation(amountInvestedPerAllocation, totalAmountInvested);

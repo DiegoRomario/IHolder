@@ -1,6 +1,6 @@
 ﻿using IHolder.Domain.Common;
 using IHolder.Domain.Enumerators;
-using IHolder.Domain.Users;
+using IHolder.Domain.Portfolios;
 
 namespace IHolder.Domain.Allocations;
 
@@ -10,18 +10,19 @@ public abstract class Allocation : Entity
     protected Allocation() { }
 
     // todo: review id base class
-    protected Allocation(decimal targetPercentage, Guid userId)
+    protected Allocation(decimal targetPercentage, Guid portfolioId)
     {
         // todo: review new
         AllocationValues = new AllocationValues(targetPercentage);
         Recommendation = Recommendation.Hold;
-        UserId = userId;
+        PortfolioId = portfolioId;
     }
 
-    public User User { get; private set; } = default!;
-    public Guid UserId { get; private set; }
+    public Guid PortfolioId { get; private set; }
     public AllocationValues AllocationValues { get; private set; } = default!;
     public Recommendation Recommendation { get; protected set; }
+
+    public Portfolio Portfolio { get; private set; } = default!;
 
     public void GenerateRecommendation(decimal amountInvestedPerAllocation, decimal totalAmountInvested)
     {

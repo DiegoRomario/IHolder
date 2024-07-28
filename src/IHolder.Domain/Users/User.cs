@@ -1,6 +1,5 @@
-﻿using IHolder.Domain.Allocations;
-using IHolder.Domain.Assets;
-using IHolder.Domain.Common;
+﻿using IHolder.Domain.Common;
+using IHolder.Domain.Portfolios;
 
 namespace IHolder.Domain.Users;
 
@@ -15,17 +14,13 @@ public class User : AggregateRoot
     }
 
     private User() { }
-    public string FirstName { get; private set; } = null!;
-    public string LastName { get; private set; } = null!;
-    public string Email { get; private set; } = null!;
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
 
-    private string _passwordHash = null!;
+    private string _passwordHash = string.Empty;
 
-
-    public IEnumerable<AllocationByCategory> AllocationsByCategory { get; private set; } = [];
-    public IEnumerable<AllocationByAsset> AllocationsByAsset { get; private set; } = [];
-    public IEnumerable<AllocationByProduct> AllocationsByProduct { get; private set; } = [];
-    public IEnumerable<AssetInPortfolio> AssetsInPortfolio { get; private set; } = [];
+    public Portfolio Portfolio { get; set; } = default!;
 
     public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher)
     {
