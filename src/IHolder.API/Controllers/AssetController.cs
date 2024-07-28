@@ -5,6 +5,7 @@ using IHolder.Application.Assets.List;
 using IHolder.Application.Assets.Update;
 using IHolder.Contracts.Assets;
 using IHolder.Domain.Assets;
+using IHolder.SharedKernel.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,19 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
         ErrorOr<Asset> Asset = await _mediator.Send(command);
 
         IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToAssetResponse()), Problem);
+
+        return response;
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request)
+    {
+        AssetPaginatedListQuery query = request.ToAssetPaginatedListQuery();
+
+        ErrorOr<PaginatedList<Asset>> paginatedList = await _mediator.Send(query);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToAssetResponsePaginatedList()), Problem);
 
         return response;
     }

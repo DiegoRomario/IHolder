@@ -1,4 +1,5 @@
-﻿using IHolder.Application.Products.List;
+﻿using IHolder.Application.Assets.List;
+using IHolder.Application.Products.List;
 using IHolder.Domain.Products;
 using IHolder.SharedKernel.DTO;
 

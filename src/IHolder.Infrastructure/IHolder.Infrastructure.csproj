@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IHolder.Application\IHolder.Application.csproj" />
     <ProjectReference Include="..\IHolder.Domain\IHolder.Domain.csproj" />
+    <ProjectReference Include="..\IHolder.SharedKernel\IHolder.SharedKernel.csproj" />
   </ItemGroup>
   
 </Project>

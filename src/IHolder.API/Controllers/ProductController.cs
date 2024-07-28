@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using IHolder.API.Mappers.Products;
+using IHolder.Application.Assets.List;
 using IHolder.Application.Products.Create;
 using IHolder.Application.Products.Delete;
 using IHolder.Application.Products.List;
