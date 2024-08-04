@@ -50,9 +50,10 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
             query = query.Where(category => category.Id == filter.Id.Value);
 
         var count = await query.CountAsync();
-        var items = await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
 
-        return new PaginatedList<Category>(items, count, filter.PageNumber, filter.PageSize);
+        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+
+        return new(items, count, filter.PageNumber, filter.PageSize);
     }
 
     public async Task DeleteAsync(Category category)

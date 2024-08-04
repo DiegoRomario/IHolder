@@ -66,11 +66,9 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
 
         var count = await query.CountAsync();
 
-        if (count == 0) return new PaginatedList<Asset>([], 0, filter.PageNumber, filter.PageSize);
+        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
 
-        var items = await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
-
-        return new PaginatedList<Asset>(items, count, filter.PageNumber, filter.PageSize);
+        return new(items, count, filter.PageNumber, filter.PageSize);
     }
 
     public async Task AddAsync(Asset asset)

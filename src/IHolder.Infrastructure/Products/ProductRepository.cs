@@ -65,9 +65,10 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
             query = query.Where(product => product.Category.Description.Contains(filter.CategoryDescription));
 
         var count = await query.CountAsync();
-        var items = await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
 
-        return new PaginatedList<Product>(items, count, filter.PageNumber, filter.PageSize);
+        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+
+        return new(items, count, filter.PageNumber, filter.PageSize);
     }
 
     public async Task AddAsync(Product product)
