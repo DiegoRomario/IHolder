@@ -40,18 +40,18 @@ public class AssetCreateCommandValidator : AbstractValidator<AssetCreateCommand>
         });
     }
 
-    private async Task<bool> ValidateName(string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(string name, CancellationToken ct = default)
     {
-        return await _assetRepository.ExistsByPredicateAsync(a => a.Name == name) is false;
+        return await _assetRepository.ExistsByPredicateAsync(a => a.Name == name, ct) is false;
     }
 
-    private async Task<bool> ValidateTicker(string ticker, CancellationToken token = default)
+    private async Task<bool> ValidateTicker(string ticker, CancellationToken ct = default)
     {
-        return await _assetRepository.ExistsByPredicateAsync(a => a.Ticker == ticker) is false;
+        return await _assetRepository.ExistsByPredicateAsync(a => a.Ticker == ticker, ct) is false;
     }
 
-    private async Task<bool> ValidateProductId(Guid productId, CancellationToken token = default)
+    private async Task<bool> ValidateProductId(Guid productId, CancellationToken ct = default)
     {
-        return await _productRepository.ExistsByIdAsync(productId);
+        return await _productRepository.ExistsByIdAsync(productId, ct);
     }
 }

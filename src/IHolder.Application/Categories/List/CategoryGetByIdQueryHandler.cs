@@ -7,9 +7,9 @@ namespace IHolder.Application.Categories.List;
 
 public class CategoryListByIdQueryHandler(ICategoryRepository _repository) : IRequestHandler<CategoryGetByIdQuery, ErrorOr<Category?>>
 {
-    public async Task<ErrorOr<Category?>> Handle(CategoryGetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Category?>> Handle(CategoryGetByIdQuery request, CancellationToken ct)
     {
-        var category = await _repository.GetByIdAsync(request.Id);
+        var category = await _repository.GetByIdAsync(request.Id, ct);
 
         if (category is null) return Error.NotFound(description: "Category not found");
 

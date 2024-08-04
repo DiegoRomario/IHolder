@@ -8,14 +8,14 @@ namespace IHolder.Application.Assets.Update;
 
 public class AssetUpdateCommandHandler(IAssetRepository _repository) : IRequestHandler<AssetUpdateCommand, ErrorOr<Asset>>
 {
-    public async Task<ErrorOr<Asset>> Handle(AssetUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Asset>> Handle(AssetUpdateCommand request, CancellationToken ct)
     {
-        if (await _repository.ExistsByPredicateAsync(a => a.Id == request.Id) is false)
+        if (await _repository.ExistsByPredicateAsync(a => a.Id == request.Id, ct) is false)
             return Error.Conflict(description: "Asset not found");
 
-        await _repository.UpdateAsync(request.ToEntity());
+        await _repository.UpdateAsync(request.ToEntity(), ct);
 
-        var Asset = await _repository.GetByIdAsync(request.Id);
+        var Asset = await _repository.GetByIdAsync(request.Id, ct);
 
         if (Asset == null) return Error.Conflict(description: "Failed to retrieve the updated Asset.");
 

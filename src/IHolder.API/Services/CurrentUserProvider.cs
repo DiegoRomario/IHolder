@@ -17,14 +17,16 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
         if (id is null || id == Guid.Empty)
             return Error.Unauthorized(description: "Authentication is required to access this resource.");
 
-        var permissions = GetClaimValues("permissions");
-        var roles = GetClaimValues(ClaimTypes.Role);
+        var permissions = GetClaimValues("permissions").AsReadOnly();
+        var roles = GetClaimValues(ClaimTypes.Role).AsReadOnly();
 
         return new CurrentUser(Id: id.Value, Permissions: permissions, Roles: roles);
     }
 
-    private IReadOnlyList<string> GetClaimValues(string claimType)
+    private List<string> GetClaimValues(string claimType)
     {
-        return _httpContextAccessor.HttpContext!.User.Claims.Where(claim => claim.Type == claimType).Select(claim => claim.Value).ToList();
+        return _httpContextAccessor.HttpContext!.User.Claims.Where(claim => claim.Type == claimType)
+                                                            .Select(claim => claim.Value)
+                                                            .ToList();
     }
 }

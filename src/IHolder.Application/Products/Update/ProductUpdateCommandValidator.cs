@@ -36,18 +36,18 @@ public class UpdateCreateCommandValidator : AbstractValidator<ProductUpdateComma
         });
     }
 
-    private async Task<bool> ValidateName(ProductUpdateCommand ProductUpdateCommand, string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(ProductUpdateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingProduct = await _productRepository.GetByNameAsync(name);
+        var existingProduct = await _productRepository.GetByNameAsync(name, ct);
 
         if (existingProduct is not null) return existingProduct.Id == ProductUpdateCommand.Id;
 
         return existingProduct is null;
     }
 
-    private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken token = default)
+    private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken ct = default)
     {
-        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId);
+        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId, ct);
         return existingCategory != null;
     }
 }

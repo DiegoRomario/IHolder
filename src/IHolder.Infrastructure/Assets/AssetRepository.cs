@@ -11,22 +11,22 @@ namespace IHolder.Infrastructure.Assets;
 
 internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
 {
-    public Task<Asset?> GetByIdAsync(Guid id)
+    public Task<Asset?> GetByIdAsync(Guid id, CancellationToken ct)
     {
         return _dbContext.Assets.AsNoTracking()
                          .Include(a => a.Product)
                          .ThenInclude(p => p.Category)
-                         .FirstOrDefaultAsync(a => a.Id == id);
+                         .FirstOrDefaultAsync(a => a.Id == id, ct);
     }
 
-    public Task<bool> ExistsByPredicateAsync(Expression<Func<Asset, bool>> predicate)
+    public Task<bool> ExistsByPredicateAsync(Expression<Func<Asset, bool>> predicate, CancellationToken ct)
     {
         return _dbContext.Assets.AsNoTracking()
-                                .AnyAsync(predicate);
+                                .AnyAsync(predicate, ct);
     }
 
 
-    public async Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter)
+    public async Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.Assets.AsNoTracking()
                                       .Include(p => p.Product)
@@ -64,22 +64,22 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
         if (!string.IsNullOrEmpty(filter.CategoryName))
             query = query.Where(asset => asset.Product.Category.Name.Contains(filter.CategoryName));
 
-        var count = await query.CountAsync();
+        var count = await query.CountAsync(ct);
 
-        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync(ct);
 
         return new(items, count, filter.PageNumber, filter.PageSize);
     }
 
-    public async Task AddAsync(Asset asset)
+    public async Task AddAsync(Asset asset, CancellationToken ct)
     {
-        await _dbContext.AddAsync(asset);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.AddAsync(asset, ct);
+        await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task UpdateAsync(Asset asset)
+    public async Task UpdateAsync(Asset asset, CancellationToken ct)
     {
         _dbContext.Update(asset);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
     }
 }

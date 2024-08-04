@@ -8,9 +8,9 @@ namespace IHolder.Application.Users.Login;
 
 public class LoginQueryHandler(IJwtTokenGenerator _jwtTokenGenerator, IPasswordHasher _passwordHasher, IUserRepository _userRepository) : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken ct)
     {
-        var user = await _userRepository.GetByEmailAsync(query.Email);
+        var user = await _userRepository.GetByEmailAsync(query.Email, ct);
 
         return user is null || !user.IsCorrectPasswordHash(query.Password, _passwordHasher)
                ? AuthenticationErrors.InvalidCredentials

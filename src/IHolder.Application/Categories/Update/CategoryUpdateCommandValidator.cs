@@ -18,9 +18,9 @@ public class UpdateCreateCommandValidator : AbstractValidator<CategoryUpdateComm
                        .WithMessage("This category already exists in the system");
     }
 
-    private async Task<bool> ValidateName(CategoryUpdateCommand categoryUpdateCommand, string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(CategoryUpdateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingCategory = await _categoryRepository.GetByNameAsync(name);
+        var existingCategory = await _categoryRepository.GetByNameAsync(name, ct);
 
         if (existingCategory is not null) return existingCategory.Id == categoryUpdateCommand.Id;
 

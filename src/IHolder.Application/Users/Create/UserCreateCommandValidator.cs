@@ -34,8 +34,8 @@ public class UserCreateCommandValidator : AbstractValidator<UserCreateCommand>
         _UserRepository = userRepository;
     }
 
-    private async Task<bool> ValidateEmailAddress(UserCreateCommand UserUpdateCommand, string email, CancellationToken token = default)
+    private async Task<bool> ValidateEmailAddress(UserCreateCommand UserUpdateCommand, string email, CancellationToken ct = default)
     {
-        return await _UserRepository.ExistsByEmailAsync(email) is false;
+        return await _UserRepository.ExistsByEmailAsync(email, ct) is false;
     }
 }

@@ -6,11 +6,11 @@ namespace IHolder.Application.Common;
 
 public interface ICategoryRepository
 {
-    Task<Category?> GetByIdAsync(Guid Id);
-    Task<Category?> GetByNameAsync(string name);
-    Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter);
-    Task<bool> ExistsByIdAsync(Guid Id);
-    Task AddAsync(Category category);
-    Task UpdateAsync(Category category);
-    Task DeleteAsync(Category category);
+    Task<Category?> GetByIdAsync(Guid Id, CancellationToken ct);
+    Task<Category?> GetByNameAsync(string name, CancellationToken ct);
+    Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter, CancellationToken ct);
+    Task<bool> ExistsByIdAsync(Guid Id, CancellationToken ct);
+    Task AddAsync(Category category, CancellationToken ct);
+    Task UpdateAsync(Category category, CancellationToken ct);
+    Task DeleteAsync(Category category, CancellationToken ct);
 }

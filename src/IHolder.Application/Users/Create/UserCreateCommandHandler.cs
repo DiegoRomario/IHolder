@@ -9,15 +9,15 @@ namespace IHolder.Application.Users.Create;
 
 public class UserCreateCommandHandler(IUserRepository _userRepository, IJwtTokenGenerator _jwtTokenGenerator, IPasswordHasher _passwordHasher) : IRequestHandler<UserCreateCommand, ErrorOr<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(UserCreateCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(UserCreateCommand request, CancellationToken ct)
     {
-        if (await _userRepository.ExistsByEmailAsync(request.Email)) return Error.Conflict(description: "User already exists");
+        if (await _userRepository.ExistsByEmailAsync(request.Email, ct)) return Error.Conflict(description: "User already exists");
 
         var hashPassword = _passwordHasher.HashPassword(request.Password);
 
         var user = new User(request.FirstName, request.LastName, request.Email, hashPassword);
 
-        await _userRepository.AddAsync(user);
+        await _userRepository.AddAsync(user, ct);
 
         var token = _jwtTokenGenerator.GenerateToken(user);
 

@@ -7,9 +7,9 @@ namespace IHolder.Application.Assets.List;
 
 public class AssetListByIdQueryHandler(IAssetRepository _repository) : IRequestHandler<AssetGetByIdQuery, ErrorOr<Asset?>>
 {
-    public async Task<ErrorOr<Asset?>> Handle(AssetGetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Asset?>> Handle(AssetGetByIdQuery request, CancellationToken ct)
     {
-        var Asset = await _repository.GetByIdAsync(request.Id);
+        var Asset = await _repository.GetByIdAsync(request.Id, ct);
 
         if (Asset is null) return Error.NotFound(description: "Asset not found");
 

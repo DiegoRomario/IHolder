@@ -40,18 +40,18 @@ public class UpdateCreateCommandValidator : AbstractValidator<AssetUpdateCommand
         });
     }
 
-    private async Task<bool> ValidateName(AssetUpdateCommand command, string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(AssetUpdateCommand command, string name, CancellationToken ct = default)
     {
-        return await _assetRepository.ExistsByPredicateAsync(a => a.Name == name && a.Id != command.Id) is false;
+        return await _assetRepository.ExistsByPredicateAsync(a => a.Name == name && a.Id != command.Id, ct) is false;
     }
 
-    private async Task<bool> ValidateTicker(AssetUpdateCommand command, string ticker, CancellationToken token = default)
+    private async Task<bool> ValidateTicker(AssetUpdateCommand command, string ticker, CancellationToken ct = default)
     {
-        return await _assetRepository.ExistsByPredicateAsync(a => a.Ticker == ticker && a.Id != command.Id) is false;
+        return await _assetRepository.ExistsByPredicateAsync(a => a.Ticker == ticker && a.Id != command.Id, ct) is false;
     }
 
-    private async Task<bool> ValidateProductId(Guid productId, CancellationToken token = default)
+    private async Task<bool> ValidateProductId(Guid productId, CancellationToken ct = default)
     {
-        return await _productRepository.ExistsByIdAsync(productId);
+        return await _productRepository.ExistsByIdAsync(productId, ct);
     }
 }

@@ -6,35 +6,35 @@ using Microsoft.EntityFrameworkCore;
 namespace IHolder.Infrastructure.Users;
 public class UserRepository(IHolderDbContext _dbContext) : IUserRepository
 {
-    public async Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
+        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id, ct);
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Email == email);
+        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid id)
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Id == id);
+        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Id == id, ct);
     }
 
-    public async Task<bool> ExistsByEmailAsync(string email)
+    public async Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Email == email);
+        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Email == email, ct);
     }
 
-    public async Task AddAsync(User user)
+    public async Task AddAsync(User user, CancellationToken ct)
     {
-        await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.AddAsync(user, ct);
+        await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(User user, CancellationToken ct)
     {
         _dbContext.Update(user);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
     }
 }

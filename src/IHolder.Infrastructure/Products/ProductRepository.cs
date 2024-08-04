@@ -9,38 +9,38 @@ namespace IHolder.Infrastructure.Products;
 
 internal class ProductRepository(IHolderDbContext _dbContext) : IProductRepository
 {
-    public async Task<Product?> GetByIdAsync(Guid id)
+    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken ct)
     {
         return await _dbContext.Products.AsNoTracking()
                                         .Include(p => p.Category)
-                                        .FirstOrDefaultAsync(Product => Product.Id == id);
+                                        .FirstOrDefaultAsync(Product => Product.Id == id, ct);
     }
 
-    public async Task<Product?> GetByNameAsync(string name)
+    public async Task<Product?> GetByNameAsync(string name, CancellationToken ct)
     {
         return await _dbContext.Products.AsNoTracking()
-                                        .FirstOrDefaultAsync(Product => Product.Name == name);
+                                        .FirstOrDefaultAsync(Product => Product.Name == name, ct);
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid id)
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken ct)
     {
         return await _dbContext.Products.AsNoTracking()
-                                        .AnyAsync(Product => Product.Id == id);
+                                        .AnyAsync(Product => Product.Id == id, ct);
     }
 
-    public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId)
+    public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId, CancellationToken ct)
     {
         return await _dbContext.Products.AsNoTracking()
-                                        .AnyAsync(product => product.CategoryId == categoryId);
+                                        .AnyAsync(product => product.CategoryId == categoryId, ct);
     }
 
-    public async Task<bool> HasAllocationsAsync(Guid productId)
+    public async Task<bool> HasAllocationsAsync(Guid productId, CancellationToken ct)
     {
         return await _dbContext.AllocationsByProduct.AsNoTracking()
-                                                    .AnyAsync(allocation => allocation.ProductId == productId);
+                                                    .AnyAsync(allocation => allocation.ProductId == productId, ct);
     }
 
-    public async Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter)
+    public async Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.Products.AsNoTracking()
                                        .Include(p => p.Category)
@@ -64,28 +64,28 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
         if (!string.IsNullOrEmpty(filter.CategoryDescription))
             query = query.Where(product => product.Category.Description.Contains(filter.CategoryDescription));
 
-        var count = await query.CountAsync();
+        var count = await query.CountAsync(ct);
 
-        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+        var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync(ct);
 
         return new(items, count, filter.PageNumber, filter.PageSize);
     }
 
-    public async Task AddAsync(Product product)
+    public async Task AddAsync(Product product, CancellationToken ct)
     {
-        await _dbContext.AddAsync(product);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.AddAsync(product, ct);
+        await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task UpdateAsync(Product product)
+    public async Task UpdateAsync(Product product, CancellationToken ct)
     {
         _dbContext.Update(product);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteAsync(Product product)
+    public async Task DeleteAsync(Product product, CancellationToken ct)
     {
         _dbContext.Remove(product);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
     }
 }

@@ -15,11 +15,11 @@ namespace IHolder.API.Controllers;
 public class AssetController(ISender _mediator) : IHolderControllerBase
 {
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get(Guid id, CancellationToken ct)
     {
         AssetGetByIdQuery command = new(id);
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command);
+        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
 
         IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 
@@ -28,11 +28,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request)
+    public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request, CancellationToken ct)
     {
         AssetPaginatedListQuery query = request.ToPaginatedListQuery();
 
-        ErrorOr<PaginatedList<Asset>> paginatedList = await _mediator.Send(query);
+        ErrorOr<PaginatedList<Asset>> paginatedList = await _mediator.Send(query, ct);
 
         IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
 
@@ -40,11 +40,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
     }
 
     [HttpPost()]
-    public async Task<IActionResult> Create(AssetCreateRequest request)
+    public async Task<IActionResult> Create(AssetCreateRequest request, CancellationToken ct)
     {
         AssetCreateCommand command = request.ToCreateCommand();
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command);
+        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
 
         IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 
@@ -52,11 +52,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, AssetUpdateRequest request)
+    public async Task<IActionResult> Update(Guid id, AssetUpdateRequest request, CancellationToken ct)
     {
         AssetUpdateCommand command = request.ToUpdateCommand(id);
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command);
+        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
 
         IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 

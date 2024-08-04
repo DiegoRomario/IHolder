@@ -36,15 +36,15 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
 
     }
 
-    private async Task<bool> ValidateName(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingProduct = await _repository.GetByNameAsync(name);
+        var existingProduct = await _repository.GetByNameAsync(name, ct);
         return existingProduct is null;
     }
 
-    private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken token = default)
+    private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken ct = default)
     {
-        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId);
+        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId, ct);
         return existingCategory != null;
     }
 }

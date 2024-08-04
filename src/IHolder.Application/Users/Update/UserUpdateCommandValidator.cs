@@ -40,9 +40,9 @@ public class UserUpdateCommandValidator : AbstractValidator<UserUpdateCommand>
 
     }
 
-    private async Task<bool> ValidateEmailAddress(UserUpdateCommand UserUpdateCommand, string email, CancellationToken token = default)
+    private async Task<bool> ValidateEmailAddress(UserUpdateCommand UserUpdateCommand, string email, CancellationToken ct = default)
     {
-        var existingUser = await _UserRepository.GetByEmailAsync(email);
+        var existingUser = await _UserRepository.GetByEmailAsync(email, ct);
 
         if (existingUser is not null) return existingUser.Id == UserUpdateCommand.Id;
 

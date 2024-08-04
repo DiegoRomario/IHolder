@@ -15,7 +15,7 @@ namespace IHolder.API.Controllers;
 public class UserController(ISender _mediator) : IHolderControllerBase
 {
     [HttpPost()]
-    public async Task<IActionResult> Register(UserCreateRequest request)
+    public async Task<IActionResult> Register(UserCreateRequest request, CancellationToken ct)
     {
         UserCreateCommand command = new(request.FirstName, request.LastName, request.Email, request.Password, request.PasswordConfirmation);
 
@@ -27,7 +27,7 @@ public class UserController(ISender _mediator) : IHolderControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, UserUpdateRequest request)
+    public async Task<IActionResult> Update(Guid id, UserUpdateRequest request, CancellationToken ct)
     {
         UserUpdateCommand command = request.ToUpdateCommand(id);
 
@@ -39,7 +39,7 @@ public class UserController(ISender _mediator) : IHolderControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request, CancellationToken ct)
     {
         LoginQuery query = new(request.Email, request.Password);
 

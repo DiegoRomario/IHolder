@@ -21,9 +21,9 @@ public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCo
 
     }
 
-    private async Task<bool> ValidateName(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken token = default)
+    private async Task<bool> ValidateName(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingCategory = await _repository.GetByNameAsync(name);
+        var existingCategory = await _repository.GetByNameAsync(name, ct);
         return existingCategory is null;
     }
 }

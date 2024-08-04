@@ -8,8 +8,8 @@ namespace IHolder.Application.Categories.List;
 
 public class CategoryPaginatedListQueryHandler(ICategoryRepository _repository) : IRequestHandler<CategoryPaginatedListQuery, ErrorOr<PaginatedList<Category>>>
 {
-    public async Task<ErrorOr<PaginatedList<Category>>> Handle(CategoryPaginatedListQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PaginatedList<Category>>> Handle(CategoryPaginatedListQuery request, CancellationToken ct)
     {
-        return await _repository.GetPaginatedAsync(request.Filter);
+        return await _repository.GetPaginatedAsync(request.Filter, ct);
     }
 }

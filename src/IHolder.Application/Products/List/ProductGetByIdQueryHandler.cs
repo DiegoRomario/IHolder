@@ -7,9 +7,9 @@ namespace IHolder.Application.Products.List;
 
 public class ProductListByIdQueryHandler(IProductRepository _repository) : IRequestHandler<ProductGetByIdQuery, ErrorOr<Product?>>
 {
-    public async Task<ErrorOr<Product?>> Handle(ProductGetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Product?>> Handle(ProductGetByIdQuery request, CancellationToken ct)
     {
-        var Product = await _repository.GetByIdAsync(request.Id);
+        var Product = await _repository.GetByIdAsync(request.Id, ct);
 
         if (Product is null) return Error.NotFound(description: "Product not found");
 

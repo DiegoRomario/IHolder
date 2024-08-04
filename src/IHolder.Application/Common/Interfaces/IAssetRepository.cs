@@ -7,9 +7,9 @@ namespace IHolder.Application.Common.Interfaces;
 
 public interface IAssetRepository
 {
-    Task<Asset?> GetByIdAsync(Guid id);
-    Task<bool> ExistsByPredicateAsync(Expression<Func<Asset, bool>> predicate);
-    Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter);
-    Task AddAsync(Asset asset);
-    Task UpdateAsync(Asset asset);
+    Task<Asset?> GetByIdAsync(Guid id, CancellationToken ct);
+    Task<bool> ExistsByPredicateAsync(Expression<Func<Asset, bool>> predicate, CancellationToken ct);
+    Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter, CancellationToken ct);
+    Task AddAsync(Asset asset, CancellationToken ct);
+    Task UpdateAsync(Asset asset, CancellationToken ct);
 }
