@@ -23,7 +23,7 @@ public class ProductController(ISender _mediator) : IHolderControllerBase
 
         ErrorOr<Product> Product = await _mediator.Send(command);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToProductResponse()), Problem);
+        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
 
         return response;
     }
@@ -31,11 +31,11 @@ public class ProductController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] ProductPaginatedListRequest request)
     {
-        ProductPaginatedListQuery query = request.ToProductPaginatedListQuery();
+        ProductPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Product>> paginatedList = await _mediator.Send(query);
 
-        IActionResult response = paginatedList.Match(list => base.Ok(list.ToProductResponsePaginatedList()), Problem);
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
 
         return response;
     }
@@ -43,11 +43,11 @@ public class ProductController(ISender _mediator) : IHolderControllerBase
     [HttpPost()]
     public async Task<IActionResult> Create(ProductCreateRequest request)
     {
-        ProductCreateCommand command = request.ToProductCreateCommand();
+        ProductCreateCommand command = request.ToCreateCommand();
 
         ErrorOr<Product> Product = await _mediator.Send(command);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToProductResponse()), Problem);
+        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
 
         return response;
     }
@@ -55,11 +55,11 @@ public class ProductController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, ProductUpdateRequest request)
     {
-        ProductUpdateCommand command = request.ToProductUpdateCommand(id);
+        ProductUpdateCommand command = request.ToUpdateCommand(id);
 
         ErrorOr<Product> Product = await _mediator.Send(command);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToProductResponse()), Problem);
+        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
 
         return response;
     }

@@ -6,12 +6,12 @@ namespace IHolder.Application.Products.Mappers;
 
 public static class ProductCommandsMapping
 {
-    public static Product ToProductEntity(this ProductCreateCommand command)
+    public static Product ToEntity(this ProductCreateCommand command)
     {
         return new Product(command.Name, command.Description, command.CategoryId, command.Risk);
     }
 
-    public static Product ToProductEntity(this ProductUpdateCommand command)
+    public static Product ToEntity(this ProductUpdateCommand command)
     {
         return new Product(command.Name, command.Description, command.CategoryId, command.Risk, id: command.Id);
     }

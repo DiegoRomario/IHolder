@@ -22,7 +22,7 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
 
         ErrorOr<Category> category = await _mediator.Send(command);
 
-        IActionResult response = category.Match(category => base.Ok(category.ToCategoryResponse()), Problem);
+        IActionResult response = category.Match(category => base.Ok(category.ToResponse()), Problem);
 
         return response;
     }
@@ -30,11 +30,11 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] CategoryPaginatedListRequest request)
     {
-        CategoryPaginatedListQuery query = request.ToCategoryPaginatedListQuery();
+        CategoryPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Category>> paginatedList = await _mediator.Send(query);
 
-        IActionResult response = paginatedList.Match(list => base.Ok(list.ToCategoryResponsePaginatedList()), Problem);
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
 
         return response;
     }
@@ -42,11 +42,11 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
     [HttpPost()]
     public async Task<IActionResult> Create(CategoryCreateRequest request)
     {
-        CategoryCreateCommand command = request.ToCategoryCreateCommand();
+        CategoryCreateCommand command = request.ToCreateCommand();
 
         ErrorOr<Category> category = await _mediator.Send(command);
 
-        IActionResult response = category.Match(category => base.Ok(category.ToCategoryResponse()), Problem);
+        IActionResult response = category.Match(category => base.Ok(category.ToResponse()), Problem);
 
         return response;
     }
@@ -54,11 +54,11 @@ public class CategoryController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, CategoryUpdateRequest request)
     {
-        CategoryUpdateCommand command = request.ToCategoryUpdateCommand(id);
+        CategoryUpdateCommand command = request.ToUpdateCommand(id);
 
         ErrorOr<Category> category = await _mediator.Send(command);
 
-        IActionResult response = category.Match(category => base.Ok(category.ToCategoryResponse()), Problem);
+        IActionResult response = category.Match(category => base.Ok(category.ToResponse()), Problem);
 
         return response;
     }

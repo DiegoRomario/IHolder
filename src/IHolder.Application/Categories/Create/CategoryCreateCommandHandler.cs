@@ -10,7 +10,7 @@ public class CategoryCreateCommandHandler(ICategoryRepository _repository) : IRe
 {
     public async Task<ErrorOr<Category>> Handle(CategoryCreateCommand request, CancellationToken cancellationToken)
     {
-        var category = request.ToCategoryEntity();
+        var category = request.ToEntity();
 
         await _repository.AddAsync(category);
 

@@ -9,7 +9,7 @@ namespace IHolder.API.Mappers.Assets;
 
 public static class AssetContractsMapping
 {
-    public static AssetResponse ToAssetResponse(this Asset Asset)
+    public static AssetResponse ToResponse(this Asset Asset)
     {
         return new AssetResponse(
             Asset.Id,
@@ -25,17 +25,17 @@ public static class AssetContractsMapping
             Asset.UpdatedAt);
     }
 
-    public static AssetCreateCommand ToAssetCreateCommand(this AssetCreateRequest request)
+    public static AssetCreateCommand ToCreateCommand(this AssetCreateRequest request)
     {
         return new AssetCreateCommand(request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
-    public static AssetUpdateCommand ToAssetUpdateCommand(this AssetUpdateRequest request, Guid id)
+    public static AssetUpdateCommand ToUpdateCommand(this AssetUpdateRequest request, Guid id)
     {
         return new AssetUpdateCommand(id, request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
-    public static AssetPaginatedListQuery ToAssetPaginatedListQuery(this AssetPaginatedListRequest request)
+    public static AssetPaginatedListQuery ToPaginatedListQuery(this AssetPaginatedListRequest request)
     {
         return new AssetPaginatedListQuery(new AssetPaginatedListFilter(
             request.Id,
@@ -52,9 +52,9 @@ public static class AssetContractsMapping
             request.PageSize));
     }
 
-    public static PaginatedList<AssetResponse> ToAssetResponsePaginatedList(this PaginatedList<Asset> asset)
+    public static PaginatedList<AssetResponse> ToResponsePaginatedList(this PaginatedList<Asset> asset)
     {
-        var items = asset.Items.Select(c => c.ToAssetResponse()).ToList();
+        var items = asset.Items.Select(c => c.ToResponse()).ToList();
         return new PaginatedList<AssetResponse>(items, asset.TotalCount, asset.PageNumber, asset.PageSize);
     }
 }

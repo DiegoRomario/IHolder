@@ -13,7 +13,7 @@ public class AssetUpdateCommandHandler(IAssetRepository _repository) : IRequestH
         if (await _repository.ExistsByPredicateAsync(a => a.Id == request.Id) is false)
             return Error.Conflict(description: "Asset not found");
 
-        await _repository.UpdateAsync(request.ToAssetEntity());
+        await _repository.UpdateAsync(request.ToEntity());
 
         var Asset = await _repository.GetByIdAsync(request.Id);
 

@@ -7,7 +7,7 @@ namespace IHolder.API.Mappers.Users;
 
 public static class UserMapping
 {
-    public static AuthenticationResponse ToAuthenticationResponse(this AuthenticationResult authenticationResult)
+    public static AuthenticationResponse ToResponse(this AuthenticationResult authenticationResult)
     {
         return new AuthenticationResponse(
             authenticationResult.User.Id,
@@ -17,12 +17,12 @@ public static class UserMapping
             authenticationResult.Token);
     }
 
-    public static UserResponse ToUserResponse(this User user)
+    public static UserResponse ToResponse(this User user)
     {
         return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email);
     }
 
-    public static UserUpdateCommand ToUserUpdateCommand(this UserUpdateRequest request, Guid id)
+    public static UserUpdateCommand ToUpdateCommand(this UserUpdateRequest request, Guid id)
     {
         return new UserUpdateCommand(id, request.FirstName, request.LastName, request.Email, request.Password, request.PasswordConfirmation);
     }

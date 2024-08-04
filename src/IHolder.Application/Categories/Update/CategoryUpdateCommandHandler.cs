@@ -12,7 +12,7 @@ public class CategoryUpdateCommandHandler(ICategoryRepository _repository) : IRe
     {
         if (await _repository.ExistsByIdAsync(request.Id) is false) return Error.Conflict(description: "Category not found");
 
-        await _repository.UpdateAsync(request.ToCategoryEntity());
+        await _repository.UpdateAsync(request.ToEntity());
 
         var category = await _repository.GetByIdAsync(request.Id);
 

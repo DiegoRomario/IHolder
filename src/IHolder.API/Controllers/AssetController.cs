@@ -21,7 +21,7 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
 
         ErrorOr<Asset> Asset = await _mediator.Send(command);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToAssetResponse()), Problem);
+        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 
         return response;
     }
@@ -30,11 +30,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request)
     {
-        AssetPaginatedListQuery query = request.ToAssetPaginatedListQuery();
+        AssetPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Asset>> paginatedList = await _mediator.Send(query);
 
-        IActionResult response = paginatedList.Match(list => base.Ok(list.ToAssetResponsePaginatedList()), Problem);
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
 
         return response;
     }
@@ -42,11 +42,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
     [HttpPost()]
     public async Task<IActionResult> Create(AssetCreateRequest request)
     {
-        AssetCreateCommand command = request.ToAssetCreateCommand();
+        AssetCreateCommand command = request.ToCreateCommand();
 
         ErrorOr<Asset> Asset = await _mediator.Send(command);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToAssetResponse()), Problem);
+        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 
         return response;
     }
@@ -54,11 +54,11 @@ public class AssetController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, AssetUpdateRequest request)
     {
-        AssetUpdateCommand command = request.ToAssetUpdateCommand(id);
+        AssetUpdateCommand command = request.ToUpdateCommand(id);
 
         ErrorOr<Asset> Asset = await _mediator.Send(command);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToAssetResponse()), Problem);
+        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
 
         return response;
     }

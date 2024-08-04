@@ -12,7 +12,7 @@ public class ProductUpdateCommandHandler(IProductRepository _repository) : IRequ
     {
         if (await _repository.ExistsByIdAsync(request.Id) is false) return Error.Conflict(description: "Product not found");
 
-        await _repository.UpdateAsync(request.ToProductEntity());
+        await _repository.UpdateAsync(request.ToEntity());
 
         var Product = await _repository.GetByIdAsync(request.Id);
 

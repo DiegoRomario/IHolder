@@ -6,12 +6,12 @@ namespace IHolder.Application.Categories.Mappers;
 
 public static class CategoryCommandsMapping
 {
-    public static Category ToCategoryEntity(this CategoryCreateCommand command)
+    public static Category ToEntity(this CategoryCreateCommand command)
     {
         return new Category(command.Name, command.Description);
     }
 
-    public static Category ToCategoryEntity(this CategoryUpdateCommand command)
+    public static Category ToEntity(this CategoryUpdateCommand command)
     {
         return new Category(command.Name, command.Description, id: command.Id);
     }

@@ -5,7 +5,7 @@ namespace IHolder.Application.Users.Mappers;
 
 public static class UserCommandsMapping
 {
-    public static User ToUserEntity(this UserCreateCommand command)
+    public static User ToEntity(this UserCreateCommand command)
     {
         return new User(command.FirstName, command.LastName, command.Email, command.Password);
     }

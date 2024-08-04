@@ -10,7 +10,7 @@ public class ProductCreateCommandHandler(IProductRepository _repository) : IRequ
 {
     public async Task<ErrorOr<Product>> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
     {
-        var Product = request.ToProductEntity();
+        var Product = request.ToEntity();
 
         await _repository.AddAsync(Product);
 

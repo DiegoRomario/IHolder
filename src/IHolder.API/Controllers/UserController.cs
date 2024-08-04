@@ -21,7 +21,7 @@ public class UserController(ISender _mediator) : IHolderControllerBase
 
         ErrorOr<AuthenticationResult> authenticationResult = await _mediator.Send(command);
 
-        IActionResult response = authenticationResult.Match(authResult => base.Ok(authResult.ToAuthenticationResponse()), Problem);
+        IActionResult response = authenticationResult.Match(authResult => base.Ok(authResult.ToResponse()), Problem);
 
         return response;
     }
@@ -29,11 +29,11 @@ public class UserController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, UserUpdateRequest request)
     {
-        UserUpdateCommand command = request.ToUserUpdateCommand(id);
+        UserUpdateCommand command = request.ToUpdateCommand(id);
 
         ErrorOr<User> updateUserResult = await _mediator.Send(command);
 
-        IActionResult response = updateUserResult.Match(User => base.Ok(User.ToUserResponse()), Problem);
+        IActionResult response = updateUserResult.Match(User => base.Ok(User.ToResponse()), Problem);
 
         return response;
     }
@@ -48,6 +48,6 @@ public class UserController(ISender _mediator) : IHolderControllerBase
         if (authenticationResult.IsError && authenticationResult.FirstError == AuthenticationErrors.InvalidCredentials)
             return Problem(detail: authenticationResult.FirstError.Description, statusCode: StatusCodes.Status401Unauthorized);
 
-        return authenticationResult.Match(authResult => Ok(authResult.ToAuthenticationResponse()), Problem);
+        return authenticationResult.Match(authResult => Ok(authResult.ToResponse()), Problem);
     }
 }

@@ -10,7 +10,7 @@ public class AssetCreateCommandHandler(IAssetRepository _repository) : IRequestH
 {
     public async Task<ErrorOr<Asset>> Handle(AssetCreateCommand request, CancellationToken cancellationToken)
     {
-        var asset = request.ToAssetEntity();
+        var asset = request.ToEntity();
 
         await _repository.AddAsync(asset);
 
