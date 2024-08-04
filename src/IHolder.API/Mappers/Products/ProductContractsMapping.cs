@@ -14,8 +14,8 @@ public static class ProductContractsMapping
     {
         return new ProductResponse(
             Product.Id,
+            Product.Name,
             Product.Description,
-            Product.Details,
             Product.CategoryId,
             Product.Category.Description,
             (byte)Product.Risk,
@@ -25,17 +25,17 @@ public static class ProductContractsMapping
 
     public static ProductCreateCommand ToProductCreateCommand(this ProductCreateRequest request)
     {
-        return new ProductCreateCommand(request.Description, request.Details, request.CategoryId, (Risk)request.Risk);
+        return new ProductCreateCommand(request.Name, request.Description, request.CategoryId, (Risk)request.Risk);
     }
 
     public static ProductUpdateCommand ToProductUpdateCommand(this ProductUpdateRequest request, Guid id)
     {
-        return new ProductUpdateCommand(id, request.Description, request.Details, request.CategoryId, (Risk)request.Risk);
+        return new ProductUpdateCommand(id, request.Name, request.Description, request.CategoryId, (Risk)request.Risk);
     }
 
     public static ProductPaginatedListQuery ToProductPaginatedListQuery(this ProductPaginatedListRequest request)
     {
-        return new ProductPaginatedListQuery(new ProductPaginatedListFilter(request.Id, request.Description, request.Details, request.CategoryId, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
+        return new ProductPaginatedListQuery(new ProductPaginatedListFilter(request.Id, request.Name, request.Description, request.CategoryId, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
     }
 
     public static PaginatedList<ProductResponse> ToProductResponsePaginatedList(this PaginatedList<Product> Product)

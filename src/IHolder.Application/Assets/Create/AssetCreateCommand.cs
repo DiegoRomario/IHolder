@@ -8,8 +8,8 @@ namespace IHolder.Application.Assets.Create;
 [Authorization]
 public record AssetCreateCommand(
     Guid ProductId,
+    string Name,
     string Description,
-    string Details,
     string Ticker,
     decimal Price) : IRequest<ErrorOr<Asset>>;
 

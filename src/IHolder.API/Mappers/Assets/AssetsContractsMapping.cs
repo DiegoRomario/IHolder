@@ -13,8 +13,8 @@ public static class AssetContractsMapping
     {
         return new AssetResponse(
             Asset.Id,
+            Asset.Name,
             Asset.Description,
-            Asset.Details,
             Asset.Ticker,
             Asset.Price,
             Asset.ProductId,
@@ -27,27 +27,27 @@ public static class AssetContractsMapping
 
     public static AssetCreateCommand ToAssetCreateCommand(this AssetCreateRequest request)
     {
-        return new AssetCreateCommand(request.ProductId, request.Description, request.Details, request.Ticker, request.Price);
+        return new AssetCreateCommand(request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
     public static AssetUpdateCommand ToAssetUpdateCommand(this AssetUpdateRequest request, Guid id)
     {
-        return new AssetUpdateCommand(id, request.ProductId, request.Description, request.Details, request.Ticker, request.Price);
+        return new AssetUpdateCommand(id, request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
     public static AssetPaginatedListQuery ToAssetPaginatedListQuery(this AssetPaginatedListRequest request)
     {
         return new AssetPaginatedListQuery(new AssetPaginatedListFilter(
             request.Id,
+            request.Name,
             request.Description,
-            request.Details,
             request.Ticker,
             request.MinPrice,
             request.MaxPrice,
             request.ProductId,
-            request.ProductDescription,
+            request.ProductName,
             request.CategoryId,
-            request.CategoryDescription,
+            request.CategoryName,
             request.PageNumber,
             request.PageSize));
     }

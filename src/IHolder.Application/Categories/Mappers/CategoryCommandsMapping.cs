@@ -8,11 +8,11 @@ public static class CategoryCommandsMapping
 {
     public static Category ToCategoryEntity(this CategoryCreateCommand command)
     {
-        return new Category(command.Description, command.Details);
+        return new Category(command.Name, command.Description);
     }
 
     public static Category ToCategoryEntity(this CategoryUpdateCommand command)
     {
-        return new Category(command.Description, command.Details, id: command.Id);
+        return new Category(command.Name, command.Description, id: command.Id);
     }
 }

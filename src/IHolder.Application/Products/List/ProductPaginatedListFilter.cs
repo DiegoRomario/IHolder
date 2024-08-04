@@ -5,8 +5,8 @@ namespace IHolder.Application.Products.List;
 
 public record ProductPaginatedListFilter(
     Guid? Id,
+    string? Name,
     string? Description,
-    string? Details,
     Guid? CategoryId,
     string? CategoryDescription,
     Risk? Risk,

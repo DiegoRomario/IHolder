@@ -10,8 +10,8 @@ public class CategoryConfiguration : EntityConfiguration<Category>
     public override void Configure(EntityTypeBuilder<Category> builder)
     {
         base.Configure(builder);
-        builder.Property(a => a.Description).HasColumnType("VARCHAR(80)").IsRequired();
-        builder.Property(a => a.Details).HasColumnType("VARCHAR(600)").IsRequired();
+        builder.Property(a => a.Name).HasColumnType("VARCHAR(80)").IsRequired();
+        builder.Property(a => a.Description).HasColumnType("VARCHAR(600)").IsRequired();
         builder.ToTable("Category");
     }
 }

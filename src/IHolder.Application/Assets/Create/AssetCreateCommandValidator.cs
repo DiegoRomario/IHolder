@@ -16,10 +16,10 @@ public class AssetCreateCommandValidator : AbstractValidator<AssetCreateCommand>
         RuleFor(x => x.Ticker).NotEmpty()
                               .MaximumLength(80);
 
-        RuleFor(x => x.Description).NotEmpty()
+        RuleFor(x => x.Name).NotEmpty()
                                    .MaximumLength(80);
 
-        RuleFor(x => x.Details).NotEmpty()
+        RuleFor(x => x.Description).NotEmpty()
                                .MaximumLength(600);
 
         RuleFor(x => x.Price).GreaterThanOrEqualTo(0);
@@ -27,7 +27,7 @@ public class AssetCreateCommandValidator : AbstractValidator<AssetCreateCommand>
         RuleFor(x => x.Ticker).MustAsync(ValidateTicker)
                            .WithMessage("This Asset already exists in the system");
 
-        RuleFor(x => x.Description).MustAsync(ValidateDescription)
+        RuleFor(x => x.Name).MustAsync(ValidateName)
                                    .WithMessage("This Asset already exists in the system");
 
         RuleFor(x => x.ProductId).NotEqual(Guid.Empty)
@@ -40,9 +40,9 @@ public class AssetCreateCommandValidator : AbstractValidator<AssetCreateCommand>
         });
     }
 
-    private async Task<bool> ValidateDescription(string description, CancellationToken token = default)
+    private async Task<bool> ValidateName(string name, CancellationToken token = default)
     {
-        return await _assetRepository.ExistsByPredicateAsync(a => a.Description == description) is false;
+        return await _assetRepository.ExistsByPredicateAsync(a => a.Name == name) is false;
     }
 
     private async Task<bool> ValidateTicker(string ticker, CancellationToken token = default)

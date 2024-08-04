@@ -2,8 +2,8 @@
 
 public record ProductResponse(
     Guid Id,
+    string Name,
     string Description,
-    string Details,
     Guid CategoryId,
     string CategoryDescription,
     byte Risk,

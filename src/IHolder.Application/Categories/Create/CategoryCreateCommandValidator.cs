@@ -10,21 +10,20 @@ public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCo
     {
         _repository = repository;
 
+        RuleFor(x => x.Name).NotEmpty()
+                            .MaximumLength(80);
+
         RuleFor(x => x.Description).NotEmpty()
-                                   .MaximumLength(80);
+                                   .MaximumLength(600);
 
-        RuleFor(x => x.Details).NotEmpty()
-                               .MaximumLength(600);
-
-        RuleFor(x => x.Description)
-               .MustAsync(ValidateDescription)
-               .WithMessage("This category already exists in the system");
+        RuleFor(x => x.Name).MustAsync(ValidateName)
+                                   .WithMessage("This category already exists in the system");
 
     }
 
-    private async Task<bool> ValidateDescription(CategoryCreateCommand categoryUpdateCommand, string description, CancellationToken token = default)
+    private async Task<bool> ValidateName(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken token = default)
     {
-        var existingCategory = await _repository.GetByDescriptionAsync(description);
+        var existingCategory = await _repository.GetByNameAsync(name);
         return existingCategory is null;
     }
 }

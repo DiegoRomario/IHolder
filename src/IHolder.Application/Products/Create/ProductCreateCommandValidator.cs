@@ -13,16 +13,16 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
         _repository = repository;
         _categoryRepository = categoryRepository;
 
-        RuleFor(x => x.Description).NotEmpty()
+        RuleFor(x => x.Name).NotEmpty()
                                    .MaximumLength(80);
 
-        RuleFor(x => x.Details).NotEmpty()
+        RuleFor(x => x.Description).NotEmpty()
                                .MaximumLength(600);
 
         RuleFor(x => x.Risk).IsInEnum()
                             .WithMessage("Invalid risk value.");
 
-        RuleFor(x => x.Description).MustAsync(ValidateDescription)
+        RuleFor(x => x.Name).MustAsync(ValidateName)
                                    .WithMessage("This Product already exists in the system");
 
         RuleFor(x => x.CategoryId).NotEqual(Guid.Empty)
@@ -36,9 +36,9 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
 
     }
 
-    private async Task<bool> ValidateDescription(ProductCreateCommand ProductUpdateCommand, string description, CancellationToken token = default)
+    private async Task<bool> ValidateName(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken token = default)
     {
-        var existingProduct = await _repository.GetByDescriptionAsync(description);
+        var existingProduct = await _repository.GetByNameAsync(name);
         return existingProduct is null;
     }
 

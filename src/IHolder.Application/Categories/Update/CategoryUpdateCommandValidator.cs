@@ -9,18 +9,18 @@ public class UpdateCreateCommandValidator : AbstractValidator<CategoryUpdateComm
     public UpdateCreateCommandValidator(ICategoryRepository categoryRepository)
     {
         _categoryRepository = categoryRepository;
-        RuleFor(x => x.Description).NotEmpty().MaximumLength(80);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(80);
 
-        RuleFor(x => x.Details).NotEmpty().MaximumLength(600);
+        RuleFor(x => x.Description).NotEmpty().MaximumLength(600);
 
-        RuleFor(x => x.Description)
-                       .MustAsync(ValidateDescription)
+        RuleFor(x => x.Name)
+                       .MustAsync(ValidateName)
                        .WithMessage("This category already exists in the system");
     }
 
-    private async Task<bool> ValidateDescription(CategoryUpdateCommand categoryUpdateCommand, string description, CancellationToken token = default)
+    private async Task<bool> ValidateName(CategoryUpdateCommand categoryUpdateCommand, string name, CancellationToken token = default)
     {
-        var existingCategory = await _categoryRepository.GetByDescriptionAsync(description);
+        var existingCategory = await _categoryRepository.GetByNameAsync(name);
 
         if (existingCategory is not null) return existingCategory.Id == categoryUpdateCommand.Id;
 

@@ -9,7 +9,7 @@ namespace IHolder.Application.Products.Update;
 [Authorization]
 public record ProductUpdateCommand(
     Guid Id,
+    string Name,
     string Description,
-    string Details,
     Guid CategoryId,
     Risk Risk) : IRequest<ErrorOr<Product>>;

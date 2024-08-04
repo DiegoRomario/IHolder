@@ -8,8 +8,8 @@ namespace IHolder.Application.Products.Create;
 
 [Authorization]
 public record ProductCreateCommand(
+    string Name,
     string Description,
-    string Details,
     Guid CategoryId,
     Risk Risk) : IRequest<ErrorOr<Product>>;
 

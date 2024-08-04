@@ -14,9 +14,9 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
         return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Id == Id);
     }
 
-    public async Task<Category?> GetByDescriptionAsync(string description)
+    public async Task<Category?> GetByNameAsync(string name)
     {
-        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Description == description);
+        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Name == name);
     }
 
     public async Task<bool> ExistsByIdAsync(Guid Id)
@@ -40,11 +40,11 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
     {
         var query = _dbContext.Categories.AsNoTracking().AsQueryable();
 
+        if (!string.IsNullOrEmpty(filter.Name))
+            query = query.Where(category => category.Name.Contains(filter.Name));
+
         if (!string.IsNullOrEmpty(filter.Description))
             query = query.Where(category => category.Description.Contains(filter.Description));
-
-        if (!string.IsNullOrEmpty(filter.Details))
-            query = query.Where(category => category.Details.Contains(filter.Details));
 
         if (filter.Id.HasValue)
             query = query.Where(category => category.Id == filter.Id.Value);

@@ -11,22 +11,22 @@ public static class CategoryContractsMapping
 {
     public static CategoryResponse ToCategoryResponse(this Category category)
     {
-        return new CategoryResponse(category.Id, category.Description, category.Details, category.CreatedAt, category.UpdatedAt);
+        return new CategoryResponse(category.Id, category.Name, category.Description, category.CreatedAt, category.UpdatedAt);
     }
 
     public static CategoryCreateCommand ToCategoryCreateCommand(this CategoryCreateRequest request)
     {
-        return new CategoryCreateCommand(request.Description, request.Details);
+        return new CategoryCreateCommand(request.Name, request.Description);
     }
 
     public static CategoryUpdateCommand ToCategoryUpdateCommand(this CategoryUpdateRequest request, Guid id)
     {
-        return new CategoryUpdateCommand(id, request.Description, request.Details);
+        return new CategoryUpdateCommand(id, request.Name, request.Description);
     }
 
     public static CategoryPaginatedListQuery ToCategoryPaginatedListQuery(this CategoryPaginatedListRequest request)
     {
-        return new CategoryPaginatedListQuery(new CategoryPaginatedListFilter(request.Id, request.Description, request.Details, request.PageNumber, request.PageSize));
+        return new CategoryPaginatedListQuery(new CategoryPaginatedListFilter(request.Id, request.Name, request.Description, request.PageNumber, request.PageSize));
     }
 
     public static PaginatedList<CategoryResponse> ToCategoryResponsePaginatedList(this PaginatedList<Category> category)

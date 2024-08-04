@@ -16,10 +16,10 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
                                         .FirstOrDefaultAsync(Product => Product.Id == id);
     }
 
-    public async Task<Product?> GetByDescriptionAsync(string description)
+    public async Task<Product?> GetByNameAsync(string name)
     {
         return await _dbContext.Products.AsNoTracking()
-                                        .FirstOrDefaultAsync(Product => Product.Description == description);
+                                        .FirstOrDefaultAsync(Product => Product.Name == name);
     }
 
     public async Task<bool> ExistsByIdAsync(Guid id)
@@ -46,11 +46,11 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
                                        .Include(p => p.Category)
                                        .AsQueryable();
 
+        if (!string.IsNullOrEmpty(filter.Name))
+            query = query.Where(product => product.Name.Contains(filter.Name));
+
         if (!string.IsNullOrEmpty(filter.Description))
             query = query.Where(product => product.Description.Contains(filter.Description));
-
-        if (!string.IsNullOrEmpty(filter.Details))
-            query = query.Where(product => product.Details.Contains(filter.Details));
 
         if (filter.Id.HasValue)
             query = query.Where(product => product.Id == filter.Id.Value);

@@ -2,7 +2,7 @@
 
 public record AssetUpdateRequest(
     Guid ProductId,
+    string Name,
     string Description,
-    string Details,
     string Ticker,
     decimal Price);

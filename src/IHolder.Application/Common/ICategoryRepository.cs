@@ -7,7 +7,7 @@ namespace IHolder.Application.Common;
 public interface ICategoryRepository
 {
     Task<Category?> GetByIdAsync(Guid Id);
-    Task<Category?> GetByDescriptionAsync(string description);
+    Task<Category?> GetByNameAsync(string name);
     Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter);
     Task<bool> ExistsByIdAsync(Guid Id);
     Task AddAsync(Category category);

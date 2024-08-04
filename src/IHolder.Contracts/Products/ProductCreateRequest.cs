@@ -1,3 +1,3 @@
 ﻿namespace IHolder.Contracts.Products;
 
-public record ProductCreateRequest(string Description, string Details, Guid CategoryId, byte Risk) { }
+public record ProductCreateRequest(string Name, string Description, Guid CategoryId, byte Risk) { }

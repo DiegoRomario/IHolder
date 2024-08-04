@@ -2,8 +2,8 @@
 
 public record AssetCreateRequest(
     Guid ProductId,
+    string Name,
     string Description,
-    string Details,
     string Ticker,
     decimal Price);
 

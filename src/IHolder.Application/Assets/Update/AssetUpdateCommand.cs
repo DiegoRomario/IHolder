@@ -9,7 +9,7 @@ namespace IHolder.Application.Assets.Update;
 public record AssetUpdateCommand(
     Guid Id,
     Guid ProductId,
+    string Name,
     string Description,
-    string Details,
     string Ticker,
     decimal Price) : IRequest<ErrorOr<Asset>>;

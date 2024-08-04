@@ -4,12 +4,12 @@ namespace IHolder.Domain.Categories;
 
 public class Category : AggregateRoot
 {
-    public Category(string description, string details, Guid? id = null) : base(id ?? Guid.NewGuid())
+    public Category(string name, string description, Guid? id = null) : base(id ?? Guid.NewGuid())
     {
+        Name = name;
         Description = description;
-        Details = details;
     }
     private Category() { }
+    public string Name { get; } = string.Empty;
     public string Description { get; } = string.Empty;
-    public string Details { get; } = string.Empty;
 }

@@ -8,11 +8,11 @@ public static class ProductCommandsMapping
 {
     public static Product ToProductEntity(this ProductCreateCommand command)
     {
-        return new Product(command.Description, command.Details, command.CategoryId, command.Risk);
+        return new Product(command.Name, command.Description, command.CategoryId, command.Risk);
     }
 
     public static Product ToProductEntity(this ProductUpdateCommand command)
     {
-        return new Product(command.Description, command.Details, command.CategoryId, command.Risk, id: command.Id);
+        return new Product(command.Name, command.Description, command.CategoryId, command.Risk, id: command.Id);
     }
 }

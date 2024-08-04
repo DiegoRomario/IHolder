@@ -2,8 +2,8 @@
 
 public record AssetResponse(
     Guid Id,
+    string Name,
     string Description,
-    string Details,
     string Ticker,
     decimal Price,
     Guid ProductId,

@@ -33,11 +33,11 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
                                       .ThenInclude(p => p.Category)
                                       .AsQueryable();
 
+        if (!string.IsNullOrEmpty(filter.Name))
+            query = query.Where(asset => asset.Name.Contains(filter.Name));
+
         if (!string.IsNullOrEmpty(filter.Description))
             query = query.Where(asset => asset.Description.Contains(filter.Description));
-
-        if (!string.IsNullOrEmpty(filter.Details))
-            query = query.Where(asset => asset.Details.Contains(filter.Details));
 
         if (!string.IsNullOrEmpty(filter.Ticker))
             query = query.Where(asset => asset.Ticker.Contains(filter.Ticker));
@@ -55,14 +55,14 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
         if (filter.ProductId is not null && filter.ProductId != Guid.Empty)
             query = query.Where(asset => asset.ProductId == filter.ProductId.Value);
 
-        if (!string.IsNullOrEmpty(filter.ProductDescription))
-            query = query.Where(asset => asset.Product.Description.Contains(filter.ProductDescription));
+        if (!string.IsNullOrEmpty(filter.ProductName))
+            query = query.Where(asset => asset.Product.Name.Contains(filter.ProductName));
 
         if (filter.CategoryId is not null && filter.CategoryId != Guid.Empty)
             query = query.Where(asset => asset.Product.CategoryId == filter.CategoryId.Value);
 
-        if (!string.IsNullOrEmpty(filter.CategoryDescription))
-            query = query.Where(asset => asset.Product.Category.Description.Contains(filter.CategoryDescription));
+        if (!string.IsNullOrEmpty(filter.CategoryName))
+            query = query.Where(asset => asset.Product.Category.Name.Contains(filter.CategoryName));
 
         var count = await query.CountAsync();
 
