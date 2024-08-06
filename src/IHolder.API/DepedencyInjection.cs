@@ -1,5 +1,5 @@
-﻿using IHolder.API.Services;
-using IHolder.API.Swagger;
+﻿using IHolder.API.Common.Swagger;
+using IHolder.API.Users;
 using IHolder.Application.Common.Interfaces;
 
 namespace IHolder.API;
@@ -14,7 +14,7 @@ public static class DepedencyInjection
         services.AddProblemDetails();
         services.AddHttpContextAccessor();
 
-        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProviderService>();
 
         return services;
     }

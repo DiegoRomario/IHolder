@@ -4,9 +4,9 @@ using IHolder.Application.Common.Models;
 using System.Security.Claims;
 using Throw;
 
-namespace IHolder.API.Services;
+namespace IHolder.API.Users;
 
-public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : ICurrentUserProvider
+public class CurrentUserProviderService(IHttpContextAccessor _httpContextAccessor) : ICurrentUserProvider
 {
     public ErrorOr<CurrentUser> GetCurrentUser()
     {

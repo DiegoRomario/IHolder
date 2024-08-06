@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace IHolder.API.Swagger;
+namespace IHolder.API.Common.Swagger;
 
 public static class SwaggerConfiguration
 {

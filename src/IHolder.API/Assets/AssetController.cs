@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using IHolder.API.Controllers;
 using IHolder.API.Mappers.Assets;
 using IHolder.Application.Assets.Create;
 using IHolder.Application.Assets.List;
@@ -9,7 +10,7 @@ using IHolder.SharedKernel.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IHolder.API.Controllers;
+namespace IHolder.API.Assets;
 
 [Route("[controller]")]
 public class AssetController(ISender _mediator) : IHolderControllerBase

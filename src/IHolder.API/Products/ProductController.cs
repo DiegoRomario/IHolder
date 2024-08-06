@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using IHolder.API.Controllers;
 using IHolder.API.Mappers.Products;
 using IHolder.Application.Products.Create;
 using IHolder.Application.Products.Delete;
@@ -10,7 +11,7 @@ using IHolder.SharedKernel.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IHolder.API.Controllers;
+namespace IHolder.API.Products;
 
 [Route("[controller]")]
 public class ProductController(ISender _mediator) : IHolderControllerBase

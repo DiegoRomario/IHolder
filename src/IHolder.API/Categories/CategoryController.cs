@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using IHolder.API.Controllers;
 using IHolder.API.Mappers.Categories;
 using IHolder.Application.Categories.Create;
 using IHolder.Application.Categories.Delete;
@@ -10,7 +11,7 @@ using IHolder.SharedKernel.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IHolder.API.Controllers;
+namespace IHolder.API.Categories;
 
 [Route("[controller]")]
 public class CategoryController(ISender _mediator) : IHolderControllerBase

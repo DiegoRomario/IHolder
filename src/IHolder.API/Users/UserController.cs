@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using IHolder.API.Controllers;
 using IHolder.API.Mappers.Users;
 using IHolder.Application.Common.Auth;
 using IHolder.Application.Users.Create;
@@ -9,7 +10,7 @@ using IHolder.Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IHolder.API.Controllers;
+namespace IHolder.API.Users;
 
 [Route("[controller]")]
 public class UserController(ISender _mediator) : IHolderControllerBase
