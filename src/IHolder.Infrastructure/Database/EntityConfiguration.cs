@@ -8,6 +8,7 @@ public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TE
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         builder.HasKey(e => e.Id);
+        builder.Property(p => p.Id).HasColumnOrder(1);
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(t => t.UpdatedAt);
     }

@@ -9,10 +9,23 @@ public class ProductConfigurations : EntityConfiguration<Product>
     public override void Configure(EntityTypeBuilder<Product> builder)
     {
         base.Configure(builder);
-        builder.Property(a => a.Name).HasColumnType("VARCHAR(80)").IsRequired();
-        builder.Property(a => a.Description).HasColumnType("VARCHAR(600)").IsRequired();
-        builder.Property(d => d.CategoryId).IsRequired();
-        builder.Property(a => a.Risk).HasColumnType("TINYINT").IsRequired();
+
         builder.ToTable("Product");
+
+        builder.Property(d => d.CategoryId).IsRequired()
+                                           .HasColumnOrder(2);
+
+        builder.Property(a => a.Name).HasColumnType("VARCHAR(80)")
+                                     .IsRequired()
+                                     .HasColumnOrder(3);
+
+        builder.Property(a => a.Description).HasColumnType("VARCHAR(600)")
+                                            .IsRequired()
+                                            .HasColumnOrder(4);
+
+        builder.Property(a => a.Risk).HasColumnType("TINYINT")
+                                     .IsRequired()
+                                     .HasColumnOrder(5);
+
     }
 }

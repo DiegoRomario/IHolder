@@ -11,10 +11,10 @@ public class AllocationValues
 
     private AllocationValues() { }
 
+    public decimal CurrentAmount { get; private set; }
     public decimal TargetPercentage { get; private set; }
     public decimal CurrentPercentage { get; private set; }
     public decimal PercentageDifference { get; private set; }
-    public decimal CurrentAmount { get; private set; }
     public decimal AmountDifference { get; private set; }
 
     // TODO: REVIEW
