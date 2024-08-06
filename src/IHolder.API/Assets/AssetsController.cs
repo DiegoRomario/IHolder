@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IHolder.API.Assets;
 
 [Route("[controller]")]
-public class AssetController(ISender _mediator) : IHolderControllerBase
+public class AssetsController(ISender _mediator) : IHolderControllerBase
 {
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id, CancellationToken ct)

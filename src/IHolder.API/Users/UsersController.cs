@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IHolder.API.Users;
 
 [Route("[controller]")]
-public class UserController(ISender _mediator) : IHolderControllerBase
+public class UsersController(ISender _mediator) : IHolderControllerBase
 {
     [HttpPost()]
     public async Task<IActionResult> Register(UserCreateRequest request, CancellationToken ct)

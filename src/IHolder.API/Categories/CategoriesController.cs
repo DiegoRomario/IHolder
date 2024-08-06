@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IHolder.API.Categories;
 
 [Route("[controller]")]
-public class CategoryController(ISender _mediator) : IHolderControllerBase
+public class CategoriesController(ISender _mediator) : IHolderControllerBase
 {
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id, CancellationToken ct)
