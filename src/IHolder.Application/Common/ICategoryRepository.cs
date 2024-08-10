@@ -8,7 +8,7 @@ public interface ICategoryRepository
 {
     Task<Category?> GetByIdAsync(Guid Id, CancellationToken ct);
     Task<Category?> GetByNameAsync(string name, CancellationToken ct);
-    Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter, CancellationToken ct);
+    Task<PaginatedList<Category>> GetPaginatedAsync(CategoriesPaginatedListFilter filter, CancellationToken ct);
     Task<bool> ExistsByIdAsync(Guid Id, CancellationToken ct);
     Task AddAsync(Category category, CancellationToken ct);
     Task UpdateAsync(Category category, CancellationToken ct);

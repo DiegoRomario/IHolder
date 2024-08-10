@@ -7,4 +7,4 @@ using MediatR;
 namespace IHolder.Application.Categories.List;
 
 [Authorization]
-public record CategoryPaginatedListQuery(CategoryPaginatedListFilter Filter) : IRequest<ErrorOr<PaginatedList<Category>>>;
+public record CategoriesPaginatedListQuery(CategoriesPaginatedListFilter Filter) : IRequest<ErrorOr<PaginatedList<Category>>>;

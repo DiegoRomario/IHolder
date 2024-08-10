@@ -5,7 +5,7 @@ using IHolder.Contracts.Categories;
 using IHolder.Domain.Categories;
 using IHolder.SharedKernel.DTO;
 
-namespace IHolder.API.Mappers.Categories;
+namespace IHolder.API.Categories;
 
 public static class CategoryContractsMapping
 {
@@ -24,9 +24,9 @@ public static class CategoryContractsMapping
         return new CategoryUpdateCommand(id, request.Name, request.Description);
     }
 
-    public static CategoryPaginatedListQuery ToPaginatedListQuery(this CategoryPaginatedListRequest request)
+    public static CategoriesPaginatedListQuery ToPaginatedListQuery(this CategoryPaginatedListRequest request)
     {
-        return new CategoryPaginatedListQuery(new CategoryPaginatedListFilter(request.Id, request.Name, request.Description, request.PageNumber, request.PageSize));
+        return new CategoriesPaginatedListQuery(new CategoriesPaginatedListFilter(request.Id, request.Name, request.Description, request.PageNumber, request.PageSize));
     }
 
     public static PaginatedList<CategoryResponse> ToResponsePaginatedList(this PaginatedList<Category> category)

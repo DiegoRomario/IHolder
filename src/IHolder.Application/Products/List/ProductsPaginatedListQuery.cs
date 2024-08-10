@@ -7,4 +7,4 @@ using MediatR;
 namespace IHolder.Application.Products.List;
 
 [Authorization]
-public record ProductPaginatedListQuery(ProductPaginatedListFilter Filter) : IRequest<ErrorOr<PaginatedList<Product>>>;
+public record ProductsPaginatedListQuery(ProductsPaginatedListFilter Filter) : IRequest<ErrorOr<PaginatedList<Product>>>;

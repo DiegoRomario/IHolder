@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.API.Controllers;
-using IHolder.API.Mappers.Assets;
+using IHolder.API.Common;
 using IHolder.Application.Assets.Create;
 using IHolder.Application.Assets.List;
 using IHolder.Application.Assets.Update;
@@ -31,7 +30,7 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request, CancellationToken ct)
     {
-        AssetPaginatedListQuery query = request.ToPaginatedListQuery();
+        AssetsPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Asset>> paginatedList = await _mediator.Send(query, ct);
 

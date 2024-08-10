@@ -3,9 +3,9 @@ using IHolder.Application.Users.Update;
 using IHolder.Contracts.Users;
 using IHolder.Domain.Users;
 
-namespace IHolder.API.Mappers.Users;
+namespace IHolder.API.Users;
 
-public static class UserMapping
+public static class UserContractsMapping
 {
     public static AuthenticationResponse ToResponse(this AuthenticationResult authenticationResult)
     {

@@ -26,7 +26,7 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
     }
 
 
-    public async Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter, CancellationToken ct)
+    public async Task<PaginatedList<Asset>> GetPaginatedAsync(AssetsPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.Assets.AsNoTracking()
                                       .Include(p => p.Product)

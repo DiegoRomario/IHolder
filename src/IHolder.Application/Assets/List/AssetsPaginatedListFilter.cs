@@ -2,7 +2,7 @@
 
 namespace IHolder.Application.Assets.List;
 
-public record AssetPaginatedListFilter(
+public record AssetsPaginatedListFilter(
     Guid? Id,
     string? Name,
     string? Description,

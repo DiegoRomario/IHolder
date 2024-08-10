@@ -36,7 +36,7 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
         await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task<PaginatedList<Category>> GetPaginatedAsync(CategoryPaginatedListFilter filter, CancellationToken ct)
+    public async Task<PaginatedList<Category>> GetPaginatedAsync(CategoriesPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.Categories.AsNoTracking().AsQueryable();
 

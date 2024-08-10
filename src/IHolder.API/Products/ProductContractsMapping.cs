@@ -6,7 +6,7 @@ using IHolder.Domain.Enumerators;
 using IHolder.Domain.Products;
 using IHolder.SharedKernel.DTO;
 
-namespace IHolder.API.Mappers.Products;
+namespace IHolder.API.Products;
 
 public static class ProductContractsMapping
 {
@@ -33,9 +33,9 @@ public static class ProductContractsMapping
         return new ProductUpdateCommand(id, request.Name, request.Description, request.CategoryId, (Risk)request.Risk);
     }
 
-    public static ProductPaginatedListQuery ToPaginatedListQuery(this ProductPaginatedListRequest request)
+    public static ProductsPaginatedListQuery ToPaginatedListQuery(this ProductPaginatedListRequest request)
     {
-        return new ProductPaginatedListQuery(new ProductPaginatedListFilter(request.Id, request.Name, request.Description, request.CategoryId, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
+        return new ProductsPaginatedListQuery(new ProductsPaginatedListFilter(request.Id, request.Name, request.Description, request.CategoryId, request.CategoryDescription, (Risk?)request.Risk, request.PageNumber, request.PageSize));
     }
 
     public static PaginatedList<ProductResponse> ToResponsePaginatedList(this PaginatedList<Product> Product)

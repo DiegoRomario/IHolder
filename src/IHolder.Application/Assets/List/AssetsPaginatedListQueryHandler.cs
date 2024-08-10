@@ -6,9 +6,9 @@ using MediatR;
 
 namespace IHolder.Application.Assets.List;
 
-public class AssetPaginatedListQueryHandler(IAssetRepository _repository) : IRequestHandler<AssetPaginatedListQuery, ErrorOr<PaginatedList<Asset>>>
+public class AssetsPaginatedListQueryHandler(IAssetRepository _repository) : IRequestHandler<AssetsPaginatedListQuery, ErrorOr<PaginatedList<Asset>>>
 {
-    public async Task<ErrorOr<PaginatedList<Asset>>> Handle(AssetPaginatedListQuery request, CancellationToken ct)
+    public async Task<ErrorOr<PaginatedList<Asset>>> Handle(AssetsPaginatedListQuery request, CancellationToken ct)
     {
         return await _repository.GetPaginatedAsync(request.Filter, ct);
     }

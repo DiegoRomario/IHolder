@@ -9,7 +9,7 @@ public interface IAssetRepository
 {
     Task<Asset?> GetByIdAsync(Guid id, CancellationToken ct);
     Task<bool> ExistsByPredicateAsync(Expression<Func<Asset, bool>> predicate, CancellationToken ct);
-    Task<PaginatedList<Asset>> GetPaginatedAsync(AssetPaginatedListFilter filter, CancellationToken ct);
+    Task<PaginatedList<Asset>> GetPaginatedAsync(AssetsPaginatedListFilter filter, CancellationToken ct);
     Task AddAsync(Asset asset, CancellationToken ct);
     Task UpdateAsync(Asset asset, CancellationToken ct);
 }

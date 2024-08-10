@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace IHolder.API.Controllers;
+namespace IHolder.API.Common;
 
 [ApiController]
 public class IHolderControllerBase : ControllerBase

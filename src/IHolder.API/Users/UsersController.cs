@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.API.Controllers;
-using IHolder.API.Mappers.Users;
+using IHolder.API.Common;
 using IHolder.Application.Common.Auth;
 using IHolder.Application.Users.Create;
 using IHolder.Application.Users.Login;

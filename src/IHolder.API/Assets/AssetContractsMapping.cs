@@ -5,7 +5,7 @@ using IHolder.Contracts.Assets;
 using IHolder.Domain.Assets;
 using IHolder.SharedKernel.DTO;
 
-namespace IHolder.API.Mappers.Assets;
+namespace IHolder.API.Assets;
 
 public static class AssetContractsMapping
 {
@@ -35,9 +35,9 @@ public static class AssetContractsMapping
         return new AssetUpdateCommand(id, request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
-    public static AssetPaginatedListQuery ToPaginatedListQuery(this AssetPaginatedListRequest request)
+    public static AssetsPaginatedListQuery ToPaginatedListQuery(this AssetPaginatedListRequest request)
     {
-        return new AssetPaginatedListQuery(new AssetPaginatedListFilter(
+        return new AssetsPaginatedListQuery(new AssetsPaginatedListFilter(
             request.Id,
             request.Name,
             request.Description,

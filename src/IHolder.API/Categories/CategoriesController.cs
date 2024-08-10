@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.API.Controllers;
-using IHolder.API.Mappers.Categories;
+using IHolder.API.Common;
 using IHolder.Application.Categories.Create;
 using IHolder.Application.Categories.Delete;
 using IHolder.Application.Categories.List;
@@ -31,7 +30,7 @@ public class CategoriesController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] CategoryPaginatedListRequest request, CancellationToken ct)
     {
-        CategoryPaginatedListQuery query = request.ToPaginatedListQuery();
+        CategoriesPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Category>> paginatedList = await _mediator.Send(query, ct);
 

@@ -3,7 +3,7 @@ using IHolder.SharedKernel.DTO;
 
 namespace IHolder.Application.Products.List;
 
-public record ProductPaginatedListFilter(
+public record ProductsPaginatedListFilter(
     Guid? Id,
     string? Name,
     string? Description,

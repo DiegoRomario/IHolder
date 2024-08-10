@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
-using IHolder.API.Controllers;
-using IHolder.API.Mappers.Products;
+using IHolder.API.Common;
 using IHolder.Application.Products.Create;
 using IHolder.Application.Products.Delete;
 using IHolder.Application.Products.List;
@@ -31,7 +30,7 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] ProductPaginatedListRequest request, CancellationToken ct)
     {
-        ProductPaginatedListQuery query = request.ToPaginatedListQuery();
+        ProductsPaginatedListQuery query = request.ToPaginatedListQuery();
 
         ErrorOr<PaginatedList<Product>> paginatedList = await _mediator.Send(query, ct);
 

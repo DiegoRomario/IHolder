@@ -40,7 +40,7 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
                                                     .AnyAsync(allocation => allocation.ProductId == productId, ct);
     }
 
-    public async Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter, CancellationToken ct)
+    public async Task<PaginatedList<Product>> GetPaginatedAsync(ProductsPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.Products.AsNoTracking()
                                        .Include(p => p.Category)

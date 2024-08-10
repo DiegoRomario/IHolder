@@ -8,7 +8,7 @@ public interface IProductRepository
 {
     Task<Product?> GetByIdAsync(Guid id, CancellationToken ct);
     Task<Product?> GetByNameAsync(string name, CancellationToken ct);
-    Task<PaginatedList<Product>> GetPaginatedAsync(ProductPaginatedListFilter filter, CancellationToken ct);
+    Task<PaginatedList<Product>> GetPaginatedAsync(ProductsPaginatedListFilter filter, CancellationToken ct);
     Task<bool> ExistsByIdAsync(Guid id, CancellationToken ct);
     Task<bool> ExistsByCategoryIdAsync(Guid categoryId, CancellationToken ct);
     Task<bool> HasAllocationsAsync(Guid productId, CancellationToken ct);
