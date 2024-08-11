@@ -1,14 +1,14 @@
-﻿using IHolder.Application.Portfolios.Create;
-using IHolder.Application.Portfolios.Update;
+﻿using IHolder.Application.Portfolios.Update;
 using IHolder.Domain.Portfolios;
+using IHolder.Domain.Users.Events;
 
 namespace IHolder.Application.Portfolios.Mappers;
 
 public static class PortfolioCommandsMapping
 {
-    public static Portfolio ToEntity(this PortfolioCreateCommand command)
+    public static Portfolio ToEntity(this UserCreatedEvent userCreatedEvent)
     {
-        return new Portfolio(command.UserId, command.Name);
+        return new Portfolio(userCreatedEvent.UserId, $"{userCreatedEvent.FirstName} {userCreatedEvent.LastName}'s portfolio"); // TODO: i18n
     }
 
     public static Portfolio ToEntity(this PortfolioUpdateCommand command)

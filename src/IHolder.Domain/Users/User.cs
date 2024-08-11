@@ -1,5 +1,6 @@
 ﻿using IHolder.Domain.Common;
 using IHolder.Domain.Portfolios;
+using IHolder.Domain.Users.Events;
 
 namespace IHolder.Domain.Users;
 
@@ -11,6 +12,7 @@ public class User : AggregateRoot
         LastName = lastName;
         Email = email;
         _passwordHash = passwordHash;
+        _domainEvents.Add(new UserCreatedEvent(Id, FirstName, LastName));
     }
 
     private User() { }
