@@ -5,6 +5,7 @@ using IHolder.Infrastructure.Assets;
 using IHolder.Infrastructure.Authentication;
 using IHolder.Infrastructure.Categories;
 using IHolder.Infrastructure.Database;
+using IHolder.Infrastructure.Portfolios;
 using IHolder.Infrastructure.Products;
 using IHolder.Infrastructure.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,7 +32,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAssetRepository, AssetRepository>();
-
+        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
         return services;
     }
 
