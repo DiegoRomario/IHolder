@@ -1,6 +1,4 @@
 ﻿using IHolder.Domain.Allocations;
-using IHolder.Domain.Portfolios;
-using IHolder.Domain.Products;
 using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,10 +12,10 @@ public class AllocationByProductConfigurations : EntityConfiguration<AllocationB
 
         builder.ToTable("AllocationByProduct");
 
-        builder.Property(p => p.PortfolioId).IsRequired()
+        builder.Property(a => a.PortfolioId).IsRequired()
                                             .HasColumnOrder(2);
 
-        builder.Property(p => p.ProductId).IsRequired()
+        builder.Property(a => a.ProductId).IsRequired()
                                           .HasColumnOrder(3);
 
         builder.ComplexProperty(a => a.AllocationValues, i =>
@@ -49,14 +47,17 @@ public class AllocationByProductConfigurations : EntityConfiguration<AllocationB
         });
 
 
-        builder.Property(p => p.Recommendation).IsRequired()
+        builder.Property(a => a.Recommendation).IsRequired()
                                                .HasColumnType("TINYINT")
                                                .HasColumnOrder(9);
 
-        builder.HasOne<Portfolio>().WithMany(p => p.AllocationsByProduct).HasForeignKey(p => p.PortfolioId);
+        builder.HasOne(a => a.Product)
+               .WithMany()
+               .HasForeignKey(a => a.ProductId);
 
-        builder.HasOne<Product>().WithMany().HasForeignKey(p => p.ProductId);
-
+        builder.HasOne(a => a.Portfolio)
+               .WithMany(a => a.AllocationsByProduct)
+               .HasForeignKey(a => a.PortfolioId);
     }
 
 }

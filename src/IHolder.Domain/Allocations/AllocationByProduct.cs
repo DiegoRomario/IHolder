@@ -1,4 +1,5 @@
 ﻿using IHolder.Domain.Enumerators;
+using IHolder.Domain.Products;
 
 namespace IHolder.Domain.Allocations;
 
@@ -11,4 +12,5 @@ public class AllocationByProduct : Allocation
         Recommendation = Recommendation.Hold;
     }
     public Guid ProductId { get; private set; }
+    public Product Product { get; private set; } = default!;
 }

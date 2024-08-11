@@ -1,4 +1,5 @@
-﻿using IHolder.Domain.Enumerators;
+﻿using IHolder.Domain.Categories;
+using IHolder.Domain.Enumerators;
 
 namespace IHolder.Domain.Allocations;
 
@@ -12,4 +13,5 @@ public class AllocationByCategory : Allocation
     }
 
     public Guid CategoryId { get; private set; }
+    public Category Category { get; private set; } = default!;
 }

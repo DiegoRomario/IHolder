@@ -1,6 +1,4 @@
 ﻿using IHolder.Domain.Allocations;
-using IHolder.Domain.Categories;
-using IHolder.Domain.Portfolios;
 using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,11 +12,11 @@ public class AllocationByCategoryConfigurations : EntityConfiguration<Allocation
 
         builder.ToTable("AllocationByCategory");
 
-        builder.Property(p => p.PortfolioId).IsRequired()
+        builder.Property(a => a.PortfolioId).IsRequired()
                                             .HasColumnOrder(2);
 
-        builder.Property(p => p.CategoryId).IsRequired()
-                                           .HasColumnOrder(3); ;
+        builder.Property(a => a.CategoryId).IsRequired()
+                                           .HasColumnOrder(3);
 
         builder.ComplexProperty(a => a.AllocationValues, i =>
         {
@@ -49,13 +47,17 @@ public class AllocationByCategoryConfigurations : EntityConfiguration<Allocation
         });
 
 
-        builder.Property(p => p.Recommendation).IsRequired()
+        builder.Property(a => a.Recommendation).IsRequired()
                                                .HasColumnType("TINYINT")
-                                               .HasColumnOrder(9); ;
+                                               .HasColumnOrder(9);
 
-        builder.HasOne<Portfolio>().WithMany(p => p.AllocationsByCategory).HasForeignKey(p => p.PortfolioId);
+        builder.HasOne(a => a.Category)
+               .WithMany()
+               .HasForeignKey(a => a.CategoryId);
 
-        builder.HasOne<Category>().WithMany().HasForeignKey(p => p.CategoryId);
+        builder.HasOne(a => a.Portfolio)
+                .WithMany(a => a.AllocationsByCategory)
+                .HasForeignKey(a => a.PortfolioId);
     }
 
 }
