@@ -11,6 +11,7 @@ public class AssetInPortfolioConfigurations : EntityConfiguration<AssetInPortfol
     {
         builder.Property(p => p.AssetId).IsRequired();
         builder.Property(p => p.PortfolioId).IsRequired();
+        builder.HasIndex(p => new { p.AssetId, p.PortfolioId }).IsUnique();
         builder.HasOne<Portfolio>().WithMany(p => p.AssetsInPortfolio).HasForeignKey(p => p.PortfolioId);
         builder.Property(p => p.AveragePrice).IsRequired();
         builder.Property(p => p.Quantity).IsRequired();
