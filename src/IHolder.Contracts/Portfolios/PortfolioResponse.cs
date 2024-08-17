@@ -47,6 +47,7 @@ public record AllocationByAssetResponse : AllocationBaseResponse
 }
 
 public record AssetInPortfolioResponse(
+    Guid Id,
     Guid AssetId,
     string Ticker,
     decimal AveragePrice,

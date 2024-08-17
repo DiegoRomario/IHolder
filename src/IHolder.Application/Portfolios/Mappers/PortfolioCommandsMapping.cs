@@ -1,4 +1,6 @@
-﻿using IHolder.Application.Portfolios.Update;
+﻿using IHolder.Application.Portfolios.AddAsset;
+using IHolder.Application.Portfolios.Update;
+using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Domain.Portfolios;
 using IHolder.Domain.Users.Events;
 
@@ -15,4 +17,15 @@ public static class PortfolioCommandsMapping
     {
         return new Portfolio(command.UserId, command.Name, id: command.Id);
     }
+
+    public static AssetInPortfolio ToEntity(this PortfolioAddAssetCommand command)
+    {
+        return new AssetInPortfolio(command.PortfolioId, command.AssetId, command.AveragePrice, command.Quantity, firstInvestmentDate: command.FirstInvestmentDate);
+
+    }
+    public static AssetInPortfolio ToEntity(this PortfolioUpdateAssetCommand command)
+    {
+        return new AssetInPortfolio(command.PortfolioId, command.AssetId, command.AveragePrice, command.Quantity, firstInvestmentDate: command.FirstInvestmentDate, id: command.Id);
+    }
 }
+

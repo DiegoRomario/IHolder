@@ -10,7 +10,12 @@ public class AssetInPortfolio : Entity
     private decimal _averagePrice;
     private decimal _quantity;
 
-    public AssetInPortfolio(Guid portfolioId, Guid assetId, decimal averagePrice, decimal quantity, DateTime? firstInvestmentDate = null, State? state = null)
+    public AssetInPortfolio(Guid portfolioId,
+        Guid assetId,
+        decimal averagePrice,
+        decimal quantity,
+        DateTime? firstInvestmentDate = null,
+        State? state = null, Guid? id = null) : base(id ?? Guid.NewGuid())
     {
         PortfolioId = portfolioId;
         AssetId = assetId;

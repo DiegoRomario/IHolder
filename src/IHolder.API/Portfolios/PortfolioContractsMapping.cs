@@ -1,4 +1,6 @@
-﻿using IHolder.Application.Portfolios.Update;
+﻿using IHolder.Application.Portfolios.AddAsset;
+using IHolder.Application.Portfolios.Update;
+using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Contracts.Portfolios;
 using IHolder.Domain.Allocations;
 using IHolder.Domain.Portfolios;
@@ -78,21 +80,26 @@ public static class PortfolioContractsMapping
         }).ToList();
     }
 
+    public static AssetInPortfolioResponse ToResponse(this AssetInPortfolio assetInPortfolio)
+    {
+        return new(
+            assetInPortfolio.Id,
+            assetInPortfolio.AssetId,
+            assetInPortfolio.Asset.Ticker,
+            assetInPortfolio.AveragePrice,
+            assetInPortfolio.Quantity,
+            assetInPortfolio.InvestedAmount,
+            assetInPortfolio.FirstInvestmentDate,
+            assetInPortfolio.State.ToString(),
+            assetInPortfolio.StateSetAt,
+            assetInPortfolio.CreatedAt,
+            assetInPortfolio.UpdatedAt
+        );
+    }
+
     public static List<AssetInPortfolioResponse> ToResponse(this IEnumerable<AssetInPortfolio> assets)
     {
-        return assets.Select(asset => new AssetInPortfolioResponse
-        (
-            asset.Id,
-            asset.Asset.Ticker,
-            asset.AveragePrice,
-            asset.Quantity,
-            asset.InvestedAmount,
-            asset.FirstInvestmentDate,
-            asset.State.ToString(),
-            asset.StateSetAt,
-            asset.CreatedAt,
-            asset.UpdatedAt
-        )).ToList();
+        return assets.Select(asset => asset.ToResponse()).ToList();
     }
 
     public static PortfolioUpdateCommand ToUpdateCommand(this PortfolioUpdateRequest request, Guid id)
@@ -100,5 +107,14 @@ public static class PortfolioContractsMapping
         return new PortfolioUpdateCommand(id, request.UserId, request.Name);
     }
 
+    public static PortfolioAddAssetCommand ToCreateCommand(this PortfolioAddAssetRequest request, Guid portfolioId)
+    {
+        return new PortfolioAddAssetCommand(portfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
+    }
+
+    public static PortfolioUpdateAssetCommand ToUpdateCommand(this PortfolioUpdateAssetRequest request, Guid portfolioId, Guid assetInPortfolioId)
+    {
+        return new PortfolioUpdateAssetCommand(assetInPortfolioId, portfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
+    }
 }
 

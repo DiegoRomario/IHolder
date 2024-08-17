@@ -25,6 +25,11 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
                                 .AnyAsync(predicate, ct);
     }
 
+    public async Task<bool> HasAllocationsAsync(Guid allocationByAssetId, CancellationToken ct)
+    {
+        return await _dbContext.AllocationsByAsset.AsNoTracking()
+                                                  .AnyAsync(allocation => allocation.Id == allocationByAssetId, ct);
+    }
 
     public async Task<PaginatedList<Asset>> GetPaginatedAsync(AssetsPaginatedListFilter filter, CancellationToken ct)
     {

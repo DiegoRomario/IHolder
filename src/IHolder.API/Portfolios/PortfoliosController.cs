@@ -1,7 +1,9 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
+using IHolder.Application.Portfolios.AddAsset;
 using IHolder.Application.Portfolios.List;
 using IHolder.Application.Portfolios.Update;
+using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Contracts.Portfolios;
 using IHolder.Domain.Portfolios;
 using MediatR;
@@ -34,5 +36,40 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
         IActionResult response = Portfolio.Match(Portfolio => base.Ok(Portfolio.ToResponse()), Problem);
 
         return response;
+    }
+
+    [HttpPost("{portfolioId}/assets")]
+    public async Task<IActionResult> AddAsset(Guid portfolioId, PortfolioAddAssetRequest request, CancellationToken ct)
+    {
+        PortfolioAddAssetCommand command = request.ToCreateCommand(portfolioId);
+
+        ErrorOr<AssetInPortfolio> assetInPortfolio = await _mediator.Send(command, ct);
+
+        IActionResult response = assetInPortfolio.Match(asset => base.Ok(asset.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpPut("{portfolioId}/assets/{assetInPortfolioId}")]
+    public async Task<IActionResult> UpdateAsset(Guid portfolioId, Guid assetInPortfolioId, PortfolioUpdateAssetRequest request, CancellationToken ct)
+    {
+        PortfolioUpdateAssetCommand command = request.ToUpdateCommand(portfolioId, assetInPortfolioId);
+
+        ErrorOr<AssetInPortfolio> portfolio = await _mediator.Send(command, ct);
+
+        IActionResult response = portfolio.Match(portfolio => base.Ok(portfolio.ToResponse()), Problem);
+
+        return response;
+    }
+
+
+    [HttpDelete("{portfolioId}/assets/{assetInPortfolioId}")]
+    public async Task<IActionResult> RemoveAsset(Guid portfolioId, Guid assetInPortfolioId, CancellationToken ct)
+    {
+        PortfolioRemoveAssetCommand command = new(assetInPortfolioId, portfolioId);
+
+        ErrorOr<Deleted> result = await _mediator.Send(command, ct);
+
+        return result.Match(_ => NoContent(), Problem);
     }
 }
