@@ -104,22 +104,22 @@ public static class PortfolioContractsMapping
         return assets.Select(asset => asset.ToResponse()).ToList();
     }
 
-    public static PortfolioUpdateCommand ToUpdateCommand(this PortfolioUpdateRequest request, Guid id)
+    public static PortfolioUpdateCommand ToCommand(this PortfolioUpdateRequest request, Guid id)
     {
         return new PortfolioUpdateCommand(id, request.UserId, request.Name);
     }
 
-    public static PortfolioAddAssetCommand ToCreateCommand(this PortfolioAddAssetRequest request, Guid portfolioId)
+    public static PortfolioAddAssetCommand ToCommand(this PortfolioAddAssetRequest request, Guid portfolioId)
     {
         return new PortfolioAddAssetCommand(portfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
     }
 
-    public static PortfolioUpdateAssetCommand ToUpdateCommand(this PortfolioUpdateAssetRequest request, Guid portfolioId, Guid assetInPortfolioId)
+    public static PortfolioUpdateAssetCommand ToCommand(this PortfolioUpdateAssetRequest request, Guid portfolioId, Guid assetInPortfolioId)
     {
         return new PortfolioUpdateAssetCommand(portfolioId, assetInPortfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
     }
 
-    public static PortfolioSetAssetStateCommand ToUpdateCommand(this PortfolioSetAssetStateRequest request, Guid portfolioId, Guid Id)
+    public static PortfolioSetAssetStateCommand ToCommand(this PortfolioSetAssetStateRequest request, Guid portfolioId, Guid Id)
     {
         return new PortfolioSetAssetStateCommand(portfolioId, Id, (State)request.State);
     }

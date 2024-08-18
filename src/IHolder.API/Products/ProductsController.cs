@@ -30,11 +30,11 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] ProductPaginatedListRequest request, CancellationToken ct)
     {
-        ProductsPaginatedListQuery query = request.ToPaginatedListQuery();
+        ProductsPaginatedListQuery query = request.ToQuery();
 
         ErrorOr<PaginatedList<Product>> paginatedList = await _mediator.Send(query, ct);
 
-        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
 
         return response;
     }
@@ -42,7 +42,7 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     [HttpPost()]
     public async Task<IActionResult> Create(ProductCreateRequest request, CancellationToken ct)
     {
-        ProductCreateCommand command = request.ToCreateCommand();
+        ProductCreateCommand command = request.ToCommand();
 
         ErrorOr<Product> Product = await _mediator.Send(command, ct);
 
@@ -54,7 +54,7 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, ProductUpdateRequest request, CancellationToken ct)
     {
-        ProductUpdateCommand command = request.ToUpdateCommand(id);
+        ProductUpdateCommand command = request.ToCommand(id);
 
         ErrorOr<Product> Product = await _mediator.Send(command, ct);
 

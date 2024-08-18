@@ -31,7 +31,7 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, PortfolioUpdateRequest request, CancellationToken ct)
     {
-        PortfolioUpdateCommand command = request.ToUpdateCommand(id);
+        PortfolioUpdateCommand command = request.ToCommand(id);
 
         ErrorOr<Portfolio> Portfolio = await _mediator.Send(command, ct);
 
@@ -43,7 +43,7 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
     [HttpPost("{portfolioId}/assets")]
     public async Task<IActionResult> AddAsset(Guid portfolioId, PortfolioAddAssetRequest request, CancellationToken ct)
     {
-        PortfolioAddAssetCommand command = request.ToCreateCommand(portfolioId);
+        PortfolioAddAssetCommand command = request.ToCommand(portfolioId);
 
         ErrorOr<AssetInPortfolio> assetInPortfolio = await _mediator.Send(command, ct);
 
@@ -55,7 +55,7 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{portfolioId}/assets/{assetInPortfolioId}")]
     public async Task<IActionResult> UpdateAsset(Guid portfolioId, Guid assetInPortfolioId, PortfolioUpdateAssetRequest request, CancellationToken ct)
     {
-        PortfolioUpdateAssetCommand command = request.ToUpdateCommand(portfolioId, assetInPortfolioId);
+        PortfolioUpdateAssetCommand command = request.ToCommand(portfolioId, assetInPortfolioId);
 
         ErrorOr<AssetInPortfolio> portfolio = await _mediator.Send(command, ct);
 
@@ -67,7 +67,7 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
     [HttpPatch("{portfolioId}/assets/{assetInPortfolioId}")]
     public async Task<IActionResult> UpdateAsset(Guid portfolioId, Guid assetInPortfolioId, PortfolioSetAssetStateRequest request, CancellationToken ct)
     {
-        PortfolioSetAssetStateCommand command = request.ToUpdateCommand(portfolioId, assetInPortfolioId);
+        PortfolioSetAssetStateCommand command = request.ToCommand(portfolioId, assetInPortfolioId);
 
         ErrorOr<AssetInPortfolio> portfolio = await _mediator.Send(command, ct);
 

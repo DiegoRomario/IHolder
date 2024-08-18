@@ -29,7 +29,7 @@ public class UsersController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, UserUpdateRequest request, CancellationToken ct)
     {
-        UserUpdateCommand command = request.ToUpdateCommand(id);
+        UserUpdateCommand command = request.ToCommand(id);
 
         ErrorOr<User> updateUserResult = await _mediator.Send(command);
 

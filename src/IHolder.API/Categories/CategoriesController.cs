@@ -30,11 +30,11 @@ public class CategoriesController(ISender _mediator) : IHolderControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] CategoryPaginatedListRequest request, CancellationToken ct)
     {
-        CategoriesPaginatedListQuery query = request.ToPaginatedListQuery();
+        CategoriesPaginatedListQuery query = request.ToQuery();
 
         ErrorOr<PaginatedList<Category>> paginatedList = await _mediator.Send(query, ct);
 
-        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponsePaginatedList()), Problem);
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
 
         return response;
     }
@@ -42,7 +42,7 @@ public class CategoriesController(ISender _mediator) : IHolderControllerBase
     [HttpPost()]
     public async Task<IActionResult> Create(CategoryCreateRequest request, CancellationToken ct)
     {
-        CategoryCreateCommand command = request.ToCreateCommand();
+        CategoryCreateCommand command = request.ToCommand();
 
         ErrorOr<Category> category = await _mediator.Send(command, ct);
 
@@ -54,7 +54,7 @@ public class CategoriesController(ISender _mediator) : IHolderControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, CategoryUpdateRequest request, CancellationToken ct)
     {
-        CategoryUpdateCommand command = request.ToUpdateCommand(id);
+        CategoryUpdateCommand command = request.ToCommand(id);
 
         ErrorOr<Category> category = await _mediator.Send(command, ct);
 

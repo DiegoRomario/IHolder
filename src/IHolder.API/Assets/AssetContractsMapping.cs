@@ -25,17 +25,17 @@ public static class AssetContractsMapping
             Asset.UpdatedAt);
     }
 
-    public static AssetCreateCommand ToCreateCommand(this AssetCreateRequest request)
+    public static AssetCreateCommand ToCommand(this AssetCreateRequest request)
     {
         return new AssetCreateCommand(request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
-    public static AssetUpdateCommand ToUpdateCommand(this AssetUpdateRequest request, Guid id)
+    public static AssetUpdateCommand ToCommand(this AssetUpdateRequest request, Guid id)
     {
         return new AssetUpdateCommand(id, request.ProductId, request.Name, request.Description, request.Ticker, request.Price);
     }
 
-    public static AssetsPaginatedListQuery ToPaginatedListQuery(this AssetPaginatedListRequest request)
+    public static AssetsPaginatedListQuery ToQuery(this AssetPaginatedListRequest request)
     {
         return new AssetsPaginatedListQuery(new AssetsPaginatedListFilter(
             request.Id,
@@ -52,7 +52,7 @@ public static class AssetContractsMapping
             request.PageSize));
     }
 
-    public static PaginatedList<AssetResponse> ToResponsePaginatedList(this PaginatedList<Asset> asset)
+    public static PaginatedList<AssetResponse> ToResponse(this PaginatedList<Asset> asset)
     {
         var items = asset.Items.Select(c => c.ToResponse()).ToList();
         return new PaginatedList<AssetResponse>(items, asset.TotalCount, asset.PageNumber, asset.PageSize);

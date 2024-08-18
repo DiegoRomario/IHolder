@@ -22,7 +22,7 @@ public static class UserContractsMapping
         return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email);
     }
 
-    public static UserUpdateCommand ToUpdateCommand(this UserUpdateRequest request, Guid id)
+    public static UserUpdateCommand ToCommand(this UserUpdateRequest request, Guid id)
     {
         return new UserUpdateCommand(id, request.FirstName, request.LastName, request.Email, request.Password, request.PasswordConfirmation);
     }
