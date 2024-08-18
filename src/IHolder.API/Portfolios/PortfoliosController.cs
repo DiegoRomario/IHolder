@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
+using IHolder.Application.Common.Interfaces;
 using IHolder.Application.Portfolios.AddAsset;
 using IHolder.Application.Portfolios.List;
 using IHolder.Application.Portfolios.RemoveAsset;
@@ -14,16 +15,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace IHolder.API.Portfolios;
 
 [Route("[controller]")]
-public class PortfoliosController(ISender _mediator) : IHolderControllerBase
+public class PortfoliosController(ISender _mediator, ICurrentUserProvider currentUserProvider) : IHolderControllerBase
 {
     [HttpGet("{userId}")]
     public async Task<IActionResult> Get(Guid userId, CancellationToken ct)
     {
         PortfolioGetByUserIdQuery command = new(userId);
 
-        ErrorOr<Portfolio> Portfolio = await _mediator.Send(command, ct);
+        ErrorOr<Portfolio> portfolio = await _mediator.Send(command, ct);
 
-        IActionResult response = Portfolio.Match(Portfolio => base.Ok(Portfolio.ToResponse()), Problem);
+        IActionResult response = portfolio.Match(portfolio => base.Ok(portfolio.ToResponse()), Problem);
 
         return response;
     }
@@ -33,9 +34,9 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
     {
         PortfolioUpdateCommand command = request.ToCommand(id);
 
-        ErrorOr<Portfolio> Portfolio = await _mediator.Send(command, ct);
+        ErrorOr<Portfolio> portfolio = await _mediator.Send(command, ct);
 
-        IActionResult response = Portfolio.Match(Portfolio => base.Ok(Portfolio.ToResponse()), Problem);
+        IActionResult response = portfolio.Match(portfolio => base.Ok(portfolio.ToResponse()), Problem);
 
         return response;
     }
@@ -47,7 +48,9 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
 
         ErrorOr<AssetInPortfolio> assetInPortfolio = await _mediator.Send(command, ct);
 
-        IActionResult response = assetInPortfolio.Match(asset => base.Ok(asset.ToResponse()), Problem);
+        Guid userId = currentUserProvider.GetCurrentUser().Value.Id;
+
+        IActionResult response = assetInPortfolio.Match(asset => base.CreatedAtAction(nameof(Get), new { userId }, asset.ToResponse()), Problem);
 
         return response;
     }

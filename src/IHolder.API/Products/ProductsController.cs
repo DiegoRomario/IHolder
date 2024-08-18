@@ -20,9 +20,9 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     {
         ProductGetByIdQuery command = new(id);
 
-        ErrorOr<Product> Product = await _mediator.Send(command, ct);
+        ErrorOr<Product> product = await _mediator.Send(command, ct);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
+        IActionResult response = product.Match(product => base.Ok(product.ToResponse()), Problem);
 
         return response;
     }
@@ -39,14 +39,14 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> Create(ProductCreateRequest request, CancellationToken ct)
     {
         ProductCreateCommand command = request.ToCommand();
 
-        ErrorOr<Product> Product = await _mediator.Send(command, ct);
+        ErrorOr<Product> product = await _mediator.Send(command, ct);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
+        IActionResult response = product.Match(product => base.CreatedAtAction(nameof(Get), new { id = product.Id }, product.ToResponse()), Problem);
 
         return response;
     }
@@ -56,9 +56,9 @@ public class ProductsController(ISender _mediator) : IHolderControllerBase
     {
         ProductUpdateCommand command = request.ToCommand(id);
 
-        ErrorOr<Product> Product = await _mediator.Send(command, ct);
+        ErrorOr<Product> product = await _mediator.Send(command, ct);
 
-        IActionResult response = Product.Match(Product => base.Ok(Product.ToResponse()), Problem);
+        IActionResult response = product.Match(product => base.Ok(product.ToResponse()), Problem);
 
         return response;
     }

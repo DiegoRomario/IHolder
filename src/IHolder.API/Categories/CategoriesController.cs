@@ -39,14 +39,14 @@ public class CategoriesController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> Create(CategoryCreateRequest request, CancellationToken ct)
     {
         CategoryCreateCommand command = request.ToCommand();
 
         ErrorOr<Category> category = await _mediator.Send(command, ct);
 
-        IActionResult response = category.Match(category => base.Ok(category.ToResponse()), Problem);
+        IActionResult response = category.Match(category => base.CreatedAtAction(nameof(Get), new { id = category.Id }, category.ToResponse()), Problem);
 
         return response;
     }

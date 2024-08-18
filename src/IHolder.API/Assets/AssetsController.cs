@@ -19,9 +19,9 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
     {
         AssetGetByIdQuery command = new(id);
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
+        ErrorOr<Asset> asset = await _mediator.Send(command, ct);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
+        IActionResult response = asset.Match(asset => base.Ok(asset.ToResponse()), Problem);
 
         return response;
     }
@@ -39,14 +39,14 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> Create(AssetCreateRequest request, CancellationToken ct)
     {
         AssetCreateCommand command = request.ToCommand();
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
+        ErrorOr<Asset> asset = await _mediator.Send(command, ct);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
+        IActionResult response = asset.Match(Asset => base.CreatedAtAction(nameof(Get), new { id = Asset.Id }, Asset.ToResponse()), Problem);
 
         return response;
     }
@@ -56,9 +56,9 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
     {
         AssetUpdateCommand command = request.ToCommand(id);
 
-        ErrorOr<Asset> Asset = await _mediator.Send(command, ct);
+        ErrorOr<Asset> asset = await _mediator.Send(command, ct);
 
-        IActionResult response = Asset.Match(Asset => base.Ok(Asset.ToResponse()), Problem);
+        IActionResult response = asset.Match(asset => base.Ok(asset.ToResponse()), Problem);
 
         return response;
     }

@@ -14,14 +14,14 @@ namespace IHolder.API.Users;
 [Route("[controller]")]
 public class UsersController(ISender _mediator) : IHolderControllerBase
 {
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> Register(UserCreateRequest request, CancellationToken ct)
     {
         UserCreateCommand command = new(request.FirstName, request.LastName, request.Email, request.Password, request.PasswordConfirmation);
 
-        ErrorOr<AuthenticationResult> authenticationResult = await _mediator.Send(command);
+        ErrorOr<AuthenticationResult> authenticationResult = await _mediator.Send(command, ct);
 
-        IActionResult response = authenticationResult.Match(authResult => base.Ok(authResult.ToResponse()), Problem);
+        IActionResult response = authenticationResult.Match(authResult => base.CreatedAtAction(actionName: nameof(Login), value: authResult.ToResponse()), Problem);
 
         return response;
     }
@@ -31,7 +31,7 @@ public class UsersController(ISender _mediator) : IHolderControllerBase
     {
         UserUpdateCommand command = request.ToCommand(id);
 
-        ErrorOr<User> updateUserResult = await _mediator.Send(command);
+        ErrorOr<User> updateUserResult = await _mediator.Send(command, ct);
 
         IActionResult response = updateUserResult.Match(User => base.Ok(User.ToResponse()), Problem);
 
@@ -43,7 +43,7 @@ public class UsersController(ISender _mediator) : IHolderControllerBase
     {
         LoginQuery query = new(request.Email, request.Password);
 
-        ErrorOr<AuthenticationResult> authenticationResult = await _mediator.Send(query);
+        ErrorOr<AuthenticationResult> authenticationResult = await _mediator.Send(query, ct);
 
         if (authenticationResult.IsError && authenticationResult.FirstError == AuthenticationErrors.InvalidCredentials)
             return Problem(detail: authenticationResult.FirstError.Description, statusCode: StatusCodes.Status401Unauthorized);
