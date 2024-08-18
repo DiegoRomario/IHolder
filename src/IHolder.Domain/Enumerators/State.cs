@@ -1,8 +1,8 @@
 ﻿namespace IHolder.Domain.Enumerators;
 
-public enum State : short
+public enum State : byte
 {
-    Regular = 0,
-    Opportunity = 1,
-    Quarantine = 2
+    Regular = 1,
+    Opportunity = 2,
+    Quarantine = 3
 }

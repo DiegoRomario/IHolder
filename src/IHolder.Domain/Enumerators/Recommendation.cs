@@ -1,8 +1,8 @@
 ﻿namespace IHolder.Domain.Enumerators;
 
-public enum Recommendation : short
+public enum Recommendation : byte
 {
-    Hold = 0,
+    Hold = 1,
     Buy = 1,
-    Sell = 2
+    Sell = 3
 }
