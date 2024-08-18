@@ -7,8 +7,8 @@ namespace IHolder.Application.Portfolios.UpdateAsset;
 
 [Authorization]
 public record PortfolioUpdateAssetCommand(
-    Guid Id,
     Guid PortfolioId,
+    Guid Id,
     Guid AssetId,
     decimal AveragePrice,
     decimal Quantity,

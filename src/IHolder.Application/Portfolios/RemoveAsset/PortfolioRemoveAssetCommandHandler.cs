@@ -2,7 +2,7 @@
 using IHolder.Application.Common.Interfaces;
 using MediatR;
 
-namespace IHolder.Application.Portfolios.AddAsset;
+namespace IHolder.Application.Portfolios.RemoveAsset;
 
 public class PortfolioRemoveAssetCommandHandler(IPortfolioRepository _portfolioRepository, IAssetRepository _assetRepository) : IRequestHandler<PortfolioRemoveAssetCommand, ErrorOr<Deleted>>
 {

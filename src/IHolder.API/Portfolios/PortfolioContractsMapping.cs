@@ -1,8 +1,10 @@
 ﻿using IHolder.Application.Portfolios.AddAsset;
+using IHolder.Application.Portfolios.SetAssetState;
 using IHolder.Application.Portfolios.Update;
 using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Contracts.Portfolios;
 using IHolder.Domain.Allocations;
+using IHolder.Domain.Enumerators;
 using IHolder.Domain.Portfolios;
 
 namespace IHolder.API.Portfolios;
@@ -114,7 +116,12 @@ public static class PortfolioContractsMapping
 
     public static PortfolioUpdateAssetCommand ToUpdateCommand(this PortfolioUpdateAssetRequest request, Guid portfolioId, Guid assetInPortfolioId)
     {
-        return new PortfolioUpdateAssetCommand(assetInPortfolioId, portfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
+        return new PortfolioUpdateAssetCommand(portfolioId, assetInPortfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
+    }
+
+    public static PortfolioSetAssetStateCommand ToUpdateCommand(this PortfolioSetAssetStateRequest request, Guid portfolioId, Guid Id)
+    {
+        return new PortfolioSetAssetStateCommand(portfolioId, Id, (State)request.State);
     }
 }
 

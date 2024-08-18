@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using IHolder.Application.Portfolios.AddAsset;
 
-namespace IHolder.Application.Portfolios.AddAsset;
+namespace IHolder.Application.Portfolios.RemoveAsset;
 
 public class PortfolioRemoveAssetCommandValidator : AbstractValidator<PortfolioAddAssetCommand>
 {

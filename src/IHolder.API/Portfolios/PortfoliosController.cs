@@ -2,6 +2,8 @@
 using IHolder.API.Common;
 using IHolder.Application.Portfolios.AddAsset;
 using IHolder.Application.Portfolios.List;
+using IHolder.Application.Portfolios.RemoveAsset;
+using IHolder.Application.Portfolios.SetAssetState;
 using IHolder.Application.Portfolios.Update;
 using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Contracts.Portfolios;
@@ -62,11 +64,22 @@ public class PortfoliosController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
+    [HttpPatch("{portfolioId}/assets/{assetInPortfolioId}")]
+    public async Task<IActionResult> UpdateAsset(Guid portfolioId, Guid assetInPortfolioId, PortfolioSetAssetStateRequest request, CancellationToken ct)
+    {
+        PortfolioSetAssetStateCommand command = request.ToUpdateCommand(portfolioId, assetInPortfolioId);
+
+        ErrorOr<AssetInPortfolio> portfolio = await _mediator.Send(command, ct);
+
+        IActionResult response = portfolio.Match(portfolio => base.Ok(portfolio.ToResponse()), Problem);
+
+        return response;
+    }
 
     [HttpDelete("{portfolioId}/assets/{assetInPortfolioId}")]
     public async Task<IActionResult> RemoveAsset(Guid portfolioId, Guid assetInPortfolioId, CancellationToken ct)
     {
-        PortfolioRemoveAssetCommand command = new(assetInPortfolioId, portfolioId);
+        PortfolioRemoveAssetCommand command = new(portfolioId, assetInPortfolioId);
 
         ErrorOr<Deleted> result = await _mediator.Send(command, ct);
 

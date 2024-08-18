@@ -2,7 +2,7 @@
 using IHolder.Application.Common.Auth;
 using MediatR;
 
-namespace IHolder.Application.Portfolios.AddAsset;
+namespace IHolder.Application.Portfolios.RemoveAsset;
 
 [Authorization]
-public record PortfolioRemoveAssetCommand(Guid Id, Guid PortfolioId) : IRequest<ErrorOr<Deleted>>;
+public record PortfolioRemoveAssetCommand(Guid PortfolioId, Guid Id) : IRequest<ErrorOr<Deleted>>;

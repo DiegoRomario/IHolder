@@ -61,7 +61,7 @@ public class AssetInPortfolio : Entity
     public Asset Asset { get; private set; } = default!;
     public Portfolio Portfolio { get; private set; } = default!;
 
-    public void UpdateState(State state)
+    public void SetState(State state)
     {
         State = state;
         StateSetAt = DateTime.Now;
