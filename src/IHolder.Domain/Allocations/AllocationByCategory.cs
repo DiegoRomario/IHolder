@@ -6,7 +6,8 @@ namespace IHolder.Domain.Allocations;
 public class AllocationByCategory : Allocation
 {
     private AllocationByCategory() { }
-    public AllocationByCategory(Guid categoryId, Guid userId, decimal targetPercentage) : base(targetPercentage, userId)
+
+    public AllocationByCategory(Guid categoryId, Guid portfolioId, decimal targetPercentage) : base(targetPercentage, portfolioId)
     {
         CategoryId = categoryId;
         Recommendation = Recommendation.Hold;

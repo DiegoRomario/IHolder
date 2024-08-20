@@ -1,4 +1,5 @@
-﻿using IHolder.Domain.Common;
+﻿using IHolder.Domain.Categories.Events;
+using IHolder.Domain.Common;
 
 namespace IHolder.Domain.Categories;
 
@@ -8,7 +9,9 @@ public class Category : AggregateRoot
     {
         Name = name;
         Description = description;
+        _domainEvents.Add(new CategoryCreatedEvent(Id));
     }
+
     private Category() { }
     public string Name { get; } = string.Empty;
     public string Description { get; } = string.Empty;
