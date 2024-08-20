@@ -10,7 +10,8 @@ public class CategoryUpdateCommandHandler(ICategoryRepository _repository) : IRe
 {
     public async Task<ErrorOr<Category>> Handle(CategoryUpdateCommand request, CancellationToken ct)
     {
-        if (await _repository.ExistsByIdAsync(request.Id, ct) is false) return Error.Conflict(description: "Category not found");
+        if (await _repository.ExistsByIdAsync(request.Id, ct) is false)
+            return Error.NotFound(description: "Category not found");
 
         await _repository.UpdateAsync(request.ToEntity(), ct);
 

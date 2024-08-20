@@ -12,7 +12,7 @@ public class PortfolioUpdateCommandHandler(IPortfolioRepository _repository) : I
     public async Task<ErrorOr<Portfolio>> Handle(PortfolioUpdateCommand request, CancellationToken ct)
     {
         if (await _repository.ExistsByPredicateAsync(a => a.Id == request.Id, ct) is false)
-            return Error.Conflict(description: "Portfolio not found");
+            return Error.NotFound(description: "Portfolio not found");
 
         await _repository.UpdateAsync(request.ToEntity(), ct);
 

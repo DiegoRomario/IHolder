@@ -11,7 +11,7 @@ public class AssetUpdateCommandHandler(IAssetRepository _repository) : IRequestH
     public async Task<ErrorOr<Asset>> Handle(AssetUpdateCommand request, CancellationToken ct)
     {
         if (await _repository.ExistsByPredicateAsync(a => a.Id == request.Id, ct) is false)
-            return Error.Conflict(description: "Asset not found");
+            return Error.NotFound(description: "Asset not found");
 
         await _repository.UpdateAsync(request.ToEntity(), ct);
 

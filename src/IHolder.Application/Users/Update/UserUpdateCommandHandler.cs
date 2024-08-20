@@ -12,7 +12,7 @@ public class UserUpdateCommandHandler(IUserRepository _repository) : IRequestHan
         var user = await _repository.GetByIdAsync(request.Id, ct);
 
         if (user is null)
-            return Error.Conflict(description: "User not found");
+            return Error.NotFound(description: "User not found");
 
         user.UpdateUserDetails(request.FirstName, request.LastName, request.Email, request.Password);
 

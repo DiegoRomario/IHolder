@@ -10,7 +10,8 @@ public class ProductUpdateCommandHandler(IProductRepository _repository) : IRequ
 {
     public async Task<ErrorOr<Product>> Handle(ProductUpdateCommand request, CancellationToken ct)
     {
-        if (await _repository.ExistsByIdAsync(request.Id, ct) is false) return Error.Conflict(description: "Product not found");
+        if (await _repository.ExistsByIdAsync(request.Id, ct) is false)
+            return Error.NotFound(description: "Product not found");
 
         await _repository.UpdateAsync(request.ToEntity(), ct);
 
