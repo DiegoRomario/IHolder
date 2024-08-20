@@ -68,7 +68,7 @@ public class PortfoliosController(ISender _mediator, ICurrentUserProvider curren
     }
 
     [HttpPatch("{portfolioId}/assets/{assetInPortfolioId}")]
-    public async Task<IActionResult> UpdateAsset(Guid portfolioId, Guid assetInPortfolioId, PortfolioSetAssetStateRequest request, CancellationToken ct)
+    public async Task<IActionResult> SetAssetState(Guid portfolioId, Guid assetInPortfolioId, PortfolioSetAssetStateRequest request, CancellationToken ct)
     {
         PortfolioSetAssetStateCommand command = request.ToCommand(portfolioId, assetInPortfolioId);
 
