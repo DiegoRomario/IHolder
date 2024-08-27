@@ -1,6 +1,7 @@
 ﻿using IHolder.Application.Allocations.Mappers;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Categories.Events;
+using IHolder.Domain.Common;
 using MediatR;
 
 namespace IHolder.Application.Allocations.Events;
@@ -11,8 +12,7 @@ internal class CategoryCreatedEventHandler(IAllocationRepository _allocationRepo
     {
         var portfolio = await _portfolioRepository.GetByUserIdAsync(currentUserProvider.GetCurrentUser().Value.Id, ct);
 
-        // TODO: EventualConsistencyException
-        // if (portfolio == null)
+        if (portfolio is null) throw new EventualConsistencyException(CategoryCreatedEvent.PortfolioNotFound, null);
 
         var allocation = categoryCreatedEvent.ToEntity(portfolio!.Id);
         await _allocationRepository.AddAsync(allocation, ct);
