@@ -21,11 +21,11 @@ public static class PortfolioCommandsMapping
     public static AssetInPortfolio ToEntity(this PortfolioAddAssetCommand command)
     {
         return new AssetInPortfolio(command.PortfolioId, command.AssetId, command.AveragePrice, command.Quantity, firstInvestmentDate: command.FirstInvestmentDate);
-
     }
-    public static AssetInPortfolio ToEntity(this PortfolioUpdateAssetCommand command)
+
+    public static AssetInPortfolio ToEntity(this PortfolioUpdateAssetCommand command, Guid assetId)
     {
-        return new AssetInPortfolio(command.PortfolioId, command.AssetId, command.AveragePrice, command.Quantity, firstInvestmentDate: command.FirstInvestmentDate, id: command.Id);
+        return new AssetInPortfolio(command.PortfolioId, assetId, command.AveragePrice, command.Quantity, firstInvestmentDate: command.FirstInvestmentDate, id: command.Id);
     }
 }
 

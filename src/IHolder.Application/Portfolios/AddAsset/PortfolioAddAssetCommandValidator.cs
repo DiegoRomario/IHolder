@@ -35,6 +35,6 @@ public class PortfolioAddAssetCommandValidator : AbstractValidator<PortfolioAddA
 
     private async Task<bool> ValidateAssetInPortfolio(PortfolioAddAssetCommand command, Guid assetId, CancellationToken ct = default)
     {
-        return await _portfolioRepository.ExistsAssetByPredicateAsync(a => a.AssetId == assetId && a.PortfolioId == command.PortfolioId, ct) is false;
+        return await _portfolioRepository.ExistsAssetInPortfolioByPredicateAsync(a => a.AssetId == assetId && a.PortfolioId == command.PortfolioId, ct) is false;
     }
 }

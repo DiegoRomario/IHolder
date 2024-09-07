@@ -10,11 +10,13 @@ internal class CategoryCreatedEventHandler(IAllocationRepository _allocationRepo
 {
     public async Task Handle(CategoryCreatedEvent categoryCreatedEvent, CancellationToken ct)
     {
-        var portfolio = await _portfolioRepository.GetByUserIdAsync(currentUserProvider.GetCurrentUser().Value.Id, ct);
+        var portfolio = await _portfolioRepository.GetByPredicateAsync(p => p.UserId == currentUserProvider.GetCurrentUser().Value.Id, ct);
 
-        if (portfolio is null) throw new EventualConsistencyException(CategoryCreatedEvent.PortfolioNotFound, null);
+        if (portfolio is null)
+            throw new EventualConsistencyException(CategoryCreatedEvent.PortfolioNotFound, null);
 
         var allocation = categoryCreatedEvent.ToEntity(portfolio!.Id);
+
         await _allocationRepository.AddAsync(allocation, ct);
     }
 }

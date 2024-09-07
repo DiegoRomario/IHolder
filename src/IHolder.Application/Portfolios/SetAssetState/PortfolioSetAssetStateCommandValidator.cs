@@ -26,6 +26,6 @@ public class PortfolioSetAssetStateCommandValidator : AbstractValidator<Portfoli
 
     private async Task<bool> ValidateAssetInPortfolioId(PortfolioSetAssetStateCommand command, Guid id, CancellationToken ct = default)
     {
-        return await _portfolioRepository.ExistsAssetByPredicateAsync(a => a.Id == id && a.PortfolioId == command.PortfolioId, ct);
+        return await _portfolioRepository.ExistsAssetInPortfolioByPredicateAsync(a => a.Id == id && a.PortfolioId == command.PortfolioId, ct);
     }
 }

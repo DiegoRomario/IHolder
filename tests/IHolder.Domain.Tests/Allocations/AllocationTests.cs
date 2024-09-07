@@ -22,7 +22,7 @@ public class AllocationTests
         // Arrange
         Asset asset = new(Guid.NewGuid(), "Demo Company", "Stuff about Demo Company", "TEST3", 10);
         AssetInPortfolio assetInPortfolio = new(Guid.NewGuid(), asset.Id, asset.Price, 10);
-        AllocationByAsset allocation = new(assetInPortfolio, Guid.NewGuid(), targetPercentage);
+        AllocationByAsset allocation = new(assetInPortfolio, targetPercentage);
 
         // Act
         allocation.GenerateRecommendation(amountInvestedPerAllocation, totalAmountInvested);

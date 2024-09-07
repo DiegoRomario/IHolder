@@ -1,5 +1,7 @@
-﻿using IHolder.Domain.Allocations;
+﻿using ErrorOr;
+using IHolder.Domain.Allocations;
 using IHolder.Domain.Common;
+using IHolder.Domain.Portfolios.Events;
 using IHolder.Domain.Users;
 
 namespace IHolder.Domain.Portfolios;
@@ -28,9 +30,37 @@ public class Portfolio : AggregateRoot
     public IReadOnlyCollection<AllocationByProduct> AllocationsByProduct => _allocationsByProduct.AsReadOnly();
     public IReadOnlyCollection<AllocationByAsset> AllocationsByAsset => _allocationsByAsset.AsReadOnly();
 
-    public void AddAsset(AssetInPortfolio assetInPortfolio) => _assetsInPortfolio.Add(assetInPortfolio);
+    public ErrorOr<Success> AddAsset(AssetInPortfolio newAssetInPortfolio)
+    {
+        _assetsInPortfolio.Add(newAssetInPortfolio);
+        _domainEvents.Add(new AssetInPortfolioAddedEvent(newAssetInPortfolio));
 
-    public void RemoveAsset(AssetInPortfolio assetInPortfolio) => _assetsInPortfolio.Remove(assetInPortfolio);
+        return Result.Success;
+    }
+
+    public ErrorOr<Success> UpdateAsset(AssetInPortfolio updatedAssetInPortfolio)
+    {
+        var existingAssetInPortfolio = _assetsInPortfolio.SingleOrDefault(a => a.Id == updatedAssetInPortfolio.Id);
+
+        if (existingAssetInPortfolio is null) return Error.NotFound(description: "Asset not found in portfolio assets");
+
+        existingAssetInPortfolio.UpdateQuantity(updatedAssetInPortfolio.Quantity);
+        existingAssetInPortfolio.UpdateAveragePrice(updatedAssetInPortfolio.AveragePrice);
+        existingAssetInPortfolio.UpdateFirstInvestmentDate(updatedAssetInPortfolio.FirstInvestmentDate);
+
+        return Result.Success;
+    }
+
+    public ErrorOr<Success> RemoveAsset(AssetInPortfolio removedAssetInPortfolio)
+    {
+        var existingAssetInPortfolio = _assetsInPortfolio.SingleOrDefault(a => a.Id == removedAssetInPortfolio.Id);
+
+        if (existingAssetInPortfolio is null) return Error.NotFound(description: "Asset not found in portfolio assets");
+
+        _assetsInPortfolio.Remove(removedAssetInPortfolio);
+
+        return Result.Success;
+    }
 
     public decimal TotalInvestedAmount => _assetsInPortfolio.Sum(asset => asset.InvestedAmount);
 

@@ -29,6 +29,5 @@ public class AssetConfigurations : EntityConfiguration<Asset>
 
         builder.Property(a => a.Price).IsRequired()
                                       .HasColumnOrder(6);
-
     }
 }

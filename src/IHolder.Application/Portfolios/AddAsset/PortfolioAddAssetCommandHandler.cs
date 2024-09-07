@@ -11,14 +11,19 @@ public class PortfolioAddAssetCommandHandler(IPortfolioRepository _portfolioRepo
 {
     public async Task<ErrorOr<AssetInPortfolio>> Handle(PortfolioAddAssetCommand request, CancellationToken ct)
     {
-        if (await _portfolioRepository.ExistsByPredicateAsync(a => a.Id == request.PortfolioId, ct) is false)
-            return Error.NotFound(description: "Portfolio not found");
+        var portfolio = await _portfolioRepository.GetByIdAsync(request.PortfolioId, ct);
+
+        if (portfolio is null) return Error.NotFound(description: "Portfolio not found");
 
         var assetInPortfolio = request.ToEntity();
 
-        await _portfolioRepository.AddAssetAsync(assetInPortfolio, ct);
+        var addAssetResult = portfolio.AddAsset(assetInPortfolio);
 
-        assetInPortfolio = await _portfolioRepository.GetAssetByIdAsync(assetInPortfolio.Id, ct);
+        if (addAssetResult.IsError) return addAssetResult.Errors;
+
+        await _portfolioRepository.UpdateAsync(portfolio, ct);
+
+        assetInPortfolio = await _portfolioRepository.GetAssetInPortfolioByIdAsync(assetInPortfolio.Id, ct);
 
         if (assetInPortfolio == null) return Error.Conflict(description: "Failed to retrieve the created Portfolio.");
 

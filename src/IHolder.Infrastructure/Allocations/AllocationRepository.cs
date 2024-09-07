@@ -6,9 +6,9 @@ namespace IHolder.Infrastructure.Allocations;
 
 internal class AllocationRepository(IHolderDbContext _dbContext) : IAllocationRepository
 {
-    public async Task AddAsync(AllocationByCategory allocation, CancellationToken ct)
+    public async Task AddAsync<T>(T allocation, CancellationToken ct) where T : Allocation
     {
-        await _dbContext.AddAsync(allocation, ct);
+        await _dbContext.Set<T>().AddAsync(allocation, ct);
         await _dbContext.SaveChangesAsync(ct);
     }
 }

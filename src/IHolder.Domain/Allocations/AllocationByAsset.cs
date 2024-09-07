@@ -9,7 +9,7 @@ public class AllocationByAsset : Allocation
     private AllocationByAsset() { }
 
     // TODO: do I need a better design for this class? should asset in portfolio be received in the contructor?
-    public AllocationByAsset(AssetInPortfolio assetInPortfolio, Guid userId, decimal targetPercentage) : base(targetPercentage, userId)
+    public AllocationByAsset(AssetInPortfolio assetInPortfolio, decimal targetPercentage) : base(targetPercentage, assetInPortfolio.PortfolioId)
     {
         AssetInPortfolio = assetInPortfolio;
         AssetId = assetInPortfolio.AssetId;

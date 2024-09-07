@@ -9,7 +9,6 @@ namespace IHolder.Application.Portfolios.UpdateAsset;
 public record PortfolioUpdateAssetCommand(
     Guid PortfolioId,
     Guid Id,
-    Guid AssetId,
     decimal AveragePrice,
     decimal Quantity,
     DateTime FirstInvestmentDate) : IRequest<ErrorOr<AssetInPortfolio>>;

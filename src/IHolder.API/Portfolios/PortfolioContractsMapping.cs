@@ -116,7 +116,7 @@ public static class PortfolioContractsMapping
 
     public static PortfolioUpdateAssetCommand ToCommand(this PortfolioUpdateAssetRequest request, Guid portfolioId, Guid assetInPortfolioId)
     {
-        return new PortfolioUpdateAssetCommand(portfolioId, assetInPortfolioId, request.AssetId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
+        return new PortfolioUpdateAssetCommand(portfolioId, assetInPortfolioId, request.AveragePrice, request.Quantity, request.FirstInvestmentDate);
     }
 
     public static PortfolioSetAssetStateCommand ToCommand(this PortfolioSetAssetStateRequest request, Guid portfolioId, Guid Id)

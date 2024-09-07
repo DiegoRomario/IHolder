@@ -67,6 +67,25 @@ public class AssetInPortfolio : Entity
         StateSetAt = DateTime.Now;
     }
 
+    public void UpdateQuantity(decimal quantity)
+    {
+        if (quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity), "The quantity of assets must be positive.");
+
+        Quantity = quantity;
+    }
+
+    public void UpdateAveragePrice(decimal averagePrice)
+    {
+        if (averagePrice <= 0) throw new ArgumentOutOfRangeException(nameof(averagePrice), "The average price of the asset must be positive.");
+
+        AveragePrice = averagePrice;
+    }
+
+    public void UpdateFirstInvestmentDate(DateTime firstInvestmentDate)
+    {
+        FirstInvestmentDate = firstInvestmentDate;
+    }
+
     private static decimal CalculateInvestedAmount(decimal averagePrice, decimal quantity)
     {
         // Check if averagePrice * quantity exceeds the maximum value for decimal

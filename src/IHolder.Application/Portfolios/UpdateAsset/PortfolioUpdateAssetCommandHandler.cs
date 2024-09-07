@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using IHolder.Application.Assets.Mappers;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Application.Portfolios.Mappers;
 using IHolder.Domain.Portfolios;
@@ -11,12 +10,23 @@ public class PortfolioUpdateAssetCommandHandler(IPortfolioRepository _repository
 {
     public async Task<ErrorOr<AssetInPortfolio>> Handle(PortfolioUpdateAssetCommand request, CancellationToken ct)
     {
-        if (await _repository.ExistsAssetByPredicateAsync(a => a.PortfolioId == request.PortfolioId && a.Id == request.Id, ct) is false)
+        var portfolio = await _repository.GetByIdAsync(request.PortfolioId, ct);
+
+        if (portfolio is null)
             return Error.NotFound(description: "Asset in potfolio not found");
 
-        await _repository.UpdateAssetAsync(request.ToEntity(), ct);
+        var assetInPortfolio = portfolio.AssetsInPortfolio.SingleOrDefault(a => a.Id == request.Id);
 
-        var assetInPortfolio = await _repository.GetAssetByIdAsync(request.Id, ct);
+        if (assetInPortfolio is null)
+            return Error.NotFound(description: "Asset in potfolio not found");
+
+        var updateAssetResult = portfolio.UpdateAsset(request.ToEntity(assetInPortfolio.AssetId));
+
+        if (updateAssetResult.IsError) return updateAssetResult.Errors;
+
+        await _repository.UpdateAsync(portfolio, ct);
+
+        assetInPortfolio = await _repository.GetAssetInPortfolioByIdAsync(request.Id, ct);
 
         if (assetInPortfolio is null)
             return Error.Conflict(description: "Failed to retrieve the updated Asset in portfolio.");

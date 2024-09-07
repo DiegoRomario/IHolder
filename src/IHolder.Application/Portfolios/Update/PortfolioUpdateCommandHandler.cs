@@ -16,7 +16,7 @@ public class PortfolioUpdateCommandHandler(IPortfolioRepository _repository) : I
 
         await _repository.UpdateAsync(request.ToEntity(), ct);
 
-        var portfolio = await _repository.GetByUserIdAsync(request.Id, ct);
+        var portfolio = await _repository.GetByPredicateAsync(p => p.Id == request.Id, ct);
 
         if (portfolio == null) return Error.Conflict(description: "Failed to retrieve the updated Portfolio.");
 

@@ -1,6 +1,7 @@
 ﻿using IHolder.Domain.Categories;
 using IHolder.Domain.Common;
 using IHolder.Domain.Enumerators;
+using IHolder.Domain.Products.Events;
 
 namespace IHolder.Domain.Products;
 
@@ -12,6 +13,7 @@ public class Product : AggregateRoot
         Description = description;
         CategoryId = categoryId;
         Risk = risk;
+        _domainEvents.Add(new ProductCreatedEvent(Id));
     }
 
     private Product() { }
