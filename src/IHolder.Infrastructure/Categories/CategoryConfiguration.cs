@@ -20,6 +20,5 @@ public class CategoryConfiguration : EntityConfiguration<Category>
         builder.Property(a => a.Description).HasColumnType("VARCHAR(600)")
                                             .IsRequired()
                                             .HasColumnOrder(3);
-
     }
 }

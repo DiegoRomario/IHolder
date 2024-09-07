@@ -9,6 +9,7 @@ public class AssetInPortfolioConfigurations : EntityConfiguration<AssetInPortfol
 {
     public override void Configure(EntityTypeBuilder<AssetInPortfolio> builder)
     {
+        base.Configure(builder);
         builder.Property(p => p.AssetId).IsRequired();
         builder.Property(p => p.PortfolioId).IsRequired();
         builder.HasIndex(p => new { p.AssetId, p.PortfolioId }).IsUnique();
