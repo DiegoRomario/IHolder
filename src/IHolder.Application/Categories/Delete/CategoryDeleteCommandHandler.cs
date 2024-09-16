@@ -13,7 +13,7 @@ public class CategoryDeleteCommandHandler(ICategoryRepository _repository, IProd
 
         if (category is null) return Error.NotFound(description: "Category not found");
 
-        var productsExists = await _productRepository.ExistsByCategoryIdAsync(request.Id, ct);
+        var productsExists = await _productRepository.ExistsByPredicateAsync(p => p.CategoryId == request.Id, ct);
 
         if (productsExists) return Error.Conflict(description: "Unable to delete category. This category is linked to one or more products.");
 

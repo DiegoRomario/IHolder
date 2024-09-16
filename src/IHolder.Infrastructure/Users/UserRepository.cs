@@ -2,28 +2,20 @@
 using IHolder.Domain.Users;
 using IHolder.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace IHolder.Infrastructure.Users;
 public class UserRepository(IHolderDbContext _dbContext) : IUserRepository
 {
-    public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct)
+    public async Task<User?> GetByPredicateAsync(Expression<Func<User, bool>> predicate, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id, ct);
+        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(predicate, ct);
     }
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
+    public Task<bool> ExistsByPredicateAsync(Expression<Func<User, bool>> predicate, CancellationToken ct)
     {
-        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Email == email, ct);
-    }
-
-    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken ct)
-    {
-        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Id == id, ct);
-    }
-
-    public async Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
-    {
-        return await _dbContext.Users.AsNoTracking().AnyAsync(user => user.Email == email, ct);
+        return _dbContext.Users.AsNoTracking()
+                                .AnyAsync(predicate, ct);
     }
 
     public async Task AddAsync(User user, CancellationToken ct)

@@ -18,12 +18,10 @@ public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCo
 
         RuleFor(x => x.Name).MustAsync(ValidateName)
                                    .WithMessage("This category already exists in the system");
-
     }
 
     private async Task<bool> ValidateName(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingCategory = await _repository.GetByNameAsync(name, ct);
-        return existingCategory is null;
+        return await _repository.ExistsByPredicateAsync(c => c.Name == name, ct);
     }
 }

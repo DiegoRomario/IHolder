@@ -52,6 +52,6 @@ public class UpdateCreateCommandValidator : AbstractValidator<AssetUpdateCommand
 
     private async Task<bool> ValidateProductId(Guid productId, CancellationToken ct = default)
     {
-        return await _productRepository.ExistsByIdAsync(productId, ct);
+        return await _productRepository.ExistsByPredicateAsync(p => p.Id == productId, ct);
     }
 }

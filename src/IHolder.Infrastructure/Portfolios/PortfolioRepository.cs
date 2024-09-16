@@ -8,20 +8,26 @@ namespace IHolder.Infrastructure.Portfolios;
 
 internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepository
 {
-    public async Task<Portfolio?> GetByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct)
+
+    public async Task<Portfolio?> GetByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct, bool includes = false)
     {
-        return await _dbContext.Portfolios.AsNoTracking()
-                                           .Include(p => p.User)
-                                           .Include(p => p.AssetsInPortfolio)
-                                                .ThenInclude(a => a.Asset)
-                                           .Include(p => p.AllocationsByCategory)
-                                               .ThenInclude(ac => ac.Category)
-                                           .Include(p => p.AllocationsByProduct)
-                                               .ThenInclude(ap => ap.Product)
-                                           .Include(p => p.AllocationsByAsset)
-                                               .ThenInclude(aa => aa.AssetInPortfolio)
-                                               .ThenInclude(a => a.Asset)
-                                           .FirstOrDefaultAsync(predicate, ct);
+        var query = _dbContext.Portfolios.AsNoTracking();
+
+        if (includes)
+        {
+            query = query.Include(p => p.User)
+                         .Include(p => p.AssetsInPortfolio)
+                            .ThenInclude(a => a.Asset)
+                         .Include(p => p.AllocationsByCategory)
+                            .ThenInclude(ac => ac.Category)
+                         .Include(p => p.AllocationsByProduct)
+                            .ThenInclude(ap => ap.Product)
+                         .Include(p => p.AllocationsByAsset)
+                            .ThenInclude(aa => aa.AssetInPortfolio)
+                            .ThenInclude(a => a.Asset);
+        }
+
+        return await query.FirstOrDefaultAsync(predicate, ct);
     }
 
     public async Task<Portfolio?> GetByIdAsync(Guid id, CancellationToken ct)

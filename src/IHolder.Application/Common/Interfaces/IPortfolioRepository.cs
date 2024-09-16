@@ -5,7 +5,7 @@ namespace IHolder.Application.Common.Interfaces;
 
 public interface IPortfolioRepository
 {
-    Task<Portfolio?> GetByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct);
+    Task<Portfolio?> GetByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct, bool includes = false);
     Task<Portfolio?> GetByIdAsync(Guid id, CancellationToken ct);
     Task<bool> ExistsByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct);
     Task AddAsync(Portfolio portfolio, CancellationToken ct);

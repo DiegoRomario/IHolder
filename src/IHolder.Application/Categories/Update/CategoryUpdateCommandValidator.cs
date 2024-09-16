@@ -20,7 +20,7 @@ public class UpdateCreateCommandValidator : AbstractValidator<CategoryUpdateComm
 
     private async Task<bool> ValidateName(CategoryUpdateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingCategory = await _categoryRepository.GetByNameAsync(name, ct);
+        var existingCategory = await _categoryRepository.GetByPredicateAsync(c => c.Name == name, ct);
 
         if (existingCategory is not null) return existingCategory.Id == categoryUpdateCommand.Id;
 

@@ -9,7 +9,7 @@ public class PortfolioSetAssetStateCommandHandler(IPortfolioRepository _reposito
 {
     public async Task<ErrorOr<AssetInPortfolio>> Handle(PortfolioSetAssetStateCommand request, CancellationToken ct)
     {
-        var portfolio = await _repository.GetByPredicateAsync(p => p.Id == request.PortfolioId, ct);
+        var portfolio = await _repository.GetByPredicateAsync(p => p.Id == request.PortfolioId, ct, includes: true);
 
         if (portfolio is null)
             return Error.NotFound(description: "Portfolio not found");

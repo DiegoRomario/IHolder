@@ -9,7 +9,7 @@ public class UserUpdateCommandHandler(IUserRepository _repository) : IRequestHan
 {
     public async Task<ErrorOr<User>> Handle(UserUpdateCommand request, CancellationToken ct)
     {
-        var user = await _repository.GetByIdAsync(request.Id, ct);
+        var user = await _repository.GetByPredicateAsync(u => u.Id == request.Id, ct);
 
         if (user is null)
             return Error.NotFound(description: "User not found");
@@ -18,7 +18,7 @@ public class UserUpdateCommandHandler(IUserRepository _repository) : IRequestHan
 
         await _repository.UpdateAsync(user, ct);
 
-        user = await _repository.GetByIdAsync(request.Id, ct);
+        user = await _repository.GetByPredicateAsync(u => u.Id == request.Id, ct);
 
         if (user == null) return Error.Conflict(description: "Failed to retrieve the updated User.");
 

@@ -4,6 +4,7 @@ using IHolder.Domain.Categories;
 using IHolder.Infrastructure.Database;
 using IHolder.SharedKernel.DTO;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace IHolder.Infrastructure.Categories;
 
@@ -14,14 +15,21 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
         return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Id == Id, ct);
     }
 
+
+    public async Task<Category?> GetByPredicateAsync(Expression<Func<Category, bool>> predicate, CancellationToken ct)
+    {
+        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(predicate, ct);
+    }
+
     public async Task<Category?> GetByNameAsync(string name, CancellationToken ct)
     {
         return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Name == name, ct);
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid Id, CancellationToken ct)
+    public Task<bool> ExistsByPredicateAsync(Expression<Func<Category, bool>> predicate, CancellationToken ct)
     {
-        return await _dbContext.Categories.AsNoTracking().AnyAsync(category => category.Id == Id, ct);
+        return _dbContext.Categories.AsNoTracking()
+                                .AnyAsync(predicate, ct);
     }
 
     public async Task AddAsync(Category category, CancellationToken ct)
@@ -61,4 +69,5 @@ internal class CategoryRepository(IHolderDbContext _dbContext) : ICategoryReposi
         _dbContext.Remove(category);
         await _dbContext.SaveChangesAsync(ct);
     }
+
 }

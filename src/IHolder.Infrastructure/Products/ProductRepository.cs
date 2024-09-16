@@ -4,6 +4,7 @@ using IHolder.Domain.Products;
 using IHolder.Infrastructure.Database;
 using IHolder.SharedKernel.DTO;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace IHolder.Infrastructure.Products;
 
@@ -16,22 +17,15 @@ internal class ProductRepository(IHolderDbContext _dbContext) : IProductReposito
                                         .FirstOrDefaultAsync(Product => Product.Id == id, ct);
     }
 
-    public async Task<Product?> GetByNameAsync(string name, CancellationToken ct)
+    public async Task<Product?> GetByPredicateAsync(Expression<Func<Product, bool>> predicate, CancellationToken ct)
     {
-        return await _dbContext.Products.AsNoTracking()
-                                        .FirstOrDefaultAsync(Product => Product.Name == name, ct);
+        return await _dbContext.Products.AsNoTracking().FirstOrDefaultAsync(predicate, ct);
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken ct)
+    public Task<bool> ExistsByPredicateAsync(Expression<Func<Product, bool>> predicate, CancellationToken ct)
     {
-        return await _dbContext.Products.AsNoTracking()
-                                        .AnyAsync(Product => Product.Id == id, ct);
-    }
-
-    public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId, CancellationToken ct)
-    {
-        return await _dbContext.Products.AsNoTracking()
-                                        .AnyAsync(product => product.CategoryId == categoryId, ct);
+        return _dbContext.Products.AsNoTracking()
+                                .AnyAsync(predicate, ct);
     }
 
     public async Task<bool> HasAllocationsAsync(Guid productId, CancellationToken ct)

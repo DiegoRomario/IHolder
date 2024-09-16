@@ -11,7 +11,7 @@ public class UserCreateCommandHandler(IUserRepository _userRepository, IJwtToken
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(UserCreateCommand request, CancellationToken ct)
     {
-        if (await _userRepository.ExistsByEmailAsync(request.Email, ct)) return Error.Conflict(description: "User already exists");
+        if (await _userRepository.ExistsByPredicateAsync(u => u.Email == request.Email, ct)) return Error.Conflict(description: "User already exists");
 
         var hashPassword = _passwordHasher.HashPassword(request.Password);
 

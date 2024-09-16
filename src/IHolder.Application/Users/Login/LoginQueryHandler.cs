@@ -10,7 +10,7 @@ public class LoginQueryHandler(IJwtTokenGenerator _jwtTokenGenerator, IPasswordH
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken ct)
     {
-        var user = await _userRepository.GetByEmailAsync(query.Email, ct);
+        var user = await _userRepository.GetByPredicateAsync(u => u.Email == query.Email, ct);
 
         return user is null || !user.IsCorrectPasswordHash(query.Password, _passwordHasher)
                ? AuthenticationErrors.InvalidCredentials

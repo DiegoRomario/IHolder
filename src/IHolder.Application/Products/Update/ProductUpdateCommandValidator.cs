@@ -38,7 +38,7 @@ public class UpdateCreateCommandValidator : AbstractValidator<ProductUpdateComma
 
     private async Task<bool> ValidateName(ProductUpdateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingProduct = await _productRepository.GetByNameAsync(name, ct);
+        var existingProduct = await _productRepository.GetByPredicateAsync(p => p.Name == name, ct);
 
         if (existingProduct is not null) return existingProduct.Id == ProductUpdateCommand.Id;
 

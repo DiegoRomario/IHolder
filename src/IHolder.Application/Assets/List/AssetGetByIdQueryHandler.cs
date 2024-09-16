@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IHolder.Application.Assets.List;
 
-public class AssetListByIdQueryHandler(IAssetRepository _repository) : IRequestHandler<AssetGetByIdQuery, ErrorOr<Asset?>>
+public class AssetGetByIdQueryHandler(IAssetRepository _repository) : IRequestHandler<AssetGetByIdQuery, ErrorOr<Asset?>>
 {
     public async Task<ErrorOr<Asset?>> Handle(AssetGetByIdQuery request, CancellationToken ct)
     {

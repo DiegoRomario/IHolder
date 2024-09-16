@@ -33,18 +33,15 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
             RuleFor(x => x.CategoryId).MustAsync(ValidateCategoryId)
                                       .WithMessage("CategoryId '{PropertyValue}' does not refer to an existing category.");
         });
-
     }
 
     private async Task<bool> ValidateName(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
     {
-        var existingProduct = await _repository.GetByNameAsync(name, ct);
-        return existingProduct is null;
+        return await _repository.ExistsByPredicateAsync(p => p.Name == name, ct);
     }
 
     private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken ct = default)
     {
-        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId, ct);
-        return existingCategory != null;
+        return await _categoryRepository.ExistsByPredicateAsync(c => c.Id == categoryId, ct); ;
     }
 }
