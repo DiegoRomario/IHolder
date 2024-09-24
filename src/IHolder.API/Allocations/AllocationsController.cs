@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
 using IHolder.Application.Allocations.UpdateByCategory;
+using IHolder.Application.Allocations.UpdateByProduct;
 using IHolder.Contracts.Allocations;
 using IHolder.Domain.Allocations;
 using MediatR;
@@ -20,6 +21,18 @@ public class AllocationsController(ISender _mediator) : IHolderControllerBase
         ErrorOr<AllocationByCategory> allocationByCategory = await _mediator.Send(command, ct);
 
         IActionResult response = allocationByCategory.Match(allocation => base.Ok(allocation.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpPut("product/{id}")]
+    public async Task<IActionResult> Update(Guid id, AllocationByProductUpdateRequest request, CancellationToken ct)
+    {
+        AllocationByProductUpdateCommand command = request.ToCommand(id);
+
+        ErrorOr<AllocationByProduct> allocationByProduct = await _mediator.Send(command, ct);
+
+        IActionResult response = allocationByProduct.Match(allocation => base.Ok(allocation.ToResponse()), Problem);
 
         return response;
     }
