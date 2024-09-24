@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
+using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
 using IHolder.Contracts.Allocations;
@@ -33,6 +34,18 @@ public class AllocationsController(ISender _mediator) : IHolderControllerBase
         ErrorOr<AllocationByProduct> allocationByProduct = await _mediator.Send(command, ct);
 
         IActionResult response = allocationByProduct.Match(allocation => base.Ok(allocation.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpPut("asset/{id}")]
+    public async Task<IActionResult> Update(Guid id, AllocationByAssetUpdateRequest request, CancellationToken ct)
+    {
+        AllocationByAssetUpdateCommand command = request.ToCommand(id);
+
+        ErrorOr<AllocationByAsset> allocationByAsset = await _mediator.Send(command, ct);
+
+        IActionResult response = allocationByAsset.Match(allocation => base.Ok(allocation.ToResponse()), Problem);
 
         return response;
     }
