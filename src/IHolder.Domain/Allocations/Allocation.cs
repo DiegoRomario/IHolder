@@ -10,9 +10,10 @@ public abstract class Allocation : Entity
     protected Allocation() { }
 
     // todo: review id base class
-    protected Allocation(decimal targetPercentage, Guid portfolioId)
+    protected Allocation(decimal targetPercentage, Guid portfolioId, Guid? id = null)
     {
         // todo: review new
+        Id = id ?? Guid.NewGuid();
         AllocationValues = new AllocationValues(targetPercentage);
         Recommendation = Recommendation.Hold;
         PortfolioId = portfolioId;

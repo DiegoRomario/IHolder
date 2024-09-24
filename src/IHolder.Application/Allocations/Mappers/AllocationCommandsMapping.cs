@@ -1,4 +1,5 @@
-﻿using IHolder.Domain.Allocations;
+﻿using IHolder.Application.Allocations.UpdateByCategory;
+using IHolder.Domain.Allocations;
 using IHolder.Domain.Categories.Events;
 using IHolder.Domain.Portfolios.Events;
 using IHolder.Domain.Products.Events;

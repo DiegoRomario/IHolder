@@ -7,7 +7,7 @@ public class AllocationByCategory : Allocation
 {
     private AllocationByCategory() { }
 
-    public AllocationByCategory(Guid categoryId, Guid portfolioId, decimal targetPercentage) : base(targetPercentage, portfolioId)
+    public AllocationByCategory(Guid categoryId, Guid portfolioId, decimal targetPercentage, Guid? id = null) : base(targetPercentage, portfolioId, id ?? Guid.NewGuid())
     {
         CategoryId = categoryId;
         Recommendation = Recommendation.Hold;
