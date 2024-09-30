@@ -1,10 +1,12 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
+using IHolder.Application.Allocations.List;
 using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
 using IHolder.Contracts.Allocations;
 using IHolder.Domain.Allocations;
+using IHolder.SharedKernel.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +48,18 @@ public class AllocationsController(ISender _mediator) : IHolderControllerBase
         ErrorOr<AllocationByAsset> allocationByAsset = await _mediator.Send(command, ct);
 
         IActionResult response = allocationByAsset.Match(allocation => base.Ok(allocation.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpGet("category")]
+    public async Task<IActionResult> GetPaginated([FromQuery] AllocationByCategoryPaginatedListRequest request, CancellationToken ct)
+    {
+        AllocationByCategoriesPaginatedListQuery query = request.ToQuery();
+
+        ErrorOr<PaginatedList<AllocationByCategory>> paginatedList = await _mediator.Send(query, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
 
         return response;
     }

@@ -6,8 +6,10 @@ using System.Linq.Expressions;
 
 namespace IHolder.Infrastructure.Allocations;
 
-internal class AllocationRepository(IHolderDbContext _dbContext) : IAllocationRepository
+internal class AllocationRepository(IHolderDbContext dbContext) : IAllocationRepository
 {
+    protected readonly IHolderDbContext _dbContext = dbContext;
+
     public async Task<bool> ExistsByPredicateAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken ct) where T : Allocation
     {
         return await _dbContext.Set<T>().AsNoTracking()

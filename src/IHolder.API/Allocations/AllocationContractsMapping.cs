@@ -1,8 +1,11 @@
-﻿using IHolder.Application.Allocations.UpdateByAsset;
+﻿using IHolder.Application.Allocations.List;
+using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
 using IHolder.Contracts.Allocations;
 using IHolder.Domain.Allocations;
+using IHolder.Domain.Enumerators;
+using IHolder.SharedKernel.DTO;
 
 namespace IHolder.API.Allocations;
 
@@ -74,4 +77,29 @@ public static class AllocationContractsMapping
     {
         return new AllocationByAssetUpdateCommand(id, request.TargetPercentage);
     }
+
+    public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request)
+    {
+        var filter = new AllocationByCategoriesPaginatedListFilter(
+                         request.Id,
+                         request.CategoryId,
+                         request.CategoryName,
+                         request.CategoryDescription,
+                         (Recommendation?)request.Recommendation,
+                         request.CurrentAmount,
+                         request.TargetPercentage,
+                         request.CurrentPercentage,
+                         request.PercentageDifference,
+                         request.AmountDifference,
+                         request.PageNumber, request.PageSize);
+
+        return new AllocationByCategoriesPaginatedListQuery(filter);
+    }
+
+    public static PaginatedList<AllocationByCategoryResponse> ToResponse(this PaginatedList<AllocationByCategory> allocationByCategory)
+    {
+        var items = allocationByCategory.Items.Select(c => c.ToResponse()).ToList();
+        return new PaginatedList<AllocationByCategoryResponse>(items, allocationByCategory.TotalCount, allocationByCategory.PageNumber, allocationByCategory.PageSize);
+    }
+
 }
