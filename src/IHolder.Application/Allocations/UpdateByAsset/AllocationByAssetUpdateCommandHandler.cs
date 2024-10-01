@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.UpdateByAsset;
 
-public class AllocationByAssetUpdateCommandHandler(IAllocationRepository _repository) :
+public class AllocationByAssetUpdateCommandHandler(IAllocationByAssetRepository _repository) :
              IRequestHandler<AllocationByAssetUpdateCommand, ErrorOr<AllocationByAsset>>
 {
     public async Task<ErrorOr<AllocationByAsset>> Handle(AllocationByAssetUpdateCommand request, CancellationToken ct)
@@ -18,7 +18,7 @@ public class AllocationByAssetUpdateCommandHandler(IAllocationRepository _reposi
 
         await _repository.UpdateAsync(allocationByAsset, ct);
 
-        allocationByAsset = await _repository.GetByIdAsync<AllocationByAsset>(request.Id, ct);
+        allocationByAsset = await _repository.GetByIdAsync(request.Id, ct);
 
         if (allocationByAsset == null) return Error.Conflict(description: "Failed to retrieve the updated allocation by asset.");
 

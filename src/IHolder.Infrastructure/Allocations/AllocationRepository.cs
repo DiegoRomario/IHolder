@@ -22,22 +22,6 @@ internal class AllocationRepository(IHolderDbContext dbContext) : IAllocationRep
         return await query.FirstOrDefaultAsync(predicate, ct);
     }
 
-    public async Task<T?> GetByIdAsync<T>(Guid id, CancellationToken ct) where T : Allocation
-    {
-        IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
-
-        query = typeof(T) switch
-        {
-            Type t when t == typeof(AllocationByCategory) => query.Include(a => ((AllocationByCategory)(object)a).Category),
-            Type t when t == typeof(AllocationByProduct) => query.Include(a => ((AllocationByProduct)(object)a).Product),
-            Type t when t == typeof(AllocationByAsset) => query.Include(a => ((AllocationByAsset)(object)a).AssetInPortfolio)
-                                                               .ThenInclude(assetInPortfolio => assetInPortfolio.Asset),
-            _ => query
-        };
-
-        return await query.FirstOrDefaultAsync(a => a.Id == id, ct);
-    }
-
     public async Task AddAsync<T>(T allocation, CancellationToken ct) where T : Allocation
     {
         await _dbContext.Set<T>().AddAsync(allocation, ct);

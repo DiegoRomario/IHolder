@@ -49,4 +49,11 @@ internal class AllocationByCategoryRepository(IHolderDbContext _dbContext) : All
 
         return new(items, count, filter.PageNumber, filter.PageSize);
     }
+
+    public async Task<AllocationByCategory?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        return await _dbContext.AllocationsByCategory.AsNoTracking()
+                                                     .Include(a => a.Category)
+                                                     .FirstOrDefaultAsync(a => a.Id == id, ct);
+    }
 }

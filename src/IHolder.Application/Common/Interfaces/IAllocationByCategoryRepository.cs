@@ -6,5 +6,6 @@ namespace IHolder.Application.Common.Interfaces;
 
 public interface IAllocationByCategoryRepository : IAllocationRepository
 {
+    Task<AllocationByCategory?> GetByIdAsync(Guid id, CancellationToken ct);
     Task<PaginatedList<AllocationByCategory>> GetPaginatedAsync(AllocationByCategoriesPaginatedListFilter filter, CancellationToken ct);
 }

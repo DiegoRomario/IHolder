@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.UpdateByCategory;
 
-public class AllocationByCategoryUpdateCommandHandler(IAllocationRepository _repository) :
+public class AllocationByCategoryUpdateCommandHandler(IAllocationByCategoryRepository _repository) :
              IRequestHandler<AllocationByCategoryUpdateCommand, ErrorOr<AllocationByCategory>>
 {
     public async Task<ErrorOr<AllocationByCategory>> Handle(AllocationByCategoryUpdateCommand request, CancellationToken ct)
@@ -18,7 +18,7 @@ public class AllocationByCategoryUpdateCommandHandler(IAllocationRepository _rep
 
         await _repository.UpdateAsync(allocationByCategory, ct);
 
-        allocationByCategory = await _repository.GetByIdAsync<AllocationByCategory>(request.Id, ct);
+        allocationByCategory = await _repository.GetByIdAsync(request.Id, ct);
 
         if (allocationByCategory == null) return Error.Conflict(description: "Failed to retrieve the updated allocation by category.");
 
