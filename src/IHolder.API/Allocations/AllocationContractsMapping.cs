@@ -96,10 +96,71 @@ public static class AllocationContractsMapping
         return new AllocationByCategoriesPaginatedListQuery(filter);
     }
 
-    public static PaginatedList<AllocationByCategoryResponse> ToResponse(this PaginatedList<AllocationByCategory> allocationByCategory)
+    public static PaginatedList<AllocationByCategoryResponse> ToResponse(this PaginatedList<AllocationByCategory> allocation)
     {
-        var items = allocationByCategory.Items.Select(c => c.ToResponse()).ToList();
-        return new PaginatedList<AllocationByCategoryResponse>(items, allocationByCategory.TotalCount, allocationByCategory.PageNumber, allocationByCategory.PageSize);
+        var items = allocation.Items.Select(c => c.ToResponse()).ToList();
+        return new PaginatedList<AllocationByCategoryResponse>(items, allocation.TotalCount, allocation.PageNumber, allocation.PageSize);
+    }
+
+    public static AllocationByProductsPaginatedListQuery ToQuery(this AllocationByProductPaginatedListRequest request)
+    {
+        var filter = new AllocationByProductsPaginatedListFilter(
+                         request.Id,
+                         request.ProductId,
+                         request.ProductName,
+                         request.ProductDescription,
+                         (Recommendation?)request.Recommendation,
+                         (Risk?)request.Risk,
+                         request.CategoryId,
+                         request.CategoryName,
+                         request.CategoryDescription,
+                         request.CurrentAmount,
+                         request.TargetPercentage,
+                         request.CurrentPercentage,
+                         request.PercentageDifference,
+                         request.AmountDifference,
+                         request.PageNumber, request.PageSize);
+
+        return new AllocationByProductsPaginatedListQuery(filter);
+    }
+
+    public static PaginatedList<AllocationByProductResponse> ToResponse(this PaginatedList<AllocationByProduct> allocation)
+    {
+        var items = allocation.Items.Select(c => c.ToResponse()).ToList();
+        return new PaginatedList<AllocationByProductResponse>(items, allocation.TotalCount, allocation.PageNumber, allocation.PageSize);
+    }
+
+    public static AllocationByAssetsPaginatedListQuery ToQuery(this AllocationByAssetPaginatedListRequest request)
+    {
+        var filter = new AllocationByAssetsPaginatedListFilter(
+                         request.Id,
+                         request.AssetId,
+                         request.AssetTicker,
+                         request.AssetName,
+                         request.AssetDescription,
+                         request.AssetPrice,
+                        (Recommendation?)request.Recommendation,
+                         request.ProductId,
+                         request.ProductName,
+                         request.ProductDescription,
+                         (Risk?)request.Risk,
+                         request.CategoryId,
+                         request.CategoryName,
+                         request.CategoryDescription,
+                         request.CurrentAmount,
+                         request.TargetPercentage,
+                         request.CurrentPercentage,
+                         request.PercentageDifference,
+                         request.AmountDifference,
+                         request.PageNumber, request.PageSize);
+
+        return new AllocationByAssetsPaginatedListQuery(filter);
+    }
+
+    public static PaginatedList<AllocationByAssetResponse> ToResponse(this PaginatedList<AllocationByAsset> allocation)
+    {
+        var items = allocation.Items.Select(c => c.ToResponse()).ToList();
+        return new PaginatedList<AllocationByAssetResponse>(items, allocation.TotalCount, allocation.PageNumber, allocation.PageSize);
     }
 
 }

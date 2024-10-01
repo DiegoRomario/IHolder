@@ -63,4 +63,28 @@ public class AllocationsController(ISender _mediator) : IHolderControllerBase
 
         return response;
     }
+
+    [HttpGet("product")]
+    public async Task<IActionResult> GetPaginated([FromQuery] AllocationByProductPaginatedListRequest request, CancellationToken ct)
+    {
+        AllocationByProductsPaginatedListQuery query = request.ToQuery();
+
+        ErrorOr<PaginatedList<AllocationByProduct>> paginatedList = await _mediator.Send(query, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpGet("asset")]
+    public async Task<IActionResult> GetPaginated([FromQuery] AllocationByAssetPaginatedListRequest request, CancellationToken ct)
+    {
+        AllocationByAssetsPaginatedListQuery query = request.ToQuery();
+
+        ErrorOr<PaginatedList<AllocationByAsset>> paginatedList = await _mediator.Send(query, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
 }

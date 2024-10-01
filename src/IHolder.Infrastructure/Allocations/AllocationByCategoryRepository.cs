@@ -9,6 +9,13 @@ namespace IHolder.Infrastructure.Allocations;
 
 internal class AllocationByCategoryRepository(IHolderDbContext _dbContext) : AllocationRepository(_dbContext), IAllocationByCategoryRepository
 {
+    public async Task<AllocationByCategory?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        return await _dbContext.AllocationsByCategory.AsNoTracking()
+                                                     .Include(a => a.Category)
+                                                     .FirstOrDefaultAsync(a => a.Id == id, ct);
+    }
+
     public async Task<PaginatedList<AllocationByCategory>> GetPaginatedAsync(AllocationByCategoriesPaginatedListFilter filter, CancellationToken ct)
     {
         var query = _dbContext.AllocationsByCategory.AsNoTracking().Include(a => a.Category).AsQueryable();
@@ -48,12 +55,5 @@ internal class AllocationByCategoryRepository(IHolderDbContext _dbContext) : All
         var items = count == 0 ? [] : await query.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync(ct);
 
         return new(items, count, filter.PageNumber, filter.PageSize);
-    }
-
-    public async Task<AllocationByCategory?> GetByIdAsync(Guid id, CancellationToken ct)
-    {
-        return await _dbContext.AllocationsByCategory.AsNoTracking()
-                                                     .Include(a => a.Category)
-                                                     .FirstOrDefaultAsync(a => a.Id == id, ct);
     }
 }
