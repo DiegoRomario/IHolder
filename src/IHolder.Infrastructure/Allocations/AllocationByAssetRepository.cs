@@ -24,11 +24,15 @@ internal class AllocationByAssetRepository(IHolderDbContext _dbContext) : Alloca
                                                  .ThenInclude(a => a.Asset)
                                                  .AsQueryable();
 
+        query = query.Where(allocation => allocation.Portfolio.UserId == filter.UserId);
+
         if (filter.Id.HasValue)
             query = query.Where(allocation => allocation.Id == filter.Id.Value);
 
         if (filter.AssetId.HasValue)
             query = query.Where(allocation => allocation.AssetId == filter.AssetId.Value);
+        else if (filter.AssetIds != null && filter.AssetIds.Any())
+            query = query.Where(allocation => filter.AssetIds.Contains(allocation.AssetInPortfolio.AssetId));
 
         if (!string.IsNullOrEmpty(filter.AssetTicker))
             query = query.Where(allocation => allocation.AssetInPortfolio.Asset.Ticker.Contains(filter.AssetTicker));

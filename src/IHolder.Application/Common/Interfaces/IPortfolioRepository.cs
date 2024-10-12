@@ -15,4 +15,5 @@ public interface IPortfolioRepository
     Task<bool> HasAllocationsByAssetInPortfolioAsync(Guid assetInPortfolioId, CancellationToken ct);
     Task<List<Guid>> GetAllCategoryIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
     Task<List<Guid>> GetAllProductIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
+    Task<List<Guid>> GetAllAssetIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
 }

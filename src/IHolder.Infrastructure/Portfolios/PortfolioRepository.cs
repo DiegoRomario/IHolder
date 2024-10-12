@@ -95,4 +95,15 @@ internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepo
 
         return productIds;
     }
+
+    public async Task<List<Guid>> GetAllAssetIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct)
+    {
+        var assetIds = await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                                  .SelectMany(p => p.AssetsInPortfolio)
+                                                  .Select(a => a.Asset.Id)
+                                                  .Distinct()
+                                                  .ToListAsync(ct);
+
+        return assetIds;
+    }
 }

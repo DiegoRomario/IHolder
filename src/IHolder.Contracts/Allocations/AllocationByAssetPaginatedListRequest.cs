@@ -21,6 +21,7 @@ public record AllocationByAssetPaginatedListRequest(
     decimal? TargetPercentage,
     decimal? CurrentPercentage,
     decimal? PercentageDifference,
-    decimal? AmountDifference) : PaginatedFilter
+    decimal? AmountDifference,
+    List<Guid>? AssetIds) : PaginatedFilter
 { }
 

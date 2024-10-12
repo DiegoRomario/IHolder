@@ -79,6 +79,18 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
+    [HttpPut("asset/divide")]
+    public async Task<IActionResult> Divide(AllocationByAssetDivideTargetPercentageRequest request, CancellationToken ct)
+    {
+        AllocationByAssetDivideTargetPercentageCommand command = request.ToCommand();
+
+        ErrorOr<PaginatedList<AllocationByAsset>> paginatedList = await _mediator.Send(command, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
     [HttpGet("category")]
     public async Task<IActionResult> GetPaginated([FromQuery] AllocationByCategoryPaginatedListRequest request, CancellationToken ct)
     {
@@ -106,7 +118,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
     [HttpGet("asset")]
     public async Task<IActionResult> GetPaginated([FromQuery] AllocationByAssetPaginatedListRequest request, CancellationToken ct)
     {
-        AllocationByAssetsPaginatedListQuery query = request.ToQuery();
+        AllocationByAssetsPaginatedListQuery query = request.ToQuery(_userID);
 
         ErrorOr<PaginatedList<AllocationByAsset>> paginatedList = await _mediator.Send(query, ct);
 

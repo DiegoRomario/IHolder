@@ -89,6 +89,10 @@ public static class AllocationContractsMapping
         return new AllocationByProductDivideTargetPercentageCommand(request.OnlyProductsInPortfolio, request.PageNumber, request.PageSize);
     }
 
+    public static AllocationByAssetDivideTargetPercentageCommand ToCommand(this AllocationByAssetDivideTargetPercentageRequest request)
+    {
+        return new AllocationByAssetDivideTargetPercentageCommand(request.PageNumber, request.PageSize);
+    }
 
     public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request, Guid userId)
     {
@@ -146,9 +150,10 @@ public static class AllocationContractsMapping
         return new PaginatedList<AllocationByProductResponse>(items, allocation.TotalCount, allocation.PageNumber, allocation.PageSize);
     }
 
-    public static AllocationByAssetsPaginatedListQuery ToQuery(this AllocationByAssetPaginatedListRequest request)
+    public static AllocationByAssetsPaginatedListQuery ToQuery(this AllocationByAssetPaginatedListRequest request, Guid userId)
     {
         var filter = new AllocationByAssetsPaginatedListFilter(
+                         userId,
                          request.Id,
                          request.AssetId,
                          request.AssetTicker,
@@ -168,6 +173,7 @@ public static class AllocationContractsMapping
                          request.CurrentPercentage,
                          request.PercentageDifference,
                          request.AmountDifference,
+                         request.AssetIds,
                          request.PageNumber, request.PageSize);
 
         return new AllocationByAssetsPaginatedListQuery(filter);
