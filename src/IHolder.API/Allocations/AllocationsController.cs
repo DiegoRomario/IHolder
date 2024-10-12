@@ -55,6 +55,18 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
+    [HttpPut("product/divide")]
+    public async Task<IActionResult> Divide(AllocationByProductDivideTargetPercentageRequest request, CancellationToken ct)
+    {
+        AllocationByProductDivideTargetPercentageCommand command = request.ToCommand();
+
+        ErrorOr<PaginatedList<AllocationByProduct>> paginatedList = await _mediator.Send(command, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
     [HttpPut("asset/{id}")]
     public async Task<IActionResult> Update(Guid id, AllocationByAssetUpdateRequest request, CancellationToken ct)
     {
@@ -82,7 +94,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
     [HttpGet("product")]
     public async Task<IActionResult> GetPaginated([FromQuery] AllocationByProductPaginatedListRequest request, CancellationToken ct)
     {
-        AllocationByProductsPaginatedListQuery query = request.ToQuery();
+        AllocationByProductsPaginatedListQuery query = request.ToQuery(_userID);
 
         ErrorOr<PaginatedList<AllocationByProduct>> paginatedList = await _mediator.Send(query, ct);
 

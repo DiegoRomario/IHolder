@@ -16,6 +16,7 @@ public record AllocationByProductPaginatedListRequest(
     decimal? TargetPercentage,
     decimal? CurrentPercentage,
     decimal? PercentageDifference,
-    decimal? AmountDifference) : PaginatedFilter
+    decimal? AmountDifference,
+    List<Guid>? ProductIds) : PaginatedFilter
 { }
 

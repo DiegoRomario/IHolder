@@ -74,7 +74,7 @@ internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepo
                                                   .AnyAsync(allocation => allocation.AssetId == assetInPortfolioId, ct);
     }
 
-    public async Task<List<Guid>> GetAllCategoryIDsInPortfolioByUserAsync(Guid userId, CancellationToken ct)
+    public async Task<List<Guid>> GetAllCategoryIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct)
     {
         var categoryIds = await _dbContext.Portfolios.Where(p => p.UserId == userId)
                                                      .SelectMany(p => p.AssetsInPortfolio)
@@ -83,5 +83,16 @@ internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepo
                                                      .ToListAsync(ct);
 
         return categoryIds;
+    }
+
+    public async Task<List<Guid>> GetAllProductIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct)
+    {
+        var productIds = await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                                     .SelectMany(p => p.AssetsInPortfolio)
+                                                     .Select(a => a.Asset.Product.Id)
+                                                     .Distinct()
+                                                     .ToListAsync(ct);
+
+        return productIds;
     }
 }

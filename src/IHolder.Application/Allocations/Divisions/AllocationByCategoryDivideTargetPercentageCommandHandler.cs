@@ -55,7 +55,7 @@ public class AllocationByCategoryDivideTargetPercentageCommandHandler
     }
     private async Task<List<AllocationByCategory>> GetAllocationByCategoriesInPortfolio(CancellationToken ct)
     {
-        var categoryIDsInPortfolio = await _portfolioRepository.GetAllCategoryIDsInPortfolioByUserAsync(_userID, ct);
+        var categoryIDsInPortfolio = await _portfolioRepository.GetAllCategoryIdsInPortfolioByUserAsync(_userID, ct);
 
         var allocations = (await _allocationByCategoryRepository.GetPaginatedAsync(new(UserId: _userID, CategoryIds: categoryIDsInPortfolio), ct)).Items.ToList();
         return allocations;

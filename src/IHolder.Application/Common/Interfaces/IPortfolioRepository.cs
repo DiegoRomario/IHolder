@@ -13,5 +13,6 @@ public interface IPortfolioRepository
     Task<AssetInPortfolio?> GetAssetInPortfolioByIdAsync(Guid id, CancellationToken ct);
     Task<bool> ExistsAssetInPortfolioByPredicateAsync(Expression<Func<AssetInPortfolio, bool>> predicate, CancellationToken ct);
     Task<bool> HasAllocationsByAssetInPortfolioAsync(Guid assetInPortfolioId, CancellationToken ct);
-    Task<List<Guid>> GetAllCategoryIDsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
+    Task<List<Guid>> GetAllCategoryIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
+    Task<List<Guid>> GetAllProductIdsInPortfolioByUserAsync(Guid userId, CancellationToken ct);
 }

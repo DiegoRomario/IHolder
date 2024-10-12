@@ -20,11 +20,15 @@ internal class AllocationByProductRepository(IHolderDbContext _dbContext) : Allo
     {
         var query = _dbContext.AllocationsByProduct.AsNoTracking().Include(a => a.Product).AsQueryable();
 
+        query = query.Where(allocation => allocation.Portfolio.UserId == filter.UserId);
+
         if (filter.Id.HasValue)
             query = query.Where(allocation => allocation.Id == filter.Id.Value);
 
         if (filter.ProductId.HasValue)
-            query = query.Where(allocation => allocation.Product.Id == filter.ProductId.Value);
+            query = query.Where(allocation => allocation.ProductId == filter.ProductId.Value);
+        else if (filter.ProductIds != null && filter.ProductIds.Any())
+            query = query.Where(allocation => filter.ProductIds.Contains(allocation.ProductId));
 
         if (!string.IsNullOrEmpty(filter.ProductName))
             query = query.Where(allocation => allocation.Product.Name.Contains(filter.ProductName));
