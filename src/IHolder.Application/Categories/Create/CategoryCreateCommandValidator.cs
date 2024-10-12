@@ -16,12 +16,12 @@ public class CategoryCreateCommandValidator : AbstractValidator<CategoryCreateCo
         RuleFor(x => x.Description).NotEmpty()
                                    .MaximumLength(600);
 
-        RuleFor(x => x.Name).MustAsync(ValidateName)
-                                   .WithMessage("This category already exists in the system");
+        RuleFor(x => x.Name).MustAsync(CategoryNameDoesNotExists)
+                            .WithMessage("This category already exists in the system");
     }
 
-    private async Task<bool> ValidateName(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
+    private async Task<bool> CategoryNameDoesNotExists(CategoryCreateCommand categoryUpdateCommand, string name, CancellationToken ct = default)
     {
-        return await _repository.ExistsByPredicateAsync(c => c.Name == name, ct);
+        return await _repository.ExistsByPredicateAsync(c => c.Name == name, ct) is false;
     }
 }

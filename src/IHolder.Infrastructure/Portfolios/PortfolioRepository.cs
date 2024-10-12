@@ -73,4 +73,15 @@ internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepo
         return await _dbContext.AllocationsByAsset.AsNoTracking()
                                                   .AnyAsync(allocation => allocation.AssetId == assetInPortfolioId, ct);
     }
+
+    public async Task<List<Guid>> GetAllCategoryIDsInPortfolioByUserAsync(Guid userId, CancellationToken ct)
+    {
+        var categoryIds = await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                                     .SelectMany(p => p.AssetsInPortfolio)
+                                                     .Select(a => a.Asset.Product.CategoryId)
+                                                     .Distinct()
+                                                     .ToListAsync(ct);
+
+        return categoryIds;
+    }
 }

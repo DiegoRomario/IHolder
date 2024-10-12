@@ -22,7 +22,7 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
         RuleFor(x => x.Risk).IsInEnum()
                             .WithMessage("Invalid risk value.");
 
-        RuleFor(x => x.Name).MustAsync(ValidateName)
+        RuleFor(x => x.Name).MustAsync(ProductNameDoesNotExists)
                                    .WithMessage("This Product already exists in the system");
 
         RuleFor(x => x.CategoryId).NotEqual(Guid.Empty)
@@ -35,13 +35,13 @@ public class ProductCreateCommandValidator : AbstractValidator<ProductCreateComm
         });
     }
 
-    private async Task<bool> ValidateName(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
+    private async Task<bool> ProductNameDoesNotExists(ProductCreateCommand ProductUpdateCommand, string name, CancellationToken ct = default)
     {
-        return await _repository.ExistsByPredicateAsync(p => p.Name == name, ct);
+        return await _repository.ExistsByPredicateAsync(p => p.Name == name, ct) is false;
     }
 
     private async Task<bool> ValidateCategoryId(Guid categoryId, CancellationToken ct = default)
     {
-        return await _categoryRepository.ExistsByPredicateAsync(c => c.Id == categoryId, ct); ;
+        return await _categoryRepository.ExistsByPredicateAsync(c => c.Id == categoryId, ct);
     }
 }

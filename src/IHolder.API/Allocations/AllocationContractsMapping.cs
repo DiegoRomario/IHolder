@@ -1,4 +1,5 @@
-﻿using IHolder.Application.Allocations.List;
+﻿using IHolder.Application.Allocations.Divisions;
+using IHolder.Application.Allocations.List;
 using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
@@ -78,9 +79,15 @@ public static class AllocationContractsMapping
         return new AllocationByAssetUpdateCommand(id, request.TargetPercentage);
     }
 
-    public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request)
+    public static AllocationByCategoryDivideTargetPercentageCommand ToCommand(this AllocationByCategoryDivideTargetPercentageRequest request)
+    {
+        return new AllocationByCategoryDivideTargetPercentageCommand(request.OnlyCategoriesInPortfolio, request.PageNumber, request.PageSize);
+    }
+
+    public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request, Guid userId)
     {
         var filter = new AllocationByCategoriesPaginatedListFilter(
+                         userId,
                          request.Id,
                          request.CategoryId,
                          request.CategoryName,
@@ -91,6 +98,7 @@ public static class AllocationContractsMapping
                          request.CurrentPercentage,
                          request.PercentageDifference,
                          request.AmountDifference,
+                         request.CategoryIds,
                          request.PageNumber, request.PageSize);
 
         return new AllocationByCategoriesPaginatedListQuery(filter);

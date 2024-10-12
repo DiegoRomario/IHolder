@@ -12,6 +12,7 @@ public record AllocationByCategoryPaginatedListRequest(
     decimal? TargetPercentage,
     decimal? CurrentPercentage,
     decimal? PercentageDifference,
+    List<Guid>? CategoryIds,
     decimal? AmountDifference) : PaginatedFilter
 { }
 

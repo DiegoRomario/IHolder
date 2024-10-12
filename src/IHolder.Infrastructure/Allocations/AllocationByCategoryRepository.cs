@@ -20,11 +20,15 @@ internal class AllocationByCategoryRepository(IHolderDbContext _dbContext) : All
     {
         var query = _dbContext.AllocationsByCategory.AsNoTracking().Include(a => a.Category).AsQueryable();
 
+        query = query.Where(allocation => allocation.Portfolio.UserId == filter.UserId);
+
         if (filter.Id.HasValue)
             query = query.Where(allocation => allocation.Id == filter.Id.Value);
 
         if (filter.CategoryId.HasValue)
             query = query.Where(allocation => allocation.Category.Id == filter.CategoryId.Value);
+        else if (filter.CategoryIds != null && filter.CategoryIds.Any())
+            query = query.Where(allocation => filter.CategoryIds.Contains(allocation.Category.Id));
 
         if (!string.IsNullOrEmpty(filter.CategoryName))
             query = query.Where(allocation => allocation.Category.Name.Contains(filter.CategoryName));
