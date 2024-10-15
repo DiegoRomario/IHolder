@@ -26,7 +26,6 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
         return response;
     }
 
-
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] AssetPaginatedListRequest request, CancellationToken ct)
     {
@@ -38,6 +37,19 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
 
         return response;
     }
+
+    [HttpGet("quote/{ticker}")]
+    public async Task<IActionResult> GetAssetQuote(string ticker, CancellationToken ct)
+    {
+        AssetGetQuoteByTickerQuery command = new(ticker);
+
+        ErrorOr<AssetQuoteDTO> assetQuote = await _mediator.Send(command, ct);
+
+        IActionResult response = assetQuote.Match(assetQuote => base.Ok(assetQuote.ToResponse()), Problem);
+
+        return response;
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> Create(AssetCreateRequest request, CancellationToken ct)

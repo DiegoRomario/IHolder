@@ -57,5 +57,10 @@ public static class AssetContractsMapping
         var items = asset.Items.Select(c => c.ToResponse()).ToList();
         return new PaginatedList<AssetResponse>(items, asset.TotalCount, asset.PageNumber, asset.PageSize);
     }
+
+    public static AssetQuoteResponse ToResponse(this AssetQuoteDTO assetQuote)
+    {
+        return new AssetQuoteResponse(assetQuote.PreviousQuote, assetQuote.Quote, assetQuote.Variation, assetQuote.PercentageVariation);
+    }
 }
 

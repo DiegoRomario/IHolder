@@ -8,6 +8,7 @@ using IHolder.Infrastructure.Categories;
 using IHolder.Infrastructure.Database;
 using IHolder.Infrastructure.Portfolios;
 using IHolder.Infrastructure.Products;
+using IHolder.Infrastructure.Services;
 using IHolder.Infrastructure.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,33 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace IHolder.Infrastructure;
+
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         return services.AddAuthentication(configuration)
                        .AddPersistence(configuration);
+    }
+
+    public static IServiceCollection AddExternalServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpClient<IAssetQuoteService, StockQuoteService>(client =>
+        {
+            // TODO: LOGS
+            string baseAddress = configuration["ExternalServices:StockQuote"]
+                ?? throw new ArgumentNullException(nameof(baseAddress), "StockQuote base address is required.");
+
+            string userAgent = configuration["ExternalServices:UserAgent"]
+                ?? throw new ArgumentNullException(nameof(userAgent), "UserAgent is required.");
+
+            client.BaseAddress = new Uri(baseAddress);
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+        })
+        .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
+        return services;
     }
 
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
