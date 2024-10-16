@@ -100,6 +100,11 @@ public static class AllocationContractsMapping
         return new AllocationByCategoryRecalculateCommand(request.PageNumber, request.PageSize);
     }
 
+    public static AllocationByProductRecalculateCommand ToCommand(this AllocationByProductRecalculateRequest request)
+    {
+        return new AllocationByProductRecalculateCommand(request.PageNumber, request.PageSize);
+    }
+
     public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request, Guid userId)
     {
         var filter = new AllocationByCategoriesPaginatedListFilter(

@@ -80,6 +80,18 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
+    [HttpPut("product/recalculate")]
+    public async Task<IActionResult> Recalculate(AllocationByProductRecalculateRequest request, CancellationToken ct)
+    {
+        AllocationByProductRecalculateCommand command = request.ToCommand();
+
+        ErrorOr<PaginatedList<AllocationByProduct>> paginatedList = await _mediator.Send(command, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
     [HttpPut("asset/{id}")]
     public async Task<IActionResult> Update(Guid id, AllocationByAssetUpdateRequest request, CancellationToken ct)
     {
