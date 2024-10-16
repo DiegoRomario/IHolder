@@ -116,6 +116,18 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
+    [HttpPut("asset/recalculate")]
+    public async Task<IActionResult> Recalculate(AllocationByAssetRecalculateRequest request, CancellationToken ct)
+    {
+        AllocationByAssetRecalculateCommand command = request.ToCommand();
+
+        ErrorOr<PaginatedList<AllocationByAsset>> paginatedList = await _mediator.Send(command, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
     [HttpGet("category")]
     public async Task<IActionResult> GetPaginated([FromQuery] AllocationByCategoryPaginatedListRequest request, CancellationToken ct)
     {
