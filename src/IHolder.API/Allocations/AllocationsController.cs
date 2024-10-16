@@ -2,6 +2,7 @@
 using IHolder.API.Common;
 using IHolder.Application.Allocations.Divisions;
 using IHolder.Application.Allocations.List;
+using IHolder.Application.Allocations.Recalculations;
 using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
@@ -35,6 +36,18 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
     public async Task<IActionResult> Divide(AllocationByCategoryDivideTargetPercentageRequest request, CancellationToken ct)
     {
         AllocationByCategoryDivideTargetPercentageCommand command = request.ToCommand();
+
+        ErrorOr<PaginatedList<AllocationByCategory>> paginatedList = await _mediator.Send(command, ct);
+
+        IActionResult response = paginatedList.Match(list => base.Ok(list.ToResponse()), Problem);
+
+        return response;
+    }
+
+    [HttpPut("category/recalculate")]
+    public async Task<IActionResult> Recalculate(AllocationByCategoryRecalculateRequest request, CancellationToken ct)
+    {
+        AllocationByCategoryRecalculateCommand command = request.ToCommand();
 
         ErrorOr<PaginatedList<AllocationByCategory>> paginatedList = await _mediator.Send(command, ct);
 

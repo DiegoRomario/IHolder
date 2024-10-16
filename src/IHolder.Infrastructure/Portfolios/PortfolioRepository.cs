@@ -8,7 +8,6 @@ namespace IHolder.Infrastructure.Portfolios;
 
 internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepository
 {
-
     public async Task<Portfolio?> GetByPredicateAsync(Expression<Func<Portfolio, bool>> predicate, CancellationToken ct, bool includes = false)
     {
         var query = _dbContext.Portfolios.AsNoTracking();
@@ -105,5 +104,36 @@ internal class PortfolioRepository(IHolderDbContext _dbContext) : IPortfolioRepo
                                                   .ToListAsync(ct);
 
         return assetIds;
+    }
+
+    public async Task<decimal> GetInvestedAmountoByCategory(Guid userId, Guid categoryId, CancellationToken ct)
+    {
+        return await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                          .SelectMany(p => p.AssetsInPortfolio)
+                                          .Where(a => a.Asset.Product.CategoryId == categoryId)
+                                          .SumAsync(a => a.InvestedAmount, ct);
+    }
+
+    public async Task<decimal> GetInvestedAmountoByProduct(Guid userId, Guid productId, CancellationToken ct)
+    {
+        return await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                          .SelectMany(p => p.AssetsInPortfolio)
+                                          .Where(a => a.Asset.Product.Id == productId)
+                                          .SumAsync(a => a.InvestedAmount, ct);
+    }
+
+    public async Task<decimal> GetInvestedAmountoByAsset(Guid userId, Guid assetId, CancellationToken ct)
+    {
+        return await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                          .SelectMany(p => p.AssetsInPortfolio)
+                                          .Where(a => a.AssetId == assetId)
+                                          .SumAsync(a => a.InvestedAmount, ct);
+    }
+
+    public async Task<decimal> GetInvestedAmount(Guid userId, CancellationToken ct)
+    {
+        return await _dbContext.Portfolios.Where(p => p.UserId == userId)
+                                          .SelectMany(p => p.AssetsInPortfolio)
+                                          .SumAsync(a => a.InvestedAmount, ct);
     }
 }

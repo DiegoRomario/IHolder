@@ -1,5 +1,6 @@
 ﻿using IHolder.Application.Allocations.Divisions;
 using IHolder.Application.Allocations.List;
+using IHolder.Application.Allocations.Recalculations;
 using IHolder.Application.Allocations.UpdateByAsset;
 using IHolder.Application.Allocations.UpdateByCategory;
 using IHolder.Application.Allocations.UpdateByProduct;
@@ -92,6 +93,11 @@ public static class AllocationContractsMapping
     public static AllocationByAssetDivideTargetPercentageCommand ToCommand(this AllocationByAssetDivideTargetPercentageRequest request)
     {
         return new AllocationByAssetDivideTargetPercentageCommand(request.PageNumber, request.PageSize);
+    }
+
+    public static AllocationByCategoryRecalculateCommand ToCommand(this AllocationByCategoryRecalculateRequest request)
+    {
+        return new AllocationByCategoryRecalculateCommand(request.PageNumber, request.PageSize);
     }
 
     public static AllocationByCategoriesPaginatedListQuery ToQuery(this AllocationByCategoryPaginatedListRequest request, Guid userId)
