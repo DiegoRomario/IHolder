@@ -11,5 +11,6 @@ public record ProductCreateCommand(
     string Name,
     string Description,
     Guid CategoryId,
-    Risk Risk) : IRequest<ErrorOr<Product>>;
+    Risk Risk,
+    string? ExchangeId = null) : IRequest<ErrorOr<Product>>;
 

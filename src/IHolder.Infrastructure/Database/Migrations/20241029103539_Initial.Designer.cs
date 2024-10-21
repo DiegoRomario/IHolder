@@ -13,15 +13,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IHolder.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(IHolderDbContext))]
-    [Migration("20240810184446_FixAllocationMappings")]
-    partial class FixAllocationMappings
+    [Migration("20241029103539_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -29,16 +29,15 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Allocations.AllocationByAsset", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
-                    b.Property<Guid>("AssetId")
+                    b.Property<Guid>("AssetInPortfolioId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(3);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier")
@@ -49,7 +48,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(9);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.ComplexProperty<Dictionary<string, object>>("AllocationValues", "IHolder.Domain.Allocations.AllocationByAsset.AllocationValues#AllocationValues", b1 =>
                         {
@@ -83,9 +82,10 @@ namespace IHolder.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetInPortfolioId");
 
-                    b.HasIndex("PortfolioId");
+                    b.HasIndex("PortfolioId", "AssetInPortfolioId")
+                        .IsUnique();
 
                     b.ToTable("AllocationByAsset", (string)null);
                 });
@@ -93,7 +93,6 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Allocations.AllocationByCategory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
@@ -102,7 +101,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(3);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier")
@@ -113,7 +112,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(9);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.ComplexProperty<Dictionary<string, object>>("AllocationValues", "IHolder.Domain.Allocations.AllocationByCategory.AllocationValues#AllocationValues", b1 =>
                         {
@@ -149,7 +148,8 @@ namespace IHolder.Infrastructure.Database.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("PortfolioId");
+                    b.HasIndex("PortfolioId", "CategoryId")
+                        .IsUnique();
 
                     b.ToTable("AllocationByCategory", (string)null);
                 });
@@ -157,12 +157,11 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Allocations.AllocationByProduct", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier")
@@ -177,7 +176,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(9);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.ComplexProperty<Dictionary<string, object>>("AllocationValues", "IHolder.Domain.Allocations.AllocationByProduct.AllocationValues#AllocationValues", b1 =>
                         {
@@ -211,9 +210,10 @@ namespace IHolder.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PortfolioId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("PortfolioId", "ProductId")
+                        .IsUnique();
 
                     b.ToTable("AllocationByProduct", (string)null);
                 });
@@ -221,12 +221,11 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Assets.Asset", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -252,7 +251,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(5);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.HasKey("Id");
 
@@ -264,12 +263,11 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Categories.Category", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -282,7 +280,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(2);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.HasKey("Id");
 
@@ -292,8 +290,8 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Portfolios.AssetInPortfolio", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
 
                     b.Property<Guid>("AssetId")
                         .HasColumnType("uniqueidentifier");
@@ -302,10 +300,10 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnType("DECIMAL(18,4)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<DateTime>("FirstInvestmentDate")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<decimal>("InvestedAmount")
                         .HasColumnType("DECIMAL(18,4)");
@@ -320,16 +318,17 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnType("TINYINT");
 
                     b.Property<DateTime>("StateSetAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
-
                     b.HasIndex("PortfolioId");
+
+                    b.HasIndex("AssetId", "PortfolioId")
+                        .IsUnique();
 
                     b.ToTable("AssetInPortfolio", (string)null);
                 });
@@ -337,18 +336,18 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Portfolios.Portfolio", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("VARCHAR(80)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -364,7 +363,6 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
@@ -373,12 +371,16 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(2);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("VARCHAR(600)")
                         .HasColumnOrder(4);
+
+                    b.Property<string>("ExchangeId")
+                        .HasColumnType("VARCHAR(10)")
+                        .HasColumnOrder(6);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -390,7 +392,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(5);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.HasKey("Id");
 
@@ -402,12 +404,11 @@ namespace IHolder.Infrastructure.Database.Migrations
             modelBuilder.Entity("IHolder.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -425,7 +426,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                         .HasColumnOrder(3);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("DATETIME");
+                        .HasColumnType("DATETIME2");
 
                     b.Property<string>("_passwordHash")
                         .IsRequired()
@@ -444,7 +445,7 @@ namespace IHolder.Infrastructure.Database.Migrations
                 {
                     b.HasOne("IHolder.Domain.Portfolios.AssetInPortfolio", "AssetInPortfolio")
                         .WithMany()
-                        .HasForeignKey("AssetId")
+                        .HasForeignKey("AssetInPortfolioId")
                         .IsRequired();
 
                     b.HasOne("IHolder.Domain.Portfolios.Portfolio", "Portfolio")

@@ -12,10 +12,10 @@ public class AllocationByAsset : Allocation
     public AllocationByAsset(AssetInPortfolio assetInPortfolio, decimal targetPercentage) : base(targetPercentage, assetInPortfolio.PortfolioId)
     {
         AssetInPortfolio = assetInPortfolio;
-        AssetId = assetInPortfolio.AssetId;
+        AssetInPortfolioId = assetInPortfolio.Id;
     }
 
-    public Guid AssetId { get; private set; }
+    public Guid AssetInPortfolioId { get; private set; }
     public AssetInPortfolio AssetInPortfolio { get; private set; } = default!;
 
     protected override Recommendation ProcessRecommendation()

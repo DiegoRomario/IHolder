@@ -42,7 +42,7 @@ public class AllocationTests
     (decimal targetPercentage, decimal amountInvestedPerAllocation, decimal totalAmountInvested, Recommendation recommendation)
     {
         // Arrange
-        Product product = new("Product A", "Stuff about Produtct A", Guid.NewGuid(), Risk.Medium);
+        Product product = new("Product A", "Stuff about Produtct A", Guid.NewGuid(), Risk.Medium, "SA");
         AllocationByProduct allocation = new(product.Id, Guid.NewGuid(), targetPercentage);
         // Act
         allocation.GenerateRecommendation(amountInvestedPerAllocation, totalAmountInvested);

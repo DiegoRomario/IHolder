@@ -7,12 +7,13 @@ namespace IHolder.Domain.Products;
 
 public class Product : AggregateRoot
 {
-    public Product(string name, string description, Guid categoryId, Risk risk, Guid? id = null) : base(id ?? Guid.NewGuid())
+    public Product(string name, string description, Guid categoryId, Risk risk, string? exchangeId = null, Guid? id = null) : base(id ?? Guid.NewGuid())
     {
         Name = name;
         Description = description;
         CategoryId = categoryId;
         Risk = risk;
+        ExchangeId = exchangeId;
         _domainEvents.Add(new ProductCreatedEvent(Id));
     }
 
@@ -22,5 +23,6 @@ public class Product : AggregateRoot
     public string Description { get; } = string.Empty;
     public Guid CategoryId { get; private set; }
     public Risk Risk { get; private set; }
+    public string? ExchangeId { get; private set; }
     public Category Category { get; private set; } = default!;
 }

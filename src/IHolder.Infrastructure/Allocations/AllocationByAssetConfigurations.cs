@@ -15,8 +15,10 @@ public class AllocationByAssetConfigurations : EntityConfiguration<AllocationByA
         builder.Property(p => p.PortfolioId).IsRequired()
                                             .HasColumnOrder(2);
 
-        builder.Property(p => p.AssetId).IsRequired()
-                                        .HasColumnOrder(3);
+        builder.Property(p => p.AssetInPortfolioId).IsRequired()
+                                                   .HasColumnOrder(3);
+
+        builder.HasIndex(p => new { p.PortfolioId, p.AssetInPortfolioId }).IsUnique();
 
         builder.ComplexProperty(a => a.AllocationValues, i =>
         {
@@ -50,14 +52,13 @@ public class AllocationByAssetConfigurations : EntityConfiguration<AllocationByA
                                                .HasColumnType("TINYINT")
                                                .HasColumnOrder(9);
 
+        builder.HasOne(a => a.AssetInPortfolio)
+               .WithMany()
+               .HasForeignKey(a => a.AssetInPortfolioId);
+
         builder.HasOne(a => a.Portfolio)
                .WithMany(p => p.AllocationsByAsset)
                .HasForeignKey(p => p.PortfolioId);
-
-        builder.HasOne(a => a.AssetInPortfolio)
-               .WithMany()
-               .HasForeignKey(a => a.AssetId);
     }
-
 }
 

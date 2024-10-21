@@ -36,8 +36,8 @@ public class IHolderDbContext(DbContextOptions options, IHttpContextAccessor htt
     {
         SetDefaultDBType(modelBuilder, typeof(decimal), "DECIMAL(18,4)");
         SetDefaultDBType(modelBuilder, typeof(string), "VARCHAR(100)");
-        SetDefaultDBType(modelBuilder, typeof(DateTime), "DATETIME");
-        SetDefaultDBType(modelBuilder, typeof(DateTime?), "DATETIME");
+        SetDefaultDBType(modelBuilder, typeof(DateTime), "DATETIME2");
+        SetDefaultDBType(modelBuilder, typeof(DateTime?), "DATETIME2");
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

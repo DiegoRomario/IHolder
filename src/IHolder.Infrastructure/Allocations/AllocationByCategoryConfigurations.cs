@@ -18,6 +18,8 @@ public class AllocationByCategoryConfigurations : EntityConfiguration<Allocation
         builder.Property(a => a.CategoryId).IsRequired()
                                            .HasColumnOrder(3);
 
+        builder.HasIndex(a => new { a.PortfolioId, a.CategoryId }).IsUnique();
+
         builder.ComplexProperty(a => a.AllocationValues, i =>
         {
             i.Property(a => a.CurrentAmount).HasColumnName("CurrentAmount")

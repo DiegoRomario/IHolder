@@ -27,5 +27,8 @@ public class ProductConfigurations : EntityConfiguration<Product>
                                      .IsRequired()
                                      .HasColumnOrder(5);
 
+        builder.Property(a => a.ExchangeId).HasColumnType("VARCHAR(10)")
+                                     .HasColumnOrder(6);
+
     }
 }
