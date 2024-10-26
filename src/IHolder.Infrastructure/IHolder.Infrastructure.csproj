@@ -19,5 +19,11 @@
     <ProjectReference Include="..\IHolder.Domain\IHolder.Domain.csproj" />
     <ProjectReference Include="..\IHolder.SharedKernel\IHolder.SharedKernel.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database/Seeds/*.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
 </Project>
