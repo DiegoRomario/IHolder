@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.UpdateByAsset;
 
-public class AllocationByAssetUpdateCommandHandler(IAssetRepository _repository) :
+public class AllocationByAssetUpdateCommandHandler(IPortfolioRepository _repository) :
              IRequestHandler<AllocationByAssetUpdateCommand, ErrorOr<AllocationByAsset>>
 {
     public async Task<ErrorOr<AllocationByAsset>> Handle(AllocationByAssetUpdateCommand request, CancellationToken ct)

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.List;
 
-public class AllocationByAssetsPaginatedListQueryHandler(IAssetRepository _repository) : IRequestHandler<AllocationByAssetsPaginatedListQuery, ErrorOr<PaginatedList<AllocationByAsset>>>
+public class AllocationByAssetsPaginatedListQueryHandler(IPortfolioRepository _repository) : IRequestHandler<AllocationByAssetsPaginatedListQuery, ErrorOr<PaginatedList<AllocationByAsset>>>
 {
     public async Task<ErrorOr<PaginatedList<AllocationByAsset>>> Handle(AllocationByAssetsPaginatedListQuery request, CancellationToken ct)
     {

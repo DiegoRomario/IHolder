@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using IHolder.API.Common;
 using IHolder.Application.Assets.Create;
+using IHolder.Application.Assets.Delete;
 using IHolder.Application.Assets.List;
 using IHolder.Application.Assets.Update;
 using IHolder.Contracts.Assets;
@@ -75,5 +76,15 @@ public class AssetsController(ISender _mediator) : IHolderControllerBase
         IActionResult response = asset.Match(asset => base.Ok(asset.ToResponse()), Problem);
 
         return response;
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        AssetDeleteCommand command = new(id);
+
+        ErrorOr<Deleted> result = await _mediator.Send(command, ct);
+
+        return result.Match(_ => NoContent(), Problem);
     }
 }

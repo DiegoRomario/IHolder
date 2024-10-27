@@ -17,6 +17,10 @@ public class CategoryDeleteCommandHandler(ICategoryRepository _repository, IProd
 
         if (productsExists) return Error.Conflict(description: "Unable to delete category. This category is linked to one or more products.");
 
+        var allocation = await _repository.GetAllocationByPredicateAsync(a => a.CategoryId == request.Id, ct);
+
+        if (allocation is not null) await _repository.DeleteAllocationAsync(allocation, ct);
+
         await _repository.DeleteAsync(category, ct);
 
         return Result.Deleted;

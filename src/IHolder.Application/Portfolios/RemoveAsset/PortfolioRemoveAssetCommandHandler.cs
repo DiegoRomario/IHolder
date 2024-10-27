@@ -17,16 +17,15 @@ public class PortfolioRemoveAssetCommandHandler(IPortfolioRepository _portfolioR
         if (assetInPortfolio is null)
             return Error.NotFound(description: "Asset in portfolio not found");
 
-        var hasAllocations = await _portfolioRepository.HasAllocationsByAssetInPortfolioAsync(assetInPortfolio.Id, ct);
+        var allocation = await _portfolioRepository.GetAllocationByPredicateAsync(a => a.AssetInPortfolioId == request.Id, ct);
 
-        if (hasAllocations)
-            return Error.Conflict(description: "Unable to remove asset from portfolio. There are allocations for this asset.");
+        if (allocation is not null) await _portfolioRepository.DeleteAllocationAsync(allocation, ct);
 
         var removeAssetResult = portfolio.RemoveAsset(assetInPortfolio);
 
         if (removeAssetResult.IsError) return removeAssetResult.Errors;
 
-        await _portfolioRepository.UpdateAsync(portfolio, ct);
+        await _portfolioRepository.RemoveAsset(assetInPortfolio, ct);
 
         return Result.Deleted;
     }

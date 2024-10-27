@@ -51,7 +51,7 @@ public static class AllocationContractsMapping
     {
         return new AllocationByAssetResponse(
             allocation.Id,
-            allocation.AssetId,
+            allocation.AssetInPortfolioId,
             allocation.AssetInPortfolio.Asset.Name,
             allocation.AssetInPortfolio.Asset.Description,
             allocation.AssetInPortfolio.Asset.Ticker,

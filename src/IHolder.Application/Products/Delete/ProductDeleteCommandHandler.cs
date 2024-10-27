@@ -12,11 +12,13 @@ public class ProductDeleteCommandHandler(IProductRepository _productRepository, 
 
         if (product is null) return Error.NotFound(description: "Product not found");
 
-        var hasAllocations = await _productRepository.HasAllocationsAsync(request.Id, ct);
-        if (hasAllocations) return Error.Conflict(description: "Unable to delete product. There are allocations for this product.");
-
         var assetsExists = await _assetRepository.ExistsByPredicateAsync(a => a.ProductId == request.Id, ct);
+
         if (assetsExists) return Error.Conflict(description: "Unable to delete product. This product is linked to one or more assets.");
+
+        var allocation = await _productRepository.GetAllocationByPredicateAsync(a => a.ProductId == request.Id, ct);
+
+        if (allocation is not null) await _productRepository.DeleteAllocationAsync(allocation, ct);
 
         await _productRepository.DeleteAsync(product, ct);
 

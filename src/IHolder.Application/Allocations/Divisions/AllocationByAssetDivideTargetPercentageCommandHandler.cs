@@ -7,8 +7,7 @@ using MediatR;
 namespace IHolder.Application.Allocations.Divisions;
 
 public class AllocationByAssetDivideTargetPercentageCommandHandler
-    (IAssetRepository _assetRepository,
-    IPortfolioRepository _portfolioRepository,
+    (IPortfolioRepository _portfolioRepository,
     ICurrentUserProvider currentUserProvider) : IRequestHandler<AllocationByAssetDivideTargetPercentageCommand, ErrorOr<PaginatedList<AllocationByAsset>>>
 {
     private const decimal MAX_PERCENTAGE = 100;
@@ -16,11 +15,11 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
 
     public async Task<ErrorOr<PaginatedList<AllocationByAsset>>> Handle(AllocationByAssetDivideTargetPercentageCommand request, CancellationToken ct)
     {
-        var allocations = (await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
+        var allocations = (await _portfolioRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
 
         await UpdateAllocationByAssetInPortfolio(allocations, ct);
 
-        var result = await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var result = await _portfolioRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return result;
     }
@@ -33,10 +32,10 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
 
         foreach (var allocation in allocations)
         {
-            var hasAllocationInPortfolio = allocationsInPortfolio.Where(a => a.AssetId == allocation.AssetId).Any();
+            var hasAllocationInPortfolio = allocationsInPortfolio.Where(a => a.AssetInPortfolioId == allocation.AssetInPortfolioId).Any();
             allocation.AllocationValues.UpdateTargetPercentage(hasAllocationInPortfolio ? percentageDistribution : 0);
 
-            await _assetRepository.UpdateAllocationAsync(allocation, ct);
+            await _portfolioRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
 
@@ -44,7 +43,7 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
     {
         var assetIDsInPortfolio = await _portfolioRepository.GetAllAssetIdsInPortfolioByUserAsync(_userID, ct);
 
-        var allocations = (await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, AssetIds: assetIDsInPortfolio), ct)).Items.ToList();
+        var allocations = (await _portfolioRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, AssetIds: assetIDsInPortfolio), ct)).Items.ToList();
         return allocations;
     }
 
