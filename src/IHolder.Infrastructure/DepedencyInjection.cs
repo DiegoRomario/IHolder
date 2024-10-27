@@ -1,7 +1,6 @@
 ﻿using IHolder.Application.Common;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Common;
-using IHolder.Infrastructure.Allocations;
 using IHolder.Infrastructure.Assets;
 using IHolder.Infrastructure.Authentication;
 using IHolder.Infrastructure.Categories;
@@ -56,10 +55,6 @@ public static class DependencyInjection
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAssetRepository, AssetRepository>();
         services.AddScoped<IPortfolioRepository, PortfolioRepository>();
-        services.AddScoped<IAllocationRepository, AllocationRepository>();
-        services.AddScoped<IAllocationByCategoryRepository, AllocationByCategoryRepository>();
-        services.AddScoped<IAllocationByProductRepository, AllocationByProductRepository>();
-        services.AddScoped<IAllocationByAssetRepository, AllocationByAssetRepository>();
 
         return services;
     }

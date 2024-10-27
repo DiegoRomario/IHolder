@@ -7,7 +7,7 @@ using MediatR;
 namespace IHolder.Application.Allocations.Divisions;
 
 public class AllocationByProductDivideTargetPercentageCommandHandler
-    (IAllocationByProductRepository _allocationByProductRepository,
+    (IProductRepository _productRepository,
     IPortfolioRepository _portfolioRepository,
     ICurrentUserProvider currentUserProvider) : IRequestHandler<AllocationByProductDivideTargetPercentageCommand, ErrorOr<PaginatedList<AllocationByProduct>>>
 {
@@ -16,14 +16,14 @@ public class AllocationByProductDivideTargetPercentageCommandHandler
 
     public async Task<ErrorOr<PaginatedList<AllocationByProduct>>> Handle(AllocationByProductDivideTargetPercentageCommand request, CancellationToken ct)
     {
-        var allocations = (await _allocationByProductRepository.GetPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
+        var allocations = (await _productRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
 
         if (request.OnlyProductsInPortfolio)
             await UpdateAllocationByProductInPortfolio(allocations, ct);
         else
             await UpdateAllocationByProductRegistered(allocations, ct);
 
-        var result = await _allocationByProductRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var result = await _productRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return result;
     }
@@ -35,7 +35,7 @@ public class AllocationByProductDivideTargetPercentageCommandHandler
         foreach (var allocation in allocations)
         {
             allocation.AllocationValues.UpdateTargetPercentage(percentageDistribution);
-            await _allocationByProductRepository.UpdateAsync(allocation, ct);
+            await _productRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
 
@@ -50,7 +50,7 @@ public class AllocationByProductDivideTargetPercentageCommandHandler
             var hasAllocationInPortfolio = allocationsInPortfolio.Where(a => a.ProductId == allocation.ProductId).Any();
             allocation.AllocationValues.UpdateTargetPercentage(hasAllocationInPortfolio ? percentageDistribution : 0);
 
-            await _allocationByProductRepository.UpdateAsync(allocation, ct);
+            await _productRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
 
@@ -58,7 +58,7 @@ public class AllocationByProductDivideTargetPercentageCommandHandler
     {
         var productIDsInPortfolio = await _portfolioRepository.GetAllProductIdsInPortfolioByUserAsync(_userID, ct);
 
-        var allocations = (await _allocationByProductRepository.GetPaginatedAsync(new(UserId: _userID, ProductIds: productIDsInPortfolio), ct)).Items.ToList();
+        var allocations = (await _productRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, ProductIds: productIDsInPortfolio), ct)).Items.ToList();
         return allocations;
     }
 

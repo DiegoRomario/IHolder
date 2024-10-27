@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.Recalculations;
 public class AllocationByAssetRecalculateCommandHandler(
-    IAllocationByAssetRepository _allocationRepository,
+    IAssetRepository _assetRepository,
     ICurrentUserProvider _currentUserProvider,
     IPortfolioRepository _portfolioRepository) : IRequestHandler<AllocationByAssetRecalculateCommand, ErrorOr<PaginatedList<AllocationByAsset>>>
 {
@@ -14,7 +14,7 @@ public class AllocationByAssetRecalculateCommandHandler(
 
     public async Task<ErrorOr<PaginatedList<AllocationByAsset>>> Handle(AllocationByAssetRecalculateCommand request, CancellationToken ct)
     {
-        var allocationsByAsset = await _allocationRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var allocationsByAsset = await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
         var investedAmount = await _portfolioRepository.GetInvestedAmount(_userID, ct);
 
         foreach (var item in allocationsByAsset.Items)
@@ -22,10 +22,10 @@ public class AllocationByAssetRecalculateCommandHandler(
             var investedAmountByAsset = await _portfolioRepository.GetInvestedAmountoByAsset(_userID, item.AssetId, ct);
             item.AllocationValues.RecalculateValues(investedAmountByAsset, investedAmount);
             item.GenerateRecommendation(investedAmountByAsset, investedAmount);
-            await _allocationRepository.UpdateAsync(item, ct);
+            await _assetRepository.UpdateAllocationAsync(item, ct);
         }
 
-        allocationsByAsset = await _allocationRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        allocationsByAsset = await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return allocationsByAsset;
     }

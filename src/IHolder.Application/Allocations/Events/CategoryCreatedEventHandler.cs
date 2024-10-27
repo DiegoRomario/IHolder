@@ -1,4 +1,5 @@
 ﻿using IHolder.Application.Allocations.Mappers;
+using IHolder.Application.Common;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Categories.Events;
 using IHolder.Domain.Common;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.Events;
 
-internal class CategoryCreatedEventHandler(IAllocationRepository _allocationRepository, IPortfolioRepository _portfolioRepository, ICurrentUserProvider currentUserProvider) : INotificationHandler<CategoryCreatedEvent>
+internal class CategoryCreatedEventHandler(ICategoryRepository _categoryRepository, IPortfolioRepository _portfolioRepository, ICurrentUserProvider currentUserProvider) : INotificationHandler<CategoryCreatedEvent>
 {
     public async Task Handle(CategoryCreatedEvent categoryCreatedEvent, CancellationToken ct)
     {
@@ -17,6 +18,6 @@ internal class CategoryCreatedEventHandler(IAllocationRepository _allocationRepo
 
         var allocation = categoryCreatedEvent.ToEntity(portfolio!.Id);
 
-        await _allocationRepository.AddAsync(allocation, ct);
+        await _categoryRepository.AddAllocationAsync(allocation, ct);
     }
 }

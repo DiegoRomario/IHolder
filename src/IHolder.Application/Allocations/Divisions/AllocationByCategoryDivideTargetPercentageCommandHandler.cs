@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using IHolder.Application.Common;
 using IHolder.Application.Common.Interfaces;
 using IHolder.Domain.Allocations;
 using IHolder.SharedKernel.DTO;
@@ -7,7 +8,7 @@ using MediatR;
 namespace IHolder.Application.Allocations.Divisions;
 
 public class AllocationByCategoryDivideTargetPercentageCommandHandler
-    (IAllocationByCategoryRepository _allocationByCategoryRepository,
+    (ICategoryRepository _categoryRepository,
     IPortfolioRepository _portfolioRepository,
     ICurrentUserProvider currentUserProvider) : IRequestHandler<AllocationByCategoryDivideTargetPercentageCommand, ErrorOr<PaginatedList<AllocationByCategory>>>
 {
@@ -16,14 +17,14 @@ public class AllocationByCategoryDivideTargetPercentageCommandHandler
 
     public async Task<ErrorOr<PaginatedList<AllocationByCategory>>> Handle(AllocationByCategoryDivideTargetPercentageCommand request, CancellationToken ct)
     {
-        var allocations = (await _allocationByCategoryRepository.GetPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
+        var allocations = (await _categoryRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
 
         if (request.OnlyCategoriesInPortfolio)
             await UpdateAllocationByCategoryInPortfolio(allocations, ct);
         else
             await UpdateAllocationByCategoryRegistered(allocations, ct);
 
-        var result = await _allocationByCategoryRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var result = await _categoryRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return result;
     }
@@ -35,7 +36,7 @@ public class AllocationByCategoryDivideTargetPercentageCommandHandler
         foreach (var allocation in allocations)
         {
             allocation.AllocationValues.UpdateTargetPercentage(percentageDistribution);
-            await _allocationByCategoryRepository.UpdateAsync(allocation, ct);
+            await _categoryRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
 
@@ -50,14 +51,14 @@ public class AllocationByCategoryDivideTargetPercentageCommandHandler
             var hasAllocationInPortfolio = allocationsInPortfolio.Where(a => a.CategoryId == allocation.CategoryId).Any();
             allocation.AllocationValues.UpdateTargetPercentage(hasAllocationInPortfolio ? percentageDistribution : 0);
 
-            await _allocationByCategoryRepository.UpdateAsync(allocation, ct);
+            await _categoryRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
     private async Task<List<AllocationByCategory>> GetAllocationByCategoriesInPortfolio(CancellationToken ct)
     {
         var categoryIDsInPortfolio = await _portfolioRepository.GetAllCategoryIdsInPortfolioByUserAsync(_userID, ct);
 
-        var allocations = (await _allocationByCategoryRepository.GetPaginatedAsync(new(UserId: _userID, CategoryIds: categoryIDsInPortfolio), ct)).Items.ToList();
+        var allocations = (await _categoryRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, CategoryIds: categoryIDsInPortfolio), ct)).Items.ToList();
         return allocations;
     }
 

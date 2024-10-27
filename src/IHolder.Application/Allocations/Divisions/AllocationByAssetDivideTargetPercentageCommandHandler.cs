@@ -7,7 +7,7 @@ using MediatR;
 namespace IHolder.Application.Allocations.Divisions;
 
 public class AllocationByAssetDivideTargetPercentageCommandHandler
-    (IAllocationByAssetRepository _allocationByAssetRepository,
+    (IAssetRepository _assetRepository,
     IPortfolioRepository _portfolioRepository,
     ICurrentUserProvider currentUserProvider) : IRequestHandler<AllocationByAssetDivideTargetPercentageCommand, ErrorOr<PaginatedList<AllocationByAsset>>>
 {
@@ -16,11 +16,11 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
 
     public async Task<ErrorOr<PaginatedList<AllocationByAsset>>> Handle(AllocationByAssetDivideTargetPercentageCommand request, CancellationToken ct)
     {
-        var allocations = (await _allocationByAssetRepository.GetPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
+        var allocations = (await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageSize: short.MaxValue), ct)).Items.ToList();
 
         await UpdateAllocationByAssetInPortfolio(allocations, ct);
 
-        var result = await _allocationByAssetRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var result = await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return result;
     }
@@ -36,7 +36,7 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
             var hasAllocationInPortfolio = allocationsInPortfolio.Where(a => a.AssetId == allocation.AssetId).Any();
             allocation.AllocationValues.UpdateTargetPercentage(hasAllocationInPortfolio ? percentageDistribution : 0);
 
-            await _allocationByAssetRepository.UpdateAsync(allocation, ct);
+            await _assetRepository.UpdateAllocationAsync(allocation, ct);
         }
     }
 
@@ -44,7 +44,7 @@ public class AllocationByAssetDivideTargetPercentageCommandHandler
     {
         var assetIDsInPortfolio = await _portfolioRepository.GetAllAssetIdsInPortfolioByUserAsync(_userID, ct);
 
-        var allocations = (await _allocationByAssetRepository.GetPaginatedAsync(new(UserId: _userID, AssetIds: assetIDsInPortfolio), ct)).Items.ToList();
+        var allocations = (await _assetRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, AssetIds: assetIDsInPortfolio), ct)).Items.ToList();
         return allocations;
     }
 

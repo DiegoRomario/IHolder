@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.Recalculations;
 public class AllocationByProductRecalculateCommandHandler(
-    IAllocationByProductRepository _allocationRepository,
+    IProductRepository _productRepository,
     ICurrentUserProvider _currentUserProvider,
     IPortfolioRepository _portfolioRepository) : IRequestHandler<AllocationByProductRecalculateCommand, ErrorOr<PaginatedList<AllocationByProduct>>>
 {
@@ -14,7 +14,7 @@ public class AllocationByProductRecalculateCommandHandler(
 
     public async Task<ErrorOr<PaginatedList<AllocationByProduct>>> Handle(AllocationByProductRecalculateCommand request, CancellationToken ct)
     {
-        var allocationsByProduct = await _allocationRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        var allocationsByProduct = await _productRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
         var investedAmount = await _portfolioRepository.GetInvestedAmount(_userID, ct);
 
         foreach (var item in allocationsByProduct.Items)
@@ -22,10 +22,10 @@ public class AllocationByProductRecalculateCommandHandler(
             var investedAmountByProduct = await _portfolioRepository.GetInvestedAmountoByProduct(_userID, item.ProductId, ct);
             item.AllocationValues.RecalculateValues(investedAmountByProduct, investedAmount);
             item.GenerateRecommendation(investedAmountByProduct, investedAmount);
-            await _allocationRepository.UpdateAsync(item, ct);
+            await _productRepository.UpdateAllocationAsync(item, ct);
         }
 
-        allocationsByProduct = await _allocationRepository.GetPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
+        allocationsByProduct = await _productRepository.GetAllocationsPaginatedAsync(new(UserId: _userID, PageNumber: request.PageNumber, PageSize: request.PageSize), ct);
 
         return allocationsByProduct;
     }

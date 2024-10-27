@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IHolder.Application.Allocations.Events;
 
-internal class AssetInPortfolioAddedEventHandler(IAllocationRepository _allocationRepository, IPortfolioRepository _portfolioRepository) : INotificationHandler<AssetInPortfolioAddedEvent>
+internal class AssetInPortfolioAddedEventHandler(IAssetRepository _allocationRepository, IPortfolioRepository _portfolioRepository) : INotificationHandler<AssetInPortfolioAddedEvent>
 {
     public async Task Handle(AssetInPortfolioAddedEvent assetCreatedEvent, CancellationToken ct)
     {
@@ -15,6 +15,6 @@ internal class AssetInPortfolioAddedEventHandler(IAllocationRepository _allocati
         if (assetInPortfolio is null) throw new EventualConsistencyException(AssetInPortfolioAddedEvent.AssetInPortfolioNotFound, null);
 
         var allocation = assetCreatedEvent.ToEntity();
-        await _allocationRepository.AddAsync(allocation, ct);
+        await _allocationRepository.AddAllocationAsync(allocation, ct);
     }
 }
