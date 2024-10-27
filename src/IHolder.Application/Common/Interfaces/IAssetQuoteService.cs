@@ -4,5 +4,5 @@ namespace IHolder.Application.Common.Interfaces;
 
 public interface IAssetQuoteService
 {
-    Task<AssetQuoteDTO> GetAssetQuoteAsync(string ticker, string productName, CancellationToken cancellationToken = default);
+    Task<AssetQuoteDTO> GetAssetQuoteAsync(string ticker, string? exchangeId, CancellationToken cancellationToken = default);
 }

@@ -12,5 +12,5 @@ public interface IAssetRepository
     Task<PaginatedList<Asset>> GetPaginatedAsync(AssetsPaginatedListFilter filter, CancellationToken ct);
     Task AddAsync(Asset asset, CancellationToken ct);
     Task UpdateAsync(Asset asset, CancellationToken ct);
-    Task<string?> GetProductNameByAssetTickerAsync(string ticker, CancellationToken ct);
+    Task<string?> GetExchangeIdByAssetTickerAsync(string ticker, CancellationToken ct);
 }

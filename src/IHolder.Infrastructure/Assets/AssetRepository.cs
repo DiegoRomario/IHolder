@@ -19,12 +19,12 @@ internal class AssetRepository(IHolderDbContext _dbContext) : IAssetRepository
                          .FirstOrDefaultAsync(a => a.Id == id, ct);
     }
 
-    public Task<string?> GetProductNameByAssetTickerAsync(string ticker, CancellationToken ct)
+    public Task<string?> GetExchangeIdByAssetTickerAsync(string ticker, CancellationToken ct)
     {
         return _dbContext.Assets
                          .AsNoTracking()
                          .Where(a => a.Ticker == ticker)
-                         .Select(a => a.Product!.Name)
+                         .Select(a => a.Product!.ExchangeId)
                          .FirstOrDefaultAsync(ct);
     }
 
