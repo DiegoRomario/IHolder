@@ -7,10 +7,12 @@ using IHolder.Contracts.Assets;
 using IHolder.Domain.Assets;
 using IHolder.SharedKernel.DTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Assets;
 
+[Authorize]
 [Route("[controller]")]
 public class AssetsController(ISender _mediator) : IHolderControllerBase
 {

@@ -10,10 +10,12 @@ using IHolder.Application.Portfolios.UpdateAsset;
 using IHolder.Contracts.Portfolios;
 using IHolder.Domain.Portfolios;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Portfolios;
 
+[Authorize]
 [Route("[controller]")]
 public class PortfoliosController(ISender _mediator, ICurrentUserProvider currentUserProvider) : IHolderControllerBase
 {

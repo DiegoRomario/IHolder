@@ -11,10 +11,12 @@ using IHolder.Contracts.Allocations;
 using IHolder.Domain.Allocations;
 using IHolder.SharedKernel.DTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Allocations;
 
+[Authorize]
 [Route("[controller]")]
 public class AllocationsController(ISender _mediator, ICurrentUserProvider currentUserProvider) : IHolderControllerBase
 {

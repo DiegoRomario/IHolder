@@ -8,10 +8,12 @@ using IHolder.Contracts.Products;
 using IHolder.Domain.Products;
 using IHolder.SharedKernel.DTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IHolder.API.Products;
 
+[Authorize]
 [Route("[controller]")]
 public class ProductsController(ISender _mediator) : IHolderControllerBase
 {
