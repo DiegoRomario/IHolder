@@ -14,7 +14,7 @@ public class Product : AggregateRoot
         CategoryId = categoryId;
         Risk = risk;
         ExchangeId = exchangeId;
-        _domainEvents.Add(new ProductCreatedEvent(Id));
+        if (id is null) _domainEvents.Add(new ProductCreatedEvent(Id));
     }
 
     private Product() { }

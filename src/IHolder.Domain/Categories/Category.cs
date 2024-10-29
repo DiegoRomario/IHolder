@@ -9,7 +9,7 @@ public class Category : AggregateRoot
     {
         Name = name;
         Description = description;
-        _domainEvents.Add(new CategoryCreatedEvent(Id));
+        if (id is null) _domainEvents.Add(new CategoryCreatedEvent(Id));
     }
 
     private Category() { }

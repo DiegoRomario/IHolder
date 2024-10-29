@@ -12,7 +12,7 @@ public class User : AggregateRoot
         LastName = lastName;
         Email = email;
         _passwordHash = passwordHash;
-        _domainEvents.Add(new UserCreatedEvent(Id, FirstName, LastName));
+        if (id is null) _domainEvents.Add(new UserCreatedEvent(Id, FirstName, LastName));
     }
 
     private User() { }
