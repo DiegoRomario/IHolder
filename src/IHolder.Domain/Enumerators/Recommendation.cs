@@ -2,7 +2,8 @@
 
 public enum Recommendation : byte
 {
-    Hold = 1,
     Buy = 1,
-    Sell = 3
+    Hold = 2,
+    Sell = 3,
+    //Trim = 4 TODO: ADD THIS NEW RECOMMENDATION OPTION AND APPLY THE NEW RULES...
 }
