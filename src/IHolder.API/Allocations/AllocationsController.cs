@@ -22,7 +22,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
 {
     private readonly Guid _userID = currentUserProvider.GetCurrentUser().Value.Id;
 
-    [HttpPut("category/{id}")]
+    [HttpPatch("category/{id}")]
     public async Task<IActionResult> Update(Guid id, AllocationByCategoryUpdateRequest request, CancellationToken ct)
     {
         AllocationByCategoryUpdateCommand command = request.ToCommand(id);
@@ -34,7 +34,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("category/divide")]
+    [HttpPost("category/divide")]
     public async Task<IActionResult> Divide(AllocationByCategoryDivideTargetPercentageRequest request, CancellationToken ct)
     {
         AllocationByCategoryDivideTargetPercentageCommand command = request.ToCommand();
@@ -46,7 +46,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("category/recalculate")]
+    [HttpPost("category/recalculate")]
     public async Task<IActionResult> Recalculate(AllocationByCategoryRecalculateRequest request, CancellationToken ct)
     {
         AllocationByCategoryRecalculateCommand command = request.ToCommand();
@@ -58,7 +58,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("product/{id}")]
+    [HttpPatch("product/{id}")]
     public async Task<IActionResult> Update(Guid id, AllocationByProductUpdateRequest request, CancellationToken ct)
     {
         AllocationByProductUpdateCommand command = request.ToCommand(id);
@@ -70,7 +70,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("product/divide")]
+    [HttpPost("product/divide")]
     public async Task<IActionResult> Divide(AllocationByProductDivideTargetPercentageRequest request, CancellationToken ct)
     {
         AllocationByProductDivideTargetPercentageCommand command = request.ToCommand();
@@ -82,7 +82,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("product/recalculate")]
+    [HttpPost("product/recalculate")]
     public async Task<IActionResult> Recalculate(AllocationByProductRecalculateRequest request, CancellationToken ct)
     {
         AllocationByProductRecalculateCommand command = request.ToCommand();
@@ -94,7 +94,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("asset/{id}")]
+    [HttpPatch("asset/{id}")]
     public async Task<IActionResult> Update(Guid id, AllocationByAssetUpdateRequest request, CancellationToken ct)
     {
         AllocationByAssetUpdateCommand command = request.ToCommand(id);
@@ -106,7 +106,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("asset/divide")]
+    [HttpPost("asset/divide")]
     public async Task<IActionResult> Divide(AllocationByAssetDivideTargetPercentageRequest request, CancellationToken ct)
     {
         AllocationByAssetDivideTargetPercentageCommand command = request.ToCommand();
@@ -118,7 +118,7 @@ public class AllocationsController(ISender _mediator, ICurrentUserProvider curre
         return response;
     }
 
-    [HttpPut("asset/recalculate")]
+    [HttpPost("asset/recalculate")]
     public async Task<IActionResult> Recalculate(AllocationByAssetRecalculateRequest request, CancellationToken ct)
     {
         AllocationByAssetRecalculateCommand command = request.ToCommand();
